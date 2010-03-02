@@ -1,6 +1,8 @@
 #ifndef __ROSE_R5RS_GRAMMAR_HPP__
 #define __ROSE_R5RS_GRAMMAR_HPP__
 
+#include "rose/identifier.hpp"
+
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
@@ -8,28 +10,20 @@
 namespace rose {
 
 namespace qi = boost::spirit::qi;
+namespace spirit = boost::spirit;
 
-template<typename Iterator, typename Lexer>
+template<
+    typename Iterator,
+    typename Skipper
+>
 struct r5rs_grammar :
-    qi::grammar<Iterator, qi::in_state_skipper<Lexer> >
+    qi::grammar<Iterator, Skipper>
 {
-    typedef Iterator iterator_type;
+    r5rs_grammar();
 
-    typedef qi::in_state_skipper<Lexer> skipper_type;
-
-    template<typename TokenDef>
-    r5rs_grammar( TokenDef const& token ) :
-        r5rs_grammar::base_type( program )
-    {
-        using qi::lit;
-
-        program
-            =   *token
-            ;
-
-    }
-
-    qi::rule<iterator_type, skipper_type> program;
+    identifier<Iterator> identifier_;
+    qi::rule<Iterator, Skipper> program;
+    qi::rule<Iterator, Skipper> identifier;
 
 };  //  struct r5rs_grammar
 

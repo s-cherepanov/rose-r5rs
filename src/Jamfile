@@ -1,0 +1,8 @@
+exe rose
+    :   [ glob-tree *.cpp ]
+    ;
+
+install install-rose
+    :   rose
+    :   <location>$(PROJECT_ROOT)/dist
+    ;

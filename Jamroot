@@ -12,7 +12,6 @@ project
             <toolset>gcc:<cxxflags>-Wall
 
             <include>include
-            <library>/boost//system
             <library>/boost//filesystem
             <library>/boost//program_options
 
@@ -26,11 +25,5 @@ project
             bin
     ;
 
-exe rose : src/main.cpp ;
-
-install install-rose
-    :   rose
-    :   <location>dist
-    ;
-
-# build-project test ;
+build-project src ;
+build-project test ;
