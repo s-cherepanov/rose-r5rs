@@ -1,0 +1,36 @@
+import modules ;
+
+local BOOST_ROOT = [ modules.peek : BOOST_ROOT ] ;
+use-project /boost : $(BOOST_ROOT) ;
+
+path-constant PROJECT_ROOT : . ;
+
+project
+    :   requirements
+            <toolset>gcc:<cxxflags>-Wno-unused-variable
+            <toolset>gcc:<cxxflags>-Wformat
+            <toolset>gcc:<cxxflags>-Wall
+
+            <include>include
+            <library>/boost//system
+            <library>/boost//filesystem
+            <library>/boost//program_options
+
+            <link>static
+            <threading>multi
+
+    :   default-build
+            debug
+
+    :   build-dir
+            bin
+    ;
+
+exe rose : src/main.cpp ;
+
+install install-rose
+    :   rose
+    :   <location>dist
+    ;
+
+# build-project test ;

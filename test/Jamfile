@@ -1,0 +1,13 @@
+project
+    :   requirements
+            <library>/boost//prg_exec_monitor
+            <library>/boost//unit_test_framework
+    ;
+
+run
+        [ glob-tree *.cpp ]
+    :   --working-dir=\"$(PROJECT_ROOT)/test/test_files\"
+    :
+    :
+    :   test
+    ;
