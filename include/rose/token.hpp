@@ -1,9 +1,6 @@
 #ifndef __ROSE_TOKEN_HPP__
 #define __ROSE_TOKEN_HPP__
 
-#include "rose/identifier.hpp"
-#include "rose/character.hpp"
-
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>

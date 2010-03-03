@@ -21,10 +21,16 @@ r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
     using spirit::_1;
 
     program
-        =  *(   lexeme[ identifier ]
-            |   lexeme[ boolean ]
-            |   lexeme[ character ]
-            |   lexeme[ string ]
+        =  *(
+                (   lexeme[ boolean ]
+                |   lexeme[ number ]
+                |   lexeme[ identifier ]
+                |   lexeme[ character ]
+                |   lexeme[ string ]
+                )
+                [
+                    std::cout << _1 << std::endl
+                ]
             )
         ;
 

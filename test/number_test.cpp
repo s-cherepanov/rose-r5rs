@@ -1,8 +1,8 @@
-#include "rose/token.hpp"
+#include "rose/number.hpp"
 
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE( boolean_suite )
+BOOST_AUTO_TEST_SUITE( number_suite )
 
 namespace qi = boost::spirit::qi;
 
@@ -11,26 +11,27 @@ typedef
     iterator_type;
 
 typedef
-    rose::boolean<iterator_type>
-    boolean;
+    rose::number<iterator_type>
+    number;
 
-void check_boolean(
+void check_number(
         std::string const& str,
-        bool expected,
-        bool initial_value )
+        int expected,
+        int initial_value = 0 )
 {
-    bool actual = initial_value;
+    int actual = initial_value;
     iterator_type first = str.begin();
-    boolean grammar;
+    number grammar;
 
     BOOST_CHECK( qi::parse( first, str.end(), grammar, actual ) );
     BOOST_CHECK( first == str.end() );
     BOOST_CHECK_EQUAL( expected, actual );
 }
 
-BOOST_AUTO_TEST_CASE( boolean_test ) {
-    check_boolean( "#t", true, false );
-    check_boolean( "#f", false, true );
+BOOST_AUTO_TEST_CASE( number_test ) {
+    check_number( "0", 0, 1 );
+    check_number( "10", 10 );
+    check_number( "-10", -10 );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
