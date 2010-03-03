@@ -20,8 +20,11 @@ identifier<Iterator>::identifier() :
     using qi::raw;
 
     start
-        %=  initial >> *subsequent
-        |   peculiar_identifier
+        =   raw
+            [
+                initial >> *subsequent
+            |   peculiar_identifier
+            ]
         ;
 
     initial
@@ -51,12 +54,12 @@ identifier<Iterator>::identifier() :
     special_subsequent  .name( "special_subsequent" );
     subsequent          .name( "subsequent" );
 
-    qi::debug( start );
-    qi::debug( initial );
-    qi::debug( peculiar_identifier );
-    qi::debug( special_initial );
-    qi::debug( special_subsequent );
-    qi::debug( subsequent );
+    BOOST_SPIRIT_DEBUG_NODE( start );
+    BOOST_SPIRIT_DEBUG_NODE( initial );
+    BOOST_SPIRIT_DEBUG_NODE( peculiar_identifier );
+    BOOST_SPIRIT_DEBUG_NODE( special_initial );
+    BOOST_SPIRIT_DEBUG_NODE( special_subsequent );
+    BOOST_SPIRIT_DEBUG_NODE( subsequent );
 }
 
 }   //  namespace rose

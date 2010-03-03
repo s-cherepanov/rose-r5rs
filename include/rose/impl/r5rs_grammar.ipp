@@ -17,20 +17,20 @@ template<
 r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
     r5rs_grammar::base_type( program )
 {
-    using spirit::_1;
     using spirit::lexeme;
-
-    identifier
-        =   lexeme[ identifier_ ]
-        ;
+    using spirit::_1;
 
     program
-        =  *identifier
+        =  *(   lexeme[ identifier ]
+            |   lexeme[ boolean ]
+            |   lexeme[ character ]
+            |   lexeme[ string ]
+            )
         ;
 
     program.name( "program" );
 
-    qi::debug( program );
+    BOOST_SPIRIT_DEBUG_NODE( program );
 }
 
 }   //  namespace rose

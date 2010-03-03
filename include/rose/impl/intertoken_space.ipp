@@ -39,10 +39,10 @@ intertoken_space<Iterator>::intertoken_space() :
     whitespace  .name( "whitespace" );
     comment     .name( "comment" );
 
-    qi::debug( start );
-    qi::debug( atmosphere );
-    qi::debug( whitespace );
-    qi::debug( comment );
+    BOOST_SPIRIT_DEBUG_NODE( start );
+    BOOST_SPIRIT_DEBUG_NODE( atmosphere );
+    BOOST_SPIRIT_DEBUG_NODE( whitespace );
+    BOOST_SPIRIT_DEBUG_NODE( comment );
 }
 
 }   //  namespace rose
