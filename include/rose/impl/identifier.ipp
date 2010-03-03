@@ -3,6 +3,8 @@
 
 #include "rose/identifier.hpp"
 
+#include <boost/spirit/include/phoenix_operator.hpp>
+
 namespace rose {
 
 namespace qi = boost::spirit::qi;

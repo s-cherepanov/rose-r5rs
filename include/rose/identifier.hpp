@@ -3,7 +3,6 @@
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
-#include <boost/spirit/include/phoenix_operator.hpp>
 
 namespace rose {
 
@@ -11,7 +10,9 @@ namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 
 template<typename Iterator>
-struct identifier : qi::grammar<Iterator, std::string()> {
+struct identifier :
+    qi::grammar<Iterator, std::string()>
+{
     identifier();
 
     qi::rule<Iterator, std::string()> start;

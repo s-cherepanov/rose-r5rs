@@ -1,9 +1,12 @@
 import modules ;
 
 local BOOST_ROOT = [ modules.peek : BOOST_ROOT ] ;
-use-project /boost : $(BOOST_ROOT) ;
 
 path-constant PROJECT_ROOT : . ;
+
+use-project /boost       : $(BOOST_ROOT) ;
+use-project /rose        : $(PROJECT_ROOT) ;
+use-project /rose/parser : $(PROJECT_ROOT)/src/parser ;
 
 project
     :   requirements
@@ -26,4 +29,5 @@ project
     ;
 
 build-project src ;
+build-project src/parser ;
 build-project test ;

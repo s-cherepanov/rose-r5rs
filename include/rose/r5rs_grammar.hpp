@@ -5,12 +5,10 @@
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
-#include <boost/spirit/include/phoenix_operator.hpp>
 
 namespace rose {
 
 namespace qi = boost::spirit::qi;
-namespace spirit = boost::spirit;
 
 template<
     typename Iterator,
