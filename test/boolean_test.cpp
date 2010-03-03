@@ -21,8 +21,9 @@ void check_boolean(
 {
     bool actual = initial_value;
     iterator_type first = str.begin();
+    boolean grammar;
 
-    BOOST_CHECK( qi::parse( first, str.end(), boolean(), actual ) );
+    BOOST_CHECK( qi::parse( first, str.end(), grammar, actual ) );
     BOOST_CHECK( first == str.end() );
     BOOST_CHECK_EQUAL( expected, actual );
 }

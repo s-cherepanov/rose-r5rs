@@ -17,8 +17,9 @@ typedef
 void check_identifier( std::string const& str ) {
     iterator_type first = str.begin();
     std::string actual;
+    identifier grammar;
 
-    BOOST_CHECK( qi::parse( first, str.end(), identifier(), actual ) );
+    BOOST_CHECK( qi::parse( first, str.end(), grammar, actual ) );
     BOOST_CHECK( first == str.end() );
     BOOST_CHECK_EQUAL( str, actual );
 }

@@ -20,8 +20,9 @@ void check_string(
 {
     iterator_type first = str.begin();
     std::string actual;
+    string grammar;
 
-    BOOST_CHECK( qi::parse( first, str.end(), string(), actual ) );
+    BOOST_CHECK( qi::parse( first, str.end(), grammar, actual ) );
     BOOST_CHECK( first == str.end() );
     BOOST_CHECK_EQUAL( expected, actual );
 }

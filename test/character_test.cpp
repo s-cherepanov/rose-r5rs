@@ -17,9 +17,9 @@ typedef
 void check_character( std::string const& input, char expected ) {
     char actual = '\0';
     iterator_type begin = input.begin();
-    bool result = qi::parse( begin, input.end(), character(), actual );
+    character grammar;
 
-    BOOST_CHECK( result );
+    BOOST_CHECK( qi::parse( begin, input.end(), grammar, actual ) );
     BOOST_CHECK( begin == input.end() );
     BOOST_CHECK_EQUAL( expected, actual );
 }
