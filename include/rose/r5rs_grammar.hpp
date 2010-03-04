@@ -2,10 +2,10 @@
 #define __ROSE_R5RS_GRAMMAR_HPP__
 
 #include "rose/character.hpp"
+#include "rose/datum.hpp"
 #include "rose/identifier.hpp"
 #include "rose/number.hpp"
 #include "rose/token.hpp"
-
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
@@ -23,14 +23,14 @@ struct r5rs_grammar :
 {
     r5rs_grammar();
 
-    rose::identifier<Iterator>  identifier;
-    rose::boolean<Iterator>     boolean;
-    rose::number<Iterator>      number;
-    rose::character<Iterator>   character;
-    rose::string<Iterator>      string;
+    rose::identifier<Iterator>     identifier;
+    rose::boolean<Iterator>        boolean;
+    rose::number<Iterator>         number;
+    rose::character<Iterator>      character;
+    rose::string<Iterator>         string;
+    rose::datum<Iterator, Skipper> datum;
 
-    qi::rule<Iterator, Skipper>                program;
-    qi::rule<Iterator, std::string(), Skipper> token;
+    qi::rule<Iterator, Skipper> program;
 
 };  //  struct r5rs_grammar
 

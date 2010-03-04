@@ -17,12 +17,19 @@ character<Iterator>::character() :
     using ascii::graph;
     using qi::attr;
 
+    //
+    // NOTE:
+    // 
+    // character_name must comes before graph, otherwise "#\newline" and
+    // "#\space" would never be matched since their prefix "#\n" and "#\s" are
+    // matched first.
+    //
     start
         =   "#\\" >> ( character_name | graph )
         ;
 
     character_name
-        =   "space" >> attr( ' ' )
+        =   "space"   >> attr( ' ' )
         |   "newline" >> attr( '\n' )
         ;
 
