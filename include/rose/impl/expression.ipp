@@ -20,15 +20,9 @@ expression<Iterator, Skipper>::expression() :
     using qi::char_;
     using qi::lexeme;
 
-    //
-    // NOTE:
-    //
-    // <literal> must comes before <variable>, or numbers like "-10"
-    // cannot be matched since "-" is recognized as identifier.
-    //
     start
-        =   literal
-        |   variable
+        =   variable
+        |   literal
         ;
 
     variable
