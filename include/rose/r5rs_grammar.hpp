@@ -28,7 +28,9 @@ struct r5rs_grammar :
     rose::number<Iterator>      number;
     rose::character<Iterator>   character;
     rose::string<Iterator>      string;
-    qi::rule<Iterator, Skipper> program;
+
+    qi::rule<Iterator, Skipper>                program;
+    qi::rule<Iterator, std::string(), Skipper> token;
 
 };  //  struct r5rs_grammar
 

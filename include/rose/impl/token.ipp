@@ -31,6 +31,7 @@ string<Iterator>::string() :
     string::base_type( start )
 {
     using ascii::graph;
+    using ascii::space;
     using qi::attr;
 
     start
@@ -38,7 +39,7 @@ string<Iterator>::string() :
         ;
 
     string_element
-        =   ( graph - '"' - '\\' )
+        =   ( ( graph | space ) - '"' - '\\' )
         |   ( "\\\"" >> attr( '"' ) )
         |   ( "\\\\" >> attr( '\\' ) )
         |   ( "\\n"  >> attr( '\n' ) )

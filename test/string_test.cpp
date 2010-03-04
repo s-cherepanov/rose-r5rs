@@ -31,6 +31,8 @@ BOOST_AUTO_TEST_CASE( string_test ) {
     check_string( "\"abc\"", "abc" );
     check_string( "\"\\\"\"", "\"" );
     check_string( "\"\\\\\"", "\\" );
+    check_string( "\" \"", " " );
+    check_string( "\"\n\"", "\n" );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
