@@ -14,6 +14,9 @@ namespace rose {
 
 namespace qi = boost::spirit::qi;
 
+const std::string default_prompt( "rose> " );
+const std::string continue_prompt( " ...> " );
+
 template<typename Iterator>
 void print_tokens( Iterator first, Iterator last ) {
     for( std::cout << "{" << *first++ << "}"; first != last; ) {
@@ -31,12 +34,9 @@ void repl() {
         rose::intertoken_space<iterator_type>
         skipper_type;
 
-    std::string
-        default_prompt( "rose> " ),
-        continue_prompt( " ...> " ),
-        prompt = default_prompt,
-        line,
-        source;
+    std::string prompt = default_prompt;
+    std::string line;
+    std::string source;
 
     while( std::cout << prompt, std::getline( std::cin, line ) ) {
         source.append( line );
@@ -56,10 +56,10 @@ void repl() {
         tokenizer grammar( output_iterator );
         skipper_type skipper;
 
-        bool matched = qi::phrase_parse( first,last, grammar, skipper );
-        bool full_matched = matched && first == last;
+        bool match = qi::phrase_parse( first,last, grammar, skipper );
+        bool full_match = match && first == last;
 
-        if( full_matched ) {
+        if( full_match ) {
             print_tokens( tokens.begin(), tokens.end() );
             source.clear();
             prompt = default_prompt;

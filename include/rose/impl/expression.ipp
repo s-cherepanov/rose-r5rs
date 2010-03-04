@@ -15,14 +15,15 @@ template<
     typename Skipper
 >
 expression<Iterator, Skipper>::expression() :
-    expression::base_type( start )
+    expression::base_type( expression_ )
 {
     using qi::char_;
     using qi::lexeme;
 
-    start
+    expression_
         =   variable
         |   literal
+        |   procedure_call
         ;
 
     variable
@@ -46,17 +47,37 @@ expression<Iterator, Skipper>::expression() :
         |   char_( '(' ) >> "quote" >> datum >> ')'
         ;
 
-    start           .name( "expression" );
-    variable        .name( "variable" );
-    literal         .name( "literal" );
-    self_evaluating .name( "self_evaluating" );
-    quotation       .name( "quotation" );
+    procedure_call
+        =   '(' >> operator_ >> *operand >> ')'
+        ;
 
-    BOOST_SPIRIT_DEBUG_NODE( start );
+    operator_
+        =   expression_.alias()
+        ;
+
+    operand
+        =   expression_.alias()
+        ;
+
+    expression_         .name( "expression" );
+    variable            .name( "variable" );
+    literal             .name( "literal" );
+    self_evaluating     .name( "self_evaluating" );
+    quotation           .name( "quotation" );
+    procedure_call      .name( "procedure_call" );
+    operator_           .name( "operator" );
+    operand             .name( "operand" );
+    lambda_expression   .name( "lambda_expression" );
+
+    BOOST_SPIRIT_DEBUG_NODE( expression_ );
     BOOST_SPIRIT_DEBUG_NODE( variable );
     BOOST_SPIRIT_DEBUG_NODE( literal );
     BOOST_SPIRIT_DEBUG_NODE( self_evaluating );
     BOOST_SPIRIT_DEBUG_NODE( quotation );
+    BOOST_SPIRIT_DEBUG_NODE( procedure_call );
+    BOOST_SPIRIT_DEBUG_NODE( operator_ );
+    BOOST_SPIRIT_DEBUG_NODE( operand );
+    BOOST_SPIRIT_DEBUG_NODE( lambda_expression );
 }
 
 }   //  namespace rose

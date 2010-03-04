@@ -28,7 +28,6 @@ struct datum :
     rose::character<Iterator>   character;
     rose::string<Iterator>      string;
 
-    qi::rule<Iterator, Skipper> start;
     qi::rule<Iterator, Skipper> datum_;
     qi::rule<Iterator, Skipper> simple_datum;
     qi::rule<Iterator, Skipper> symbol;

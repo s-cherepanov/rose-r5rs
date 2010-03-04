@@ -15,14 +15,10 @@ template<
     typename Skipper
 >
 datum<Iterator, Skipper>::datum() :
-    datum::base_type( start )
+    datum::base_type( datum_ )
 {
     using qi::char_;
     using qi::lexeme;
-
-    start
-        =   datum_.alias()
-        ;
 
     datum_
         =   simple_datum
@@ -69,7 +65,6 @@ datum<Iterator, Skipper>::datum() :
         =   "#("  >> *datum_ >> ')'
         ;
 
-    start           .name( "datum" );
     datum_          .name( "datum" );
     simple_datum    .name( "simple_datum" );
     symbol          .name( "symbol" );
@@ -79,7 +74,6 @@ datum<Iterator, Skipper>::datum() :
     abbrev_prefix   .name( "abbrev_prefix" );
     vector          .name( "vector" );
 
-    BOOST_SPIRIT_DEBUG_NODE( start );
     BOOST_SPIRIT_DEBUG_NODE( datum_ );
     BOOST_SPIRIT_DEBUG_NODE( simple_datum );
     BOOST_SPIRIT_DEBUG_NODE( symbol );

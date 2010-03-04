@@ -29,36 +29,45 @@ bool is_expression( std::string const& input ) {
     return result && begin == end;
 }
 
-BOOST_AUTO_TEST_CASE( expression_test ) {
-    // variable
+BOOST_AUTO_TEST_CASE( variable_test ) {
     BOOST_CHECK( is_expression( "abc" ) );
     BOOST_CHECK( is_expression( "+" ) );
     BOOST_CHECK( is_expression( "-" ) );
     BOOST_CHECK( is_expression( "a->b" ) );
     BOOST_CHECK( is_expression( "boolean?" ) );
+}
 
-    // literal/quotation
+BOOST_AUTO_TEST_CASE( literal_quotation_test ) {
     BOOST_CHECK( is_expression( "'a" ) );
     BOOST_CHECK( is_expression( "'(1 2 3)" ) );
     BOOST_CHECK( is_expression( "(quote (1 2 3))" ) );
+}
 
-    // literal/self_evaluating/boolean
+BOOST_AUTO_TEST_CASE( literal_self_evaluating_boolean_test ) {
     BOOST_CHECK( is_expression( "#t" ) );
     BOOST_CHECK( is_expression( "#f" ) );
+}
 
-    // literal/self_evaluating/number
+BOOST_AUTO_TEST_CASE( literal_self_evaluating_number_test ) {
     BOOST_CHECK( is_expression( "10" ) );
     BOOST_CHECK( is_expression( "-10" ) );
+}
 
-    // literal/self_evaluating/character
+BOOST_AUTO_TEST_CASE( literal_self_evaluating_character_test ) {
     BOOST_CHECK( is_expression( "#\\a" ) );
     BOOST_CHECK( is_expression( "#\\newline" ) );
     BOOST_CHECK( is_expression( "#\\space" ) );
+}
 
-    // literal/self_evaluating/string
+BOOST_AUTO_TEST_CASE( literal_self_evaluating_string_test ) {
     BOOST_CHECK( is_expression( "\"\"" ) );
     BOOST_CHECK( is_expression( "\"\\n\"" ) );
     BOOST_CHECK( is_expression( "\"abc\"" ) );
+}
+
+BOOST_AUTO_TEST_CASE( procedure_call_test ) {
+    BOOST_CHECK( is_expression( "(+ a b)" ) );
+    BOOST_CHECK( is_expression( "(symbol? 'a)" ) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -29,11 +29,16 @@ struct expression :
 
     rose::datum<Iterator, Skipper> datum;
 
-    qi::rule<Iterator, Skipper> start;
+    qi::rule<Iterator, Skipper> expression_;
     qi::rule<Iterator, Skipper> variable;
     qi::rule<Iterator, Skipper> literal;
     qi::rule<Iterator, Skipper> self_evaluating;
     qi::rule<Iterator, Skipper> quotation;
+    qi::rule<Iterator, Skipper> procedure_call;
+    qi::rule<Iterator, Skipper> operator_;
+    qi::rule<Iterator, Skipper> operand;
+    qi::rule<Iterator, Skipper> lambda_expression;
+    qi::rule<Iterator, Skipper> formals;
 
 };  //  struct expression
 
