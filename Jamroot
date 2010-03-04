@@ -15,7 +15,6 @@ project
             <toolset>gcc:<cxxflags>-Wall
 
             <define>BOOST_SPIRIT_DONT_USE_MPL_ASSERT_MSG=1
-            <undef>BOOST_SPIRIT_DEBUG
 
             <include>include
             <library>/boost//filesystem

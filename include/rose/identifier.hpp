@@ -16,6 +16,7 @@ struct identifier :
     identifier();
 
     qi::rule<Iterator, std::string()> start;
+    qi::rule<Iterator> delimiter;
     qi::rule<Iterator> initial;
     qi::rule<Iterator> peculiar_identifier;
     qi::rule<Iterator> special_initial;

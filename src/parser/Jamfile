@@ -1,3 +1,8 @@
+project
+    :   requirements
+            <define>BOOST_SPIRIT_DEBUG
+    ;
+
 lib rose-parser
     :   [ glob-tree *.cpp ]
     ;

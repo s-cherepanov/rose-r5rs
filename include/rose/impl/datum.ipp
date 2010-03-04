@@ -68,6 +68,26 @@ datum<Iterator, Skipper>::datum() :
     vector
         =   "#("  >> *datum_ >> ')'
         ;
+
+    start           .name( "datum" );
+    datum_          .name( "datum" );
+    simple_datum    .name( "simple_datum" );
+    symbol          .name( "symbol" );
+    compound_datum  .name( "compound_datum" );
+    list            .name( "list" );
+    abbreviation    .name( "abbreviation" );
+    abbrev_prefix   .name( "abbrev_prefix" );
+    vector          .name( "vector" );
+
+    BOOST_SPIRIT_DEBUG_NODE( start );
+    BOOST_SPIRIT_DEBUG_NODE( datum_ );
+    BOOST_SPIRIT_DEBUG_NODE( simple_datum );
+    BOOST_SPIRIT_DEBUG_NODE( symbol );
+    BOOST_SPIRIT_DEBUG_NODE( compound_datum );
+    BOOST_SPIRIT_DEBUG_NODE( list );
+    BOOST_SPIRIT_DEBUG_NODE( abbreviation );
+    BOOST_SPIRIT_DEBUG_NODE( abbrev_prefix );
+    BOOST_SPIRIT_DEBUG_NODE( vector );
 }
 
 }   //  namespace rose
