@@ -1,5 +1,6 @@
 #include "rose/impl/character.ipp"
 #include "rose/impl/token.ipp"
+#include "rose/intertoken_space.hpp"
 
 namespace rose {
 
@@ -8,9 +9,12 @@ void instantiate_token() {
         std::string::const_iterator
         iterator_type;
 
-    boolean<iterator_type> b;
-    character<iterator_type> c;
-    string<iterator_type> s;
+    typedef
+        rose::intertoken_space<iterator_type>
+        skipper_type;
+
+    rose::token<iterator_type, skipper_type> t;
+    rose::character<iterator_type> c;
 }
 
 }   //  namespace rose

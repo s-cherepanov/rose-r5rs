@@ -20,22 +20,20 @@ identifier<Iterator>::identifier() :
     using ascii::digit;
     using ascii::space;
     using qi::char_;
+    using qi::eoi;
     using qi::raw;
     using repository::distinct;
+
+    delimiter
+        =   space | char_( "()\";" ) | eoi
+        ;
 
     start
         =   raw
             [
-                distinct( char_ - delimiter )
-                [
-                    initial >> *subsequent
-                |   peculiar_identifier
-                ]
+                initial >> *subsequent
+            |   peculiar_identifier
             ]
-        ;
-
-    delimiter
-        =   space | char_( "()\";" )
         ;
 
     initial

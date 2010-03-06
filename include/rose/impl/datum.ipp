@@ -26,15 +26,15 @@ datum<Iterator, Skipper>::datum() :
         ;
 
     simple_datum
-        =   lexeme[ boolean ]
-        |   lexeme[ number ]
-        |   lexeme[ character ]
-        |   lexeme[ string ]
+        =   token.boolean
+        |   token.number
+        |   token.character
+        |   token.string
         |   symbol
         ;
 
     symbol
-        =   lexeme[ identifier ]
+        =   token.identifier.alias()
         ;
 
     compound_datum
@@ -43,8 +43,10 @@ datum<Iterator, Skipper>::datum() :
         ;
 
     list
-        =   '(' >> *datum_ >> ')'
-        |   '(' >> +datum_ >> '.' >> datum_ >> ')'
+        =   token.lparen >> *datum_ >> token.rparen
+        |   token.lparen
+            >> +datum_ >> token.dot >> datum_
+            >> token.rparen
         |   abbreviation
         ;
 
@@ -52,17 +54,16 @@ datum<Iterator, Skipper>::datum() :
         =   abbrev_prefix >> datum_
         ;
 
-    //
-    // NOTE:
-    //
-    // ",@" must comes first, or ',' as its prefix would be matched first.
-    //
+    // NOTE: `comma_at' must comes before `comma'
     abbrev_prefix
-        =   ",@" | char_( "'`," )
+        =   token.single_quote
+        |   token.back_quote
+        |   token.comma_at
+        |   token.comma
         ;
 
     vector
-        =   "#("  >> *datum_ >> ')'
+        =   token.sharp_lparen >> *datum_ >> token.rparen
         ;
 
     datum_          .name( "datum" );

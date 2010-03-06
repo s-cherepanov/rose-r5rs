@@ -1,3 +1,4 @@
+#include "rose/intertoken_space.hpp"
 #include "rose/token.hpp"
 
 #include <boost/test/unit_test.hpp>
@@ -11,28 +12,36 @@ typedef
     iterator_type;
 
 typedef
-    rose::string<iterator_type>
-    string;
+    rose::intertoken_space<iterator_type>
+    skipper_type;
 
-void check_string(
+typedef
+    rose::token<iterator_type, skipper_type>
+    token_type;
+
+bool is_string(
         std::string const& str,
         std::string const& expected )
 {
     iterator_type first = str.begin();
+    iterator_type last = str.end();
     std::string actual;
-    string grammar;
+    token_type token;
+    skipper_type skipper;
 
-    BOOST_CHECK( qi::parse( first, str.end(), grammar, actual ) );
-    BOOST_CHECK( first == str.end() );
+    bool match = qi::phrase_parse(
+            first, last, token.string, skipper, actual );
+
     BOOST_CHECK_EQUAL( expected, actual );
+    return match && first == last;
 }
 
 BOOST_AUTO_TEST_CASE( string_test ) {
-    check_string( "\"abc\"", "abc" );
-    check_string( "\"\\\"\"", "\"" );
-    check_string( "\"\\\\\"", "\\" );
-    check_string( "\" \"", " " );
-    check_string( "\"\n\"", "\n" );
+    BOOST_CHECK( is_string( "\"abc\"", "abc" ) );
+    BOOST_CHECK( is_string( "\"\\\"\"", "\"" ) );
+    BOOST_CHECK( is_string( "\"\\\\\"", "\\" ) );
+    BOOST_CHECK( is_string( "\" \"", " " ) );
+    BOOST_CHECK( is_string( "\"\n\"", "\n" ) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

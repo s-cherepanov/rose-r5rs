@@ -1,6 +1,6 @@
 #include "rose/intertoken_space.hpp"
 #include "rose/repl.hpp"
-#include "rose/tokenizer.hpp"
+#include "rose/r5rs_grammar.hpp"
 
 #include <boost/format.hpp>
 #include <boost/spirit/include/qi.hpp>
@@ -44,23 +44,16 @@ void repl() {
         iterator_type last = source.end();
 
         typedef
-            rose::tokenizer<iterator_type, skipper_type>
-            tokenizer;
+            rose::r5rs_grammar<iterator_type, skipper_type>
+            r5rs_grammar;
 
-        typedef
-            std::back_insert_iterator<std::vector<std::string> >
-            output_iterator_type;
-
-        std::vector<std::string> tokens;
-        output_iterator_type output_iterator( tokens );
-        tokenizer grammar( output_iterator );
+        r5rs_grammar grammar;
         skipper_type skipper;
 
         bool match = qi::phrase_parse( first,last, grammar, skipper );
         bool full_match = match && first == last;
 
         if( full_match ) {
-            print_tokens( tokens.begin(), tokens.end() );
             source.clear();
             prompt = default_prompt;
         }

@@ -3,7 +3,6 @@
 
 #include "rose/token.hpp"
 #include "rose/datum.hpp"
-#include "rose/identifier.hpp"
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
@@ -21,12 +20,7 @@ struct expression :
 {
     expression();
 
-    rose::boolean<Iterator>    boolean;
-    rose::character<Iterator>  character;
-    rose::identifier<Iterator> identifier;
-    rose::number<Iterator>     number;
-    rose::string<Iterator>     string;
-
+    rose::token<Iterator, Skipper> token;
     rose::datum<Iterator, Skipper> datum;
 
     qi::rule<Iterator, Skipper> expression_;
@@ -39,6 +33,16 @@ struct expression :
     qi::rule<Iterator, Skipper> operand;
     qi::rule<Iterator, Skipper> lambda_expression;
     qi::rule<Iterator, Skipper> formals;
+    qi::rule<Iterator, Skipper> body;
+    qi::rule<Iterator, Skipper> definition;
+    qi::rule<Iterator, Skipper> def_formals;
+    qi::rule<Iterator, Skipper> sequence;
+    qi::rule<Iterator, Skipper> command;
+    qi::rule<Iterator, Skipper> conditional;
+    qi::rule<Iterator, Skipper> test;
+    qi::rule<Iterator, Skipper> consequent;
+    qi::rule<Iterator, Skipper> alternate;
+    qi::rule<Iterator, Skipper> assignment;
 
 };  //  struct expression
 

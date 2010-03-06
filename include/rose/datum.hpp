@@ -1,9 +1,6 @@
 #ifndef __ROSE_DATUM_HPP__
 #define __ROSE_DATUM_HPP__
 
-#include "rose/character.hpp"
-#include "rose/identifier.hpp"
-#include "rose/number.hpp"
 #include "rose/token.hpp"
 
 #include <boost/config/warning_disable.hpp>
@@ -22,11 +19,7 @@ struct datum :
 {
     datum();
 
-    rose::identifier<Iterator>  identifier;
-    rose::boolean<Iterator>     boolean;
-    rose::number<Iterator>      number;
-    rose::character<Iterator>   character;
-    rose::string<Iterator>      string;
+    rose::token<Iterator, Skipper> token;
 
     qi::rule<Iterator, Skipper> datum_;
     qi::rule<Iterator, Skipper> simple_datum;
