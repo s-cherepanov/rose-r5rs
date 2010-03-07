@@ -14,51 +14,51 @@ typedef
     rose::identifier<iterator_type>
     identifier;
 
-void check_identifier( std::string const& str ) {
+bool is_identifier( std::string const& str ) {
     iterator_type first = str.begin();
+    iterator_type last = str.end();
     std::string actual;
     identifier grammar;
 
-    BOOST_CHECK( qi::parse( first, str.end(), grammar, actual ) );
-    BOOST_CHECK( first == str.end() );
-    BOOST_CHECK_EQUAL( str, actual );
+    bool result = qi::parse( first, last, grammar, actual );
+    return result && first == last && str == actual;
 }
 
 BOOST_AUTO_TEST_CASE( peculiar_identifier_test ) {
-    check_identifier( "+" );
-    check_identifier( "-" );
-    check_identifier( "..." );
+    BOOST_CHECK( is_identifier( "+" ) );
+    BOOST_CHECK( is_identifier( "-" ) );
+    BOOST_CHECK( is_identifier( "..." ) );
 }
 
 BOOST_AUTO_TEST_CASE( test_special_initial ) {
-    check_identifier( "!" );
-    check_identifier( "$" );
-    check_identifier( "%" );
-    check_identifier( "&" );
-    check_identifier( "*" );
-    check_identifier( "/" );
-    check_identifier( ":" );
-    check_identifier( "<" );
-    check_identifier( "=" );
-    check_identifier( ">" );
-    check_identifier( "?" );
-    check_identifier( "^" );
-    check_identifier( "_" );
-    check_identifier( "~" );
+    BOOST_CHECK( is_identifier( "!" ) );
+    BOOST_CHECK( is_identifier( "$" ) );
+    BOOST_CHECK( is_identifier( "%" ) );
+    BOOST_CHECK( is_identifier( "&" ) );
+    BOOST_CHECK( is_identifier( "*" ) );
+    BOOST_CHECK( is_identifier( "/" ) );
+    BOOST_CHECK( is_identifier( ":" ) );
+    BOOST_CHECK( is_identifier( "<" ) );
+    BOOST_CHECK( is_identifier( "=" ) );
+    BOOST_CHECK( is_identifier( ">" ) );
+    BOOST_CHECK( is_identifier( "?" ) );
+    BOOST_CHECK( is_identifier( "^" ) );
+    BOOST_CHECK( is_identifier( "_" ) );
+    BOOST_CHECK( is_identifier( "~" ) );
 }
 
 BOOST_AUTO_TEST_CASE( test_special_subsequent ) {
-    check_identifier( "a+" );
-    check_identifier( "a-" );
-    check_identifier( "a." );
-    check_identifier( "a@" );
+    BOOST_CHECK( is_identifier( "a+" ) );
+    BOOST_CHECK( is_identifier( "a-" ) );
+    BOOST_CHECK( is_identifier( "a." ) );
+    BOOST_CHECK( is_identifier( "a@" ) );
 }
 
 BOOST_AUTO_TEST_CASE( test_mixed ) {
-    check_identifier( "abc" );
-    check_identifier( "!abc" );
-    check_identifier( "abc!" );
-    check_identifier( "a->b" );
+    BOOST_CHECK( is_identifier( "abc" ) );
+    BOOST_CHECK( is_identifier( "!abc" ) );
+    BOOST_CHECK( is_identifier( "abc!" ) );
+    BOOST_CHECK( is_identifier( "a->b" ) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

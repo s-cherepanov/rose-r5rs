@@ -31,6 +31,7 @@ character<Iterator>::character() :
     character_name
         =   "space"   >> attr( ' ' )
         |   "newline" >> attr( '\n' )
+        |   "tab"     >> attr( '\t' )
         ;
 
     start           .name( "character" );

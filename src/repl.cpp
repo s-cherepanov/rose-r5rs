@@ -5,10 +5,7 @@
 #include <boost/format.hpp>
 #include <boost/spirit/include/qi.hpp>
 
-#include <algorithm>
 #include <iostream>
-#include <iterator>
-#include <vector>
 
 namespace rose {
 
@@ -16,14 +13,6 @@ namespace qi = boost::spirit::qi;
 
 const std::string default_prompt( "rose> " );
 const std::string continue_prompt( " ...> " );
-
-template<typename Iterator>
-void print_tokens( Iterator first, Iterator last ) {
-    for( std::cout << "{" << *first++ << "}"; first != last; ) {
-        std::cout << " {" << *first++ << "}";
-    }
-    std::cout << std::endl;
-}
 
 void repl() {
     typedef

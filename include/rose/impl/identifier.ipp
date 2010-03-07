@@ -4,13 +4,11 @@
 #include "rose/identifier.hpp"
 
 #include <boost/spirit/include/phoenix_operator.hpp>
-#include <boost/spirit/repository/include/qi_distinct.hpp>
 
 namespace rose {
 
 namespace ascii = boost::spirit::ascii;
 namespace qi = boost::spirit::qi;
-namespace repository = boost::spirit::repository;
 
 template<typename Iterator>
 identifier<Iterator>::identifier() :
@@ -18,15 +16,8 @@ identifier<Iterator>::identifier() :
 {
     using ascii::alpha;
     using ascii::digit;
-    using ascii::space;
     using qi::char_;
-    using qi::eoi;
     using qi::raw;
-    using repository::distinct;
-
-    delimiter
-        =   space | char_( "()\";" ) | eoi
-        ;
 
     start
         =   raw

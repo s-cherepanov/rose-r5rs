@@ -2,6 +2,9 @@
 R5RS Scheme EBNF
 ----------------
 
+:Author: Lian Cheng <rhythm.mail@gmail.com>
+:Link: http://rose-r5rs.googlecode.com/hg/doc/r5rs-grammar.html
+
 .. contents::
 
 Lexical structure
