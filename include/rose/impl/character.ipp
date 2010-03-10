@@ -16,12 +16,13 @@ character<Iterator>::character() :
 {
     using ascii::graph;
     using qi::attr;
+    using qi::no_case;
 
     //
     // NOTE:
     // 
-    // character_name must comes before graph, otherwise "#\newline" and
-    // "#\space" would never be matched since their prefix "#\n" and "#\s" are
+    // `character_name' must comes before `graph', otherwise `#\newline' and
+    // `#\space' would never be matched since their prefix `#\n' and `#\s' are
     // matched first.
     //
     start
@@ -29,9 +30,12 @@ character<Iterator>::character() :
         ;
 
     character_name
-        =   "space"   >> attr( ' ' )
-        |   "newline" >> attr( '\n' )
-        |   "tab"     >> attr( '\t' )
+        =   no_case
+            [
+                "space"   >> attr( ' ' )
+            |   "newline" >> attr( '\n' )
+            |   "tab"     >> attr( '\t' )
+            ]
         ;
 
     start           .name( "character" );

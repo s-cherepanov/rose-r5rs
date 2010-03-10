@@ -18,12 +18,13 @@ expression<Iterator, Skipper>::expression() :
     expression::base_type( expression_ )
 {
     using qi::char_;
+    using qi::no_case;
 
     expression_
         =   variable
         |   literal
-        |   procedure_call
         |   lambda_expression
+        |   procedure_call
         |   conditional
         |   assignment
         ;
@@ -47,7 +48,7 @@ expression<Iterator, Skipper>::expression() :
     quotation
         =   token.single_quote >> datum
         |   token.lparen
-            >> "quote" >> datum
+            >> no_case[ "quote" ] >> datum
             >> token.rparen
         ;
 
@@ -67,35 +68,35 @@ expression<Iterator, Skipper>::expression() :
 
     lambda_expression
         =   token.lparen
-            >>  "lambda" >> formals >> body
-            >>  token.rparen
+            >> no_case[ "lambda" ] >> formals >> body
+            >> token.rparen
         ;
 
     formals
         =   token.lparen >> *variable >> token.rparen
         |   variable
         |   token.lparen
-            >>  +variable >> token.dot >> variable
-            >>  token.rparen
+            >> +variable >> token.dot >> variable
+            >> token.rparen
         ;
 
     body
-        =   *definition >> sequence
+        =  *definition >> sequence
         ;
 
     definition
         =   token.lparen
-            >>  "define" >> variable >> expression_
-            >>  token.rparen
-        |   token.lparen >> "define"
-            >>  token.lparen
-            >>  variable >> def_formals
-            >>  token.rparen
-            >>  body >> token.rparen
+            >> no_case[ "define" ] >> variable >> expression_
+            >> token.rparen
+        |   token.lparen >> no_case[ "define" ]
+            >> token.lparen
+            >> variable >> def_formals
+            >> token.rparen
+            >> body >> token.rparen
         ;
 
     sequence
-        =   *command >> expression_
+        =   +command
         ;
 
     command
@@ -104,8 +105,8 @@ expression<Iterator, Skipper>::expression() :
 
     conditional
         =   token.lparen
-            >>  "if" >> test >> consequent >> -alternate
-            >>  token.rparen
+            >> no_case[ "if" ] >> test >> consequent >> -alternate
+            >> token.rparen
         ;
 
     test
@@ -122,8 +123,8 @@ expression<Iterator, Skipper>::expression() :
 
     assignment
         =   token.lparen
-            >>  "set!" >> variable >> expression_
-            >>  token.rparen
+            >> no_case[ "set!" ] >> variable >> expression_
+            >> token.rparen
         ;
 
     expression_      .name( "expression" );
@@ -137,6 +138,7 @@ expression<Iterator, Skipper>::expression() :
     lambda_expression.name( "lambda_expression" );
     formals          .name( "formals" );
     body             .name( "body" );
+    definition       .name( "definition" );
     sequence         .name( "sequence" );
     command          .name( "command" );
     conditional      .name( "conditional" );
@@ -156,6 +158,7 @@ expression<Iterator, Skipper>::expression() :
     BOOST_SPIRIT_DEBUG_NODE( lambda_expression );
     BOOST_SPIRIT_DEBUG_NODE( formals );
     BOOST_SPIRIT_DEBUG_NODE( body );
+    BOOST_SPIRIT_DEBUG_NODE( definition );
     BOOST_SPIRIT_DEBUG_NODE( sequence );
     BOOST_SPIRIT_DEBUG_NODE( command );
     BOOST_SPIRIT_DEBUG_NODE( conditional );

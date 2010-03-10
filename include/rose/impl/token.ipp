@@ -20,6 +20,8 @@ token<Iterator, Skipper>::token() :
     using qi::char_;
     using qi::eoi;
     using qi::lexeme;
+    using qi::lit;
+    using qi::no_case;
 
     start
         =   identifier
@@ -42,8 +44,11 @@ token<Iterator, Skipper>::token() :
         ;
 
     boolean_
-        =   "#t" >> attr( true )
-        |   "#f" >> attr( false )
+        =   no_case
+            [
+                "#t" >> attr( true )
+            |   "#f" >> attr( false )
+            ]
         ;
 
     string_
@@ -51,11 +56,11 @@ token<Iterator, Skipper>::token() :
         ;
 
     string_element
-        =   ( ( graph | space ) - '"' - '\\' )
-        |   ( "\\\"" >> attr( '"' ) )
-        |   ( "\\\\" >> attr( '\\' ) )
-        |   ( "\\n"  >> attr( '\n' ) )
-        |   ( "\\t"  >> attr( '\t' ) )
+        =   ( ( graph | space ) - char_( "\"\\" ) )
+        |   lit( "\\\"" ) >> attr( '"' )
+        |   lit( "\\\\" ) >> attr( '\\' )
+        |   lit( "\\n" )  >> attr( '\n' )
+        |   lit( "\\t" )  >> attr( '\t' )
         ;
 
     identifier   = lexeme[ identifier_ >> &delimiter ];
@@ -71,6 +76,29 @@ token<Iterator, Skipper>::token() :
     back_quote   = lexeme[ '`' ];
     comma        = lexeme[ ',' ];
     comma_at     = lexeme[ ",@" ];
+
+    identifier  .name( "identifier" );
+    boolean     .name( "boolean" );
+    number      .name( "number" );
+    character   .name( "character" );
+    string      .name( "string" );
+    lparen      .name( "lparen" );
+    rparen      .name( "rparen" );
+    sharp_lparen.name( "sharp_lparen" );
+    single_quote.name( "single_quote" );
+    back_quote  .name( "back_quote" );
+    comma       .name( "comma" );
+    comma_at    .name( "comma_at" );
+    dot         .name( "dot" );
+
+    BOOST_SPIRIT_DEBUG_NODE( identifier );
+    BOOST_SPIRIT_DEBUG_NODE( boolean );
+    BOOST_SPIRIT_DEBUG_NODE( number );
+    BOOST_SPIRIT_DEBUG_NODE( character );
+    BOOST_SPIRIT_DEBUG_NODE( string );
+    BOOST_SPIRIT_DEBUG_NODE( lparen );
+    BOOST_SPIRIT_DEBUG_NODE( rparen );
+    BOOST_SPIRIT_DEBUG_NODE( sharp_lparen );
 }
 
 }   //  namespace rose

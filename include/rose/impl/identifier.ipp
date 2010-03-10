@@ -17,6 +17,7 @@ identifier<Iterator>::identifier() :
     using ascii::alpha;
     using ascii::digit;
     using qi::char_;
+    using qi::no_case;
     using qi::raw;
 
     start
@@ -28,7 +29,7 @@ identifier<Iterator>::identifier() :
         ;
 
     initial
-        =   alpha | special_initial
+        =   no_case[ alpha ] | special_initial
         ;
 
     special_initial
