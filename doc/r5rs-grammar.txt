@@ -1,0 +1,867 @@
+----------------
+R5RS Scheme EBNF
+----------------
+
+:Author: Lian Cheng <rhythm.mail@gmail.com>
+:Link: http://rose-r5rs.googlecode.com/hg/doc/r5rs-grammar.html
+
+.. contents::
+
+Lexical structure
+=================
+
+.. _token:
+.. parsed-literal::
+
+    <token>
+        ::= <`identifier`_> | <`boolean`_> | <`number`_>
+          | <`character`_> | <`string`_>
+          | {(} | {)} | {#(} | {'} | {\`} | {,} | {,@} | {.}
+
+.. _delimiter:
+.. parsed-literal::
+
+    <delimiter>
+        ::= <`whitespace`_> | {(} | {)} | {"} | {;}
+
+.. _whitespace:
+.. parsed-literal::
+
+    <whitespace>
+        ::= <space or newline>
+
+.. _comment:
+.. parsed-literal::
+
+    <comment>
+        ::= {;} <all subsequent characters up to line break>
+
+.. _atmosphere:
+.. parsed-literal::
+
+    <atmosphere>
+        ::= <`whitespace`_> | <`comment`_>
+
+.. _intertoken space:
+.. parsed-literal::
+
+    <intertoken space>
+        ::= <`atmosphere`_>*
+
+.. _identifier:
+.. parsed-literal::
+
+    <identifier>
+        ::= <`initial`_> <`subsequent`_>*
+          | <`peculiar identifier`_>
+
+.. _initial:
+.. parsed-literal::
+
+    <initial>
+        ::= <`letter`_> | <`special initial`_>
+
+.. _letter:
+.. parsed-literal::
+
+    <letter>
+        ::= {a} | ... | {z}
+
+.. _special initial:
+.. parsed-literal::
+
+    <special initial>
+        ::= {!} | {$} | {%} | {&} | {*} | {/} | {:} | {<} | {=}
+          | {>} | {?} | {^} | {_} | {~}
+
+.. _subsequent:
+.. parsed-literal::
+
+    <subsequent>
+        ::= <`initial`_> | <`digit`_>
+          | <`special subsequent`_>
+
+.. _digit:
+.. parsed-literal::
+
+    <digit>
+        ::= {0} | ... | {9}
+
+.. _special subsequent:
+.. parsed-literal::
+
+    <special subsequent>
+        ::= {+} | {-} | {.} | {@}
+
+.. _peculiar identifier:
+.. parsed-literal::
+
+    <peculiar identifier>
+        ::= {+} | {-} | {...}
+
+.. _syntactic keyword:
+.. parsed-literal::
+
+    <syntactic keyword>
+        ::= <`expression keyword`_>
+          | {else} | {=>} | {define}
+          | {unquote} | {unquote-splicing}
+
+.. _expression keyword:
+.. parsed-literal::
+
+    <expression keyword>
+        ::= {quote} | {lambda} | {if}
+          | {set!} | {begin} | {cond} | {and} | {or} | {case}
+          | {let} | {let*} | {letrec} | {do} | {delay}
+          | {quasiquote}
+
+.. _variable:
+.. parsed-literal::
+
+    <variable>
+        ::= <any `identifier`_ that isn't also a `syntactic keyword`_>
+
+.. _boolean:
+.. parsed-literal::
+
+    <boolean>
+        ::= {#t} | {#f}
+
+.. _character:
+.. parsed-literal::
+
+    <characters>
+        ::= {#\\} <any character>
+          | {#\\} <`character name`_>
+
+.. _character name:
+.. parsed-literal::
+
+    <character name>
+        ::= {space} | {newline}
+
+.. _string:
+.. parsed-literal::
+
+    <string>
+        ::= {"} <`string element`_>+ {"}
+
+.. _string element:
+.. parsed-literal::
+
+    <string element>
+        ::= <any character other than {"} or {\\}>
+          | {\\"} | {\\\\}
+
+Number
+------
+
+.. _number:
+.. parsed-literal::
+
+    <number>
+        ::= <`num 2`_> | <`num 8`_> | <`num 10`_> | <`num 16`_>
+
+.. _suffix:
+.. parsed-literal::
+
+    <suffix>
+        ::= <empty>
+          | <`exponent marker`_> <`sign`_> <`digit 10`_>+
+
+.. _exponent marker:
+.. parsed-literal::
+
+    <exponent marker>
+        ::= {e} | {s} | {f} | {d} | {l}
+
+.. _sign:
+.. parsed-literal::
+
+    <sign>
+        ::= <empty> | {+} | {-}
+
+.. _exactness:
+.. parsed-literal::
+
+    <exactness>
+        ::= <empty> | {#i} | {#e}
+
+Binary number
+~~~~~~~~~~~~~
+
+.. _num 2:
+.. parsed-literal::
+
+    <num 2>
+        ::= <`prefix 2`_> <`complex 2`_>
+
+.. _complex 2:
+.. parsed-literal::
+
+    <complex 2>
+        ::= <`real 2`_> | <`real 2`_> {@} <`real 2`_>
+          | <`real 2`_> {+} <`ureal 2`_> {i} | <`real 2`_> {-} <`ureal 2`_> {i}
+          | <`real 2`_> {+} {i} | <`real 2`_> {-} {i}
+          | {+} <`ureal 2`_> {i} | {-} <`ureal 2`_> {i} | {+} {i} | {-} {i}
+
+.. _real 2:
+.. parsed-literal::
+
+    <real 2>
+        ::= <`sign`_> <`ureal 2`_>
+
+.. _ureal 2:
+.. parsed-literal::
+
+    <ureal 2>
+        ::= <`uinteger 2`_>
+          | <`uinteger 2`_> {/} <`uinteger 2`_>
+
+.. _uinteger 2:
+.. parsed-literal::
+
+    <uinteger 2>
+        ::= <`digit 2`_>+ {#}*
+
+.. _prefix 2:
+.. parsed-literal::
+
+    <prefix 2>
+        ::= <`radix 2`_> <`exactness`_>
+          | <`exactness`_> <`radix 2`_>
+
+.. _radix 2:
+.. parsed-literal::
+
+    <radix 2>
+        ::= {#b}
+
+.. _digit 2:
+.. parsed-literal::
+
+    <digit 2>
+        ::= {0} | {1}
+
+Octal number
+~~~~~~~~~~~~
+
+.. _num 8:
+.. parsed-literal::
+
+    <num 8>
+        ::= <`prefix 8`_> <`complex 8`_>
+
+.. _complex 8:
+.. parsed-literal::
+
+    <complex 8>
+        ::= <`real 8`_> | <`real 8`_> {@} <`real 8`_>
+          | <`real 8`_> {+} <`ureal 8`_> {i} | <`real 8`_> {-} <`ureal 8`_> {i}
+          | <`real 8`_> {+} {i} | <`real 8`_> {-} {i}
+          | {+} <`ureal 8`_> {i} | {-} <`ureal 8`_> {i} | {+} {i} | {-} {i}
+
+.. _real 8:
+.. parsed-literal::
+
+    <real 8>
+        ::= <`sign`_> <`ureal 8`_>
+
+.. _ureal 8:
+.. parsed-literal::
+
+    <ureal 8>
+        ::= <`uinteger 8`_>
+          | <`uinteger 8`_> {/} <`uinteger 8`_>
+
+.. _uinteger 8:
+.. parsed-literal::
+
+    <uinteger 8>
+        ::= <`digit 8`_>+ {#}*
+
+.. _prefix 8:
+.. parsed-literal::
+
+    <prefix 8>
+        ::= <`radix 8`_> <`exactness`_>
+          | <`exactness`_> <`radix 8`_>
+
+.. _radix 8:
+.. parsed-literal::
+
+    <radix 8>
+        ::= #o
+
+.. _digit 8:
+.. parsed-literal::
+
+    <digit 8>
+        ::= {0} | ... | {7}
+
+Decimal number
+~~~~~~~~~~~~~~
+
+.. _num 10:
+.. parsed-literal::
+
+    <num 10>
+        ::= <`prefix 10`_> <`complex 10`_>
+
+.. _complex 10:
+.. parsed-literal::
+
+    <complex 10>
+        ::= <`real 10`_> | <`real 10`_> {@} <`real 10`_>
+          | <`real 10`_> {+} <`ureal 10`_> {i} | <`real 10`_> {-} <`ureal 10`_> {i}
+          | <`real 10`_> {+} {i} | <`real 10`_> {-} {i}
+          | {+} <`ureal 10`_> {i} | {-} <`ureal 10`_> {i} | {+} {i} | {-} {i}
+
+.. _real 10:
+.. parsed-literal::
+
+    <real 10>
+        ::= <`sign`_> <`ureal 10`_>
+
+.. _ureal 10:
+.. parsed-literal::
+
+    <ureal 10>
+        ::= <`uinteger 10`_>
+          | <`uinteger 10`_> {/} <`uinteger 10`_>
+          | <`decimal 10`_>
+
+.. _decimal 10:
+.. parsed-literal::
+
+    <decimal 10>
+        ::= <`uinteger 10`_> <`suffix`_>
+          | {.} <`digit 10`_>+ {.} {#}* <`suffix`_>
+          | <`digit 10`_>+ {.} <`digit 10`_>* {#}* <`suffix`_>
+          | <`digit 10`_>+ {#}+ {.} {#}* <`suffix`_>
+
+.. _uinteger 10:
+.. parsed-literal::
+
+    <uinteger 10>
+        ::= <`digit 10`_>+ {#}*
+
+.. _prefix 10:
+.. parsed-literal::
+
+    <prefix 10>
+        ::= <`radix 10`_> <`exactness`_>
+          | <`exactness`_> <`radix 10`_>
+
+.. _radix 10:
+.. parsed-literal::
+
+    <radix 10>
+        ::= <empty> {#d}
+
+.. _digit 10:
+.. parsed-literal::
+
+    <digit 10>
+        ::= <`digit`_>
+
+Hexadecimal number
+~~~~~~~~~~~~~~~~~~
+
+.. _num 16:
+.. parsed-literal::
+
+    <num 16>
+        ::= <`prefix 16`_> <`complex 16`_>
+
+.. _complex 16:
+.. parsed-literal::
+
+    <complex 16>
+        ::= <`real 16`_> | <`real 16`_> {@} <`real 16`_>
+          | <`real 16`_> {+} <`ureal 16`_> {i} | <`real 16`_> {-} <`ureal 16`_> {i}
+          | <`real 16`_> {+} {i} | <`real 16`_> {-} {i}
+          | {+} <`ureal 16`_> {i} | {-} <`ureal 16`_> {i} | {+} {i} | {-} {i}
+
+.. _real 16:
+.. parsed-literal::
+
+    <real 16>
+        ::= <`sign`_> <`ureal 16`_>
+
+.. _ureal 16:
+.. parsed-literal::
+
+    <ureal 16>
+        ::= <`uinteger 16`_>
+          | <`uinteger 16`_> {/} <`uinteger 16`_>
+
+.. _uinteger 16:
+.. parsed-literal::
+
+    <uinteger 16>
+        ::= <`digit 16`_>+ {#}*
+
+.. _prefix 16:
+.. parsed-literal::
+
+    <prefix 16>
+        ::= <`radix 16`_> <`exactness`_>
+          | <`exactness`_> <`radix 16`_>
+
+.. _radix 16:
+.. parsed-literal::
+
+    <radix 16>
+        ::= {#x}
+
+.. _digit 16:
+.. parsed-literal::
+
+    <digit 16>
+        ::= <`digit 10`_> | {a} | {b} | {c} | {d} | {e} | {f}
+
+External representations
+========================
+
+.. _datum:
+.. parsed-literal::
+
+    <datum>
+        ::= <`simple datum`_> | <`compound datum`_>
+
+.. _simple datum:
+.. parsed-literal::
+
+    <simple datum>
+        ::= <`boolean`_> | <`number`_>
+          | <`character`_> | <`string`_> | <`symbol`_>
+
+.. _symbol:
+.. parsed-literal::
+
+    <symbol>
+        ::= <`identifier`_>
+
+.. _compound datum:
+.. parsed-literal::
+
+    <compound datum>
+        ::= <`list`_> | <`vector`_>
+
+.. _list:
+.. parsed-literal::
+
+    <list>
+        ::= {(} <`datum`_>* {)} | {(} <`datum`_>+ {.} <`datum`_> {)}
+          | <`abbreviation`_>
+
+.. _abbreviation:
+.. parsed-literal::
+
+    <abbreviation>
+        ::= <`abbrev prefix`_> <`datum`_>
+
+.. _abbrev prefix:
+.. parsed-literal::
+
+    <abbrev prefix>
+        ::= {'} | {\`} | {,} | {,@}
+
+.. _vector:
+.. parsed-literal::
+
+    <vector>
+        ::= {#(} <`datum`_>* {)}
+
+Expressions
+===========
+
+.. _expression:
+.. parsed-literal::
+
+    <expression>
+        ::= <`variable`_>
+          | <`literal`_>
+          | <`procedure call`_>
+          | <`lambda expression`_>
+          | <`conditional`_>
+          | <`assignment`_>
+          | <`derived expression`_>
+          | <`macro use`_>
+          | <`macro block`_>
+
+.. _literal:
+.. parsed-literal::
+
+    <literal>
+        ::= <`quotation`_> | <`self-evaluating`_>
+
+.. _self-evaluating:
+.. parsed-literal::
+
+    <self-evaluating>
+        ::= <`boolean`_> | <`number`_>
+          | <`character`_> | <`string`_>
+
+.. _quotation:
+.. parsed-literal::
+
+    <quotation>
+        ::= '<`datum`_> | {(} {quote} <`datum`_> {)}
+
+.. _procedure call:
+.. parsed-literal::
+
+    <procedure call>
+        ::= {(} <`operator`_> <`operand`_>* {)}
+
+.. _operator:
+.. parsed-literal::
+
+    <operator>
+        ::= <`expression`_>
+
+.. _operand:
+.. parsed-literal::
+
+    <operand>
+        ::= <`expression`_>
+
+.. _lambda expression:
+.. parsed-literal::
+
+    <lambda expression>
+        ::= {(} {lambda} <`formals`_> <`body`_> {)}
+
+.. _formals:
+.. parsed-literal::
+
+    <formals>
+        ::= {(} <`variable`_>* {)} | <`variable`_>
+          | {(} <`variable`_>+ {.} <`variable`_> {)}
+
+.. _body:
+.. parsed-literal::
+
+    <body>
+        ::= <`definition`_>* <`sequence`_>
+
+.. _sequence:
+.. parsed-literal::
+
+    <sequence>
+        ::= <`command`_>* <`expression`_>
+
+.. _command:
+.. parsed-literal::
+
+    <command>
+        ::= <`expression`_>
+
+.. _conditional:
+.. parsed-literal::
+
+    <conditional>
+        ::= {(} {if} <`test`_> <`consequent`_> <`alternate`_> {)}
+
+.. _test:
+.. parsed-literal::
+
+    <test>
+        ::= <`expression`_>
+
+.. _consequent:
+.. parsed-literal::
+
+    <consequent>
+        ::= <`expression`_>
+
+.. _alternate:
+.. parsed-literal::
+
+    <alternate>
+        ::= <`expression`_> | <empty>
+
+.. _assignment:
+.. parsed-literal::
+
+    <assignment>
+        ::= {(} {set!} <`variable`_> <`expression`_> {)}
+
+.. _derived expression:
+.. parsed-literal::
+
+    <derived expression>
+        ::= {(} {cond} <`cond clause`_>+ {)}
+          | {(} {cond} <`cond clause`_>* {(} else <`sequence`_> {)} {)}
+          | {(} {case} <`expression`_>
+                <`case clause`_>+ {)}
+          | {(} {case} <`expression`_>
+                <`case clause`_>*
+                {(} {else} <sequence> {)} {)}
+          | {(} {and} <`test`_>* {)}
+          | {(} {or} <`test`_>* {)}
+          | {(} {let} {(} <`binding spec`_>* {)} <`body`_> {)}
+          | {(} {let} <`variable`_> {(} <`binding spec`_>* {)} <`body`_> {)}
+          | {(} {let*} {(} <`binding spec`_>* {)} <`body`_> {)}
+          | {(} {letrec} {(} <`binding spec`_>* {)} <`body`_> {)}
+          | {(} {begin} <`sequence`_> {)}
+          | {(} {do} {(} <`iteration spec`_>* {)}
+                {(} <`test`_> <`do result`_> {)}
+                <`command`_>* {)}
+          | {(} {delay} <`expression`_> {)}
+          | <`quasiquotation`_>
+
+.. _cond clause:
+.. parsed-literal::
+
+    <cond clause>
+        ::= (<`test`_> <`sequence`_>)
+          | (<`test`_>)
+          | (<`test`_> {=>} <`recipient`_>)
+
+.. _recipient:
+.. parsed-literal::
+
+    <recipient>
+        ::= <`expression`_>
+
+.. _case clause:
+.. parsed-literal::
+
+    <case clause>
+        ::= {(} {(} <`datum`_>* {)} <`sequence`_> {)}
+
+.. _binding spec:
+.. parsed-literal::
+
+    <binding spec>
+        ::= {(} <`variable`_> <`expression`_> {)}
+
+.. _iteration spec:
+.. parsed-literal::
+
+    <iteration spec>
+        ::= {(} <`variable`_> <`init`_> <`setup`_> {)}
+          | {(} <`variable`_> <`init`_> {)}
+
+.. _init:
+.. parsed-literal::
+
+    <init>
+        ::= <`expression`_>
+
+.. _setup:
+.. parsed-literal::
+
+    <setup>
+        ::= <`expression`_>
+
+.. _do result:
+.. parsed-literal::
+
+    <do result>
+        ::= <`sequence`_> | <empty>
+
+.. _macro use:
+.. parsed-literal::
+
+    <macro use>
+        ::= {(} <`keyword`_> <`datum`_>* {)}
+
+.. _keyword:
+.. parsed-literal::
+
+    <keyword>
+        ::= <`identifier`_>
+
+.. _macro block:
+.. parsed-literal::
+
+    <macro block>
+        ::= {(} {let-syntax} {(} <`syntax spec`_>* {)} <`body`_> {)}
+          | {(} {letrec-syntax} {(} <`syntax spec`_>* {)} <`body`_> {)}
+
+.. _syntax spec:
+.. parsed-literal::
+
+    <syntax spec>
+        ::= {(} <`keyword`_> <`transformer spec`_> {)}
+
+Quasiquotation
+==============
+
+.. _quasiquotation:
+.. parsed-literal::
+
+    <quasiquotation>
+        ::= <quasiquotation 1>
+
+    <qq template 0>
+        ::= <expression>
+
+.. _quasiquotation D:
+.. parsed-literal::
+
+    <quasiquotation D>
+        ::= {\`} <`qq template D`_>
+          | {(} {quasiquote} <`qq template D`_> {)}
+
+.. _qq template D:
+.. parsed-literal::
+
+    <qq template D>
+        ::= <`simple datum`_>
+          | <`list qq template D`_>
+          | <`vector qq template D`_>
+          | <`unquotation D`_>
+
+.. _list qq template D:
+.. parsed-literal::
+
+    <list qq template D>
+        ::= {(} <`qq template or splice D`_>* {)}
+          | {(} <`qq template or splice D`_>+ {.} <`qq template D`_> {)}
+          | {'} <`qq template D`_>
+          | <`quasiquotation D`_\ +1>
+
+.. _vector qq template D:
+.. parsed-literal::
+
+    <vector qq template D>
+        ::= {#(} <`qq template or splice D`_>* {)}
+
+.. _unquotation D:
+.. parsed-literal::
+
+    <unquotation D>
+        ::= {,} <`qq template D`_\ -1>
+          | {(} {unquote} <`qq template D`_\ -1> {)}
+
+.. _qq template or splice D:
+.. parsed-literal::
+
+    <qq template or splice D>
+        ::= <`qq template D`_>
+          | <`splicing unquotation D`_>
+
+.. _splicing unquotation D:
+.. parsed-literal::
+
+    <splicing unquotation D>
+        ::= {,@} <`qq template D`_\ -1>
+          | {(} {unquote-splicing} <`qq template D`_\ -1> {)}
+
+Transformers
+============
+
+.. _transformer spec:
+.. parsed-literal::
+
+    <transformer spec>
+        ::= {(} {syntax-rules} {(} <`identifier`_>* {)} <`syntax rule`_>* {)}
+
+.. _syntax rule:
+.. parsed-literal::
+
+    <syntax rule>
+        ::= {(} <`pattern`_> <`template`_> {)}
+
+.. _pattern:
+.. parsed-literal::
+
+    <pattern>
+        ::= <`pattern identifier`_>
+          | {(} <`pattern`_>* {)}
+          | {(} <`pattern`_>+ {.} <`pattern`_> {)}
+          | {(} <`pattern`_>* <`pattern`_> <`ellipsis`_> {)}
+          | {#(} <pattern>* {)}
+          | {#(} <`pattern`_>* <`pattern`_> <`ellipsis`_> {)}
+          | <`pattern datum`_>
+
+.. _pattern datum:
+.. parsed-literal::
+
+    <pattern datum>
+        ::= <`string`_>
+          | <`character`_>
+          | <`boolean`_>
+          | <`number`_>
+
+.. _template:
+.. parsed-literal::
+
+    <template>
+        ::= <`pattern identifier`_>
+          | {(} <`template element`_>* {)}
+          | {(} <`template element`_>+ {.} <`template`_> {)}
+          | {#(} <`template element`_>* {)}
+          | <`template datum`_>
+
+.. _template element:
+.. parsed-literal::
+
+    <template element>
+        ::= <`template`_>
+          | <`template`_> <`ellipsis`_>
+
+.. _template datum:
+.. parsed-literal::
+
+    <template datum>
+        ::= <`pattern datum`_>
+
+.. _pattern identifier:
+.. parsed-literal::
+
+    <pattern identifier>
+        ::= <any identifier except {...}>
+
+.. _ellipsis:
+.. parsed-literal::
+
+    <ellipsis>
+        ::= {...}
+
+Programs and definitions
+========================
+
+.. _program:
+.. parsed-literal::
+
+    <program>
+        ::= <`command or definition`_>*
+
+.. _command or definition:
+.. parsed-literal::
+
+    <command or definition>
+        ::= <`command`_>
+          | <`definition`_>
+          | <`syntax definition`_>
+          | {(} {begin} <`command or definition`_>+ {)}
+
+.. _definition:
+.. parsed-literal::
+
+    <definition>
+        ::= {(} {define} <`variable`_> <`expression`_> {)}
+          | {(} {define} {(} <`variable`_> <`def formals`_> {)} <`body`_> {)}
+          | {(} {begin} <`definition`_>* {)}
+
+.. _def formals:
+.. parsed-literal::
+
+    <def formals>
+        ::= <`variable`_>*
+          | <`variable`_>* {.} <`variable`_>
+
+.. _syntax definition:
+.. parsed-literal::
+
+    <syntax definition>
+        ::= {(} {define-syntax} <`keyword`_> <`transformer spec`_> {)}
+
+.. vim:ft=rst nowrap

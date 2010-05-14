@@ -1,0 +1,35 @@
+import modules ;
+
+local BOOST_ROOT = [ modules.peek : BOOST_ROOT ] ;
+
+path-constant PROJECT_ROOT : . ;
+
+use-project /boost       : $(BOOST_ROOT) ;
+use-project /rose        : $(PROJECT_ROOT) ;
+use-project /rose/parser : $(PROJECT_ROOT)/src/parser ;
+
+project
+    :   requirements
+            <toolset>gcc:<cxxflags>-Wno-unused-variable
+            <toolset>gcc:<cxxflags>-Wformat
+            <toolset>gcc:<cxxflags>-Wall
+
+            <define>BOOST_SPIRIT_DONT_USE_MPL_ASSERT_MSG=1
+
+            <include>include
+            <library>/boost//filesystem
+            <library>/boost//program_options
+
+            <link>static
+            <threading>multi
+
+    :   default-build
+            debug
+
+    :   build-dir
+            bin
+    ;
+
+build-project src ;
+build-project src/parser ;
+build-project test ;

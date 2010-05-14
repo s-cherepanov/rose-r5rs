@@ -1,0 +1,9 @@
+exe rose
+    :   [ glob-tree *.cpp ]
+        /rose/parser//rose-parser
+    ;
+
+install install-rose
+    :   rose
+    :   <location>$(PROJECT_ROOT)/dist
+    ;
