@@ -12,7 +12,7 @@ namespace ascii = boost::spirit::ascii;
 
 template<typename Iterator>
 number<Iterator>::number() :
-    number::base_type( start )
+    number::base_type(start)
 {
     using qi::int_;
 

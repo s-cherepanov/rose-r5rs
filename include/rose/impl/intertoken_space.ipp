@@ -12,7 +12,7 @@ namespace ascii = boost::spirit::ascii;
 
 template<typename Iterator>
 intertoken_space<Iterator>::intertoken_space() :
-    intertoken_space::base_type( start )
+    intertoken_space::base_type(start)
 {
     using ascii::char_;
     using ascii::alpha;
@@ -27,22 +27,22 @@ intertoken_space<Iterator>::intertoken_space() :
         ;
 
     whitespace
-        =   char_( " \n" )
+        =   char_(" \n")
         ;
 
     comment
-        =   ';' >> *( char_ - eol ) >> eol
+        =   ';' >> *(char_ - eol) >> eol
         ;
 
-    start       .name( "intertoken_space" );
-    atmosphere  .name( "atmosphere" );
-    whitespace  .name( "whitespace" );
-    comment     .name( "comment" );
+    start     .name("intertoken_space");
+    atmosphere.name("atmosphere");
+    whitespace.name("whitespace");
+    comment   .name("comment");
 
-    BOOST_SPIRIT_DEBUG_NODE( start );
-    BOOST_SPIRIT_DEBUG_NODE( atmosphere );
-    BOOST_SPIRIT_DEBUG_NODE( whitespace );
-    BOOST_SPIRIT_DEBUG_NODE( comment );
+    BOOST_SPIRIT_DEBUG_NODE(start);
+    BOOST_SPIRIT_DEBUG_NODE(atmosphere);
+    BOOST_SPIRIT_DEBUG_NODE(whitespace);
+    BOOST_SPIRIT_DEBUG_NODE(comment);
 }
 
 }   //  namespace rose

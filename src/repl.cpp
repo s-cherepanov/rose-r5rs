@@ -11,8 +11,7 @@ namespace rose {
 
 namespace qi = boost::spirit::qi;
 
-const std::string default_prompt( "rose> " );
-const std::string continue_prompt( " ...> " );
+const std::string default_prompt("rose> ");
 
 void repl() {
     typedef
@@ -27,8 +26,8 @@ void repl() {
     std::string line;
     std::string source;
 
-    while( std::cout << prompt, std::getline( std::cin, line ) ) {
-        source.append( line );
+    while (std::cout << prompt, std::getline(std::cin, line)) {
+        source.append(line);
         iterator_type first = source.begin();
         iterator_type last = source.end();
 
@@ -39,16 +38,13 @@ void repl() {
         r5rs_grammar grammar;
         skipper_type skipper;
 
-        bool match = qi::phrase_parse( first,last, grammar, skipper );
+        bool match = qi::phrase_parse(first,last, grammar, skipper);
         bool full_match = match && first == last;
 
-        if( full_match ) {
-            source.clear();
-            prompt = default_prompt;
-        }
-        else {
-            source.push_back( '\n' );
-            prompt = continue_prompt;
+        source.clear();
+
+        if (!full_match) {
+            std::cerr << "error" << std::endl;
         }
     }
 

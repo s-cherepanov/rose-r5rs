@@ -3,43 +3,52 @@
 
 #include "rose/expression.hpp"
 
+#include <boost/spirit/include/phoenix_fusion.hpp>
+#include <boost/spirit/include/phoenix_object.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
+#include <boost/spirit/include/phoenix_stl.hpp>
 
 namespace rose {
 
 namespace qi = boost::spirit::qi;
 namespace spirit = boost::spirit;
+namespace phoenix = boost::phoenix;
 
 template<
     typename Iterator,
     typename Skipper
 >
 expression<Iterator, Skipper>::expression() :
-    expression::base_type( expression_ )
+    expression::base_type(expression_)
 {
     using qi::char_;
     using qi::no_case;
 
+    using namespace qi::labels;
+
+    using phoenix::at_c;
+    using phoenix::push_back;
+
     expression_
-        =   variable
-        |   literal
+        =   variable                        [_val = _1]
+        |   literal                         [_val = _1]
         |   lambda_expression
-        |   procedure_call
-        |   conditional
-        |   assignment
+        |   procedure_call                  [_val = _1]
+        |   conditional                     [_val = _1]
+        |   assignment                      [_val = _1]
         ;
 
     variable
-        =   token.identifier
+       %=   token.identifier
         ;
 
     literal
-        =   quotation
+       %=   quotation
         |   self_evaluating
         ;
 
     self_evaluating
-        =   token.boolean
+       %=   token.boolean
         |   token.number
         |   token.character
         |   token.string
@@ -48,27 +57,28 @@ expression<Iterator, Skipper>::expression() :
     quotation
         =   token.single_quote >> datum
         |   token.lparen
-            >> no_case[ "quote" ] >> datum
+            >> no_case["quote"] >> datum    [_val = _1]
             >> token.rparen
         ;
 
     procedure_call
         =   token.lparen
-            >> operator_ >> *operand
+            >> operator_                    [at_c<0>(_val) = _1]
+            >> *operand                     [push_back(at_c<1>(_val), _1)]
             >> token.rparen
         ;
 
     operator_
-        =   expression_.alias()
+       %=   expression_.alias()
         ;
 
     operand
-        =   expression_.alias()
+       %=   expression_.alias()
         ;
 
     lambda_expression
         =   token.lparen
-            >> no_case[ "lambda" ] >> formals >> body
+            >> no_case["lambda"] >> formals >> body
             >> token.rparen
         ;
 
@@ -86,9 +96,12 @@ expression<Iterator, Skipper>::expression() :
 
     definition
         =   token.lparen
-            >> no_case[ "define" ] >> variable >> expression_
+            >> no_case["define"]
+            >> variable
+            >> expression_
             >> token.rparen
-        |   token.lparen >> no_case[ "define" ]
+        |   token.lparen
+            >> no_case["define"]
             >> token.lparen
             >> variable >> def_formals
             >> token.rparen
@@ -100,12 +113,15 @@ expression<Iterator, Skipper>::expression() :
         ;
 
     command
-        =   expression_.alias()
+       %=   expression_.alias()
         ;
 
     conditional
         =   token.lparen
-            >> no_case[ "if" ] >> test >> consequent >> -alternate
+            >> no_case["if"]
+            >> test                         [at_c<0>(_val) = _1]
+            >> consequent                   [at_c<1>(_val) = _1]
+            >> -alternate                   [at_c<2>(_val) = _1]
             >> token.rparen
         ;
 
@@ -123,46 +139,29 @@ expression<Iterator, Skipper>::expression() :
 
     assignment
         =   token.lparen
-            >> no_case[ "set!" ] >> variable >> expression_
+            >> no_case["set!"] >> variable >> expression_
             >> token.rparen
         ;
 
-    expression_      .name( "expression" );
-    variable         .name( "variable" );
-    literal          .name( "literal" );
-    self_evaluating  .name( "self_evaluating" );
-    quotation        .name( "quotation" );
-    procedure_call   .name( "procedure_call" );
-    operator_        .name( "operator" );
-    operand          .name( "operand" );
-    lambda_expression.name( "lambda_expression" );
-    formals          .name( "formals" );
-    body             .name( "body" );
-    definition       .name( "definition" );
-    sequence         .name( "sequence" );
-    command          .name( "command" );
-    conditional      .name( "conditional" );
-    test             .name( "test" );
-    consequent       .name( "consequent" );
-    alternate        .name( "alternate" );
-    assignment       .name( "assignment" );
-
-    BOOST_SPIRIT_DEBUG_NODE( expression_ );
-    BOOST_SPIRIT_DEBUG_NODE( variable );
-    BOOST_SPIRIT_DEBUG_NODE( literal );
-    BOOST_SPIRIT_DEBUG_NODE( self_evaluating );
-    BOOST_SPIRIT_DEBUG_NODE( quotation );
-    BOOST_SPIRIT_DEBUG_NODE( procedure_call );
-    BOOST_SPIRIT_DEBUG_NODE( operator_ );
-    BOOST_SPIRIT_DEBUG_NODE( operand );
-    BOOST_SPIRIT_DEBUG_NODE( lambda_expression );
-    BOOST_SPIRIT_DEBUG_NODE( formals );
-    BOOST_SPIRIT_DEBUG_NODE( body );
-    BOOST_SPIRIT_DEBUG_NODE( definition );
-    BOOST_SPIRIT_DEBUG_NODE( sequence );
-    BOOST_SPIRIT_DEBUG_NODE( command );
-    BOOST_SPIRIT_DEBUG_NODE( conditional );
-    BOOST_SPIRIT_DEBUG_NODE( assignment );
+    expression_      .name("expression");
+    variable         .name("variable");
+    literal          .name("literal");
+    self_evaluating  .name("self_evaluating");
+    quotation        .name("quotation");
+    procedure_call   .name("procedure_call");
+    operator_        .name("operator");
+    operand          .name("operand");
+    lambda_expression.name("lambda_expression");
+    formals          .name("formals");
+    body             .name("body");
+    definition       .name("definition");
+    sequence         .name("sequence");
+    command          .name("command");
+    conditional      .name("conditional");
+    test             .name("test");
+    consequent       .name("consequent");
+    alternate        .name("alternate");
+    assignment       .name("assignment");
 }
 
 }   //  namespace rose

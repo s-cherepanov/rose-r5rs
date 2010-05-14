@@ -1,6 +1,7 @@
 #ifndef __ROSE_TOKEN_HPP__
 #define __ROSE_TOKEN_HPP__
 
+#include "rose/ast/datum.hpp"
 #include "rose/character.hpp"
 #include "rose/identifier.hpp"
 #include "rose/number.hpp"
@@ -22,11 +23,11 @@ struct token :
     qi::rule<Iterator, Skipper> start;
     qi::rule<Iterator> delimiter;
 
-    qi::rule<Iterator, std::string(), Skipper> identifier;
-    qi::rule<Iterator, int(), Skipper>         number;
-    qi::rule<Iterator, char(), Skipper>        character;
-    qi::rule<Iterator, std::string(), Skipper> string;
-    qi::rule<Iterator, bool(), Skipper>        boolean;
+    qi::rule<Iterator, ast::identifier(), Skipper> identifier;
+    qi::rule<Iterator, int(),             Skipper> number;
+    qi::rule<Iterator, char(),            Skipper> character;
+    qi::rule<Iterator, ast::string(),     Skipper> string;
+    qi::rule<Iterator, bool(),            Skipper> boolean;
 
     qi::rule<Iterator, Skipper> lparen;
     qi::rule<Iterator, Skipper> rparen;
@@ -43,7 +44,7 @@ private:
     rose::character<Iterator>  character_;
 
     qi::rule<Iterator, bool()>        boolean_;
-    qi::rule<Iterator, std::string()> string_;
+    qi::rule<Iterator, ast::string()> string_;
     qi::rule<Iterator, char()>        string_element;
 
 };  //  struct token

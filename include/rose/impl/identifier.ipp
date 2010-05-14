@@ -12,7 +12,7 @@ namespace qi = boost::spirit::qi;
 
 template<typename Iterator>
 identifier<Iterator>::identifier() :
-    identifier::base_type( start )
+    identifier::base_type(start)
 {
     using ascii::alpha;
     using ascii::digit;
@@ -29,11 +29,11 @@ identifier<Iterator>::identifier() :
         ;
 
     initial
-        =   no_case[ alpha ] | special_initial
+        =   no_case[alpha] | special_initial
         ;
 
     special_initial
-        =   char_( "!$%&*/:<=>?^_~" )
+        =   char_("!$%&*/:<=>?^_~")
         ;
 
     subsequent
@@ -41,26 +41,26 @@ identifier<Iterator>::identifier() :
         ;
 
     special_subsequent
-        =   char_( "+-.@" )
+        =   char_("+-.@")
         ;
 
     peculiar_identifier
-        =   char_( "+-" ) | "..."
+        =   char_("+-") | "..."
         ;
 
-    start               .name( "identifier" );
-    initial             .name( "initial" );
-    peculiar_identifier .name( "peculiar_identifier" );
-    special_initial     .name( "special_initial" );
-    special_subsequent  .name( "special_subsequent" );
-    subsequent          .name( "subsequent" );
+    start              .name("identifier");
+    initial            .name("initial");
+    peculiar_identifier.name("peculiar_identifier");
+    special_initial    .name("special_initial");
+    special_subsequent .name("special_subsequent");
+    subsequent         .name("subsequent");
 
-    BOOST_SPIRIT_DEBUG_NODE( start );
-    BOOST_SPIRIT_DEBUG_NODE( initial );
-    BOOST_SPIRIT_DEBUG_NODE( peculiar_identifier );
-    BOOST_SPIRIT_DEBUG_NODE( special_initial );
-    BOOST_SPIRIT_DEBUG_NODE( special_subsequent );
-    BOOST_SPIRIT_DEBUG_NODE( subsequent );
+    BOOST_SPIRIT_DEBUG_NODE(start);
+    BOOST_SPIRIT_DEBUG_NODE(initial);
+    BOOST_SPIRIT_DEBUG_NODE(peculiar_identifier);
+    BOOST_SPIRIT_DEBUG_NODE(special_initial);
+    BOOST_SPIRIT_DEBUG_NODE(special_subsequent);
+    BOOST_SPIRIT_DEBUG_NODE(subsequent);
 }
 
 }   //  namespace rose

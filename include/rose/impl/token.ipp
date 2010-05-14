@@ -12,7 +12,7 @@ namespace ascii = boost::spirit::ascii;
 
 template<typename Iterator, typename Skipper>
 token<Iterator, Skipper>::token() :
-    token::base_type( start )
+    token::base_type(start)
 {
     using ascii::graph;
     using ascii::space;
@@ -40,65 +40,65 @@ token<Iterator, Skipper>::token() :
         ;
 
     delimiter
-        =   space | char_( "()\";" ) | eoi
+        =   space | char_("()\";") | eoi
         ;
 
     boolean_
         =   no_case
             [
-                "#t" >> attr( true )
-            |   "#f" >> attr( false )
+                "#t" >> attr(true)
+            |   "#f" >> attr(false)
             ]
         ;
 
     string_
-        =   '"' >> *( string_element - '"' ) >> '"'
+        =   '"' >> *(string_element - '"') >> '"'
         ;
 
     string_element
-        =   ( ( graph | space ) - char_( "\"\\" ) )
-        |   lit( "\\\"" ) >> attr( '"' )
-        |   lit( "\\\\" ) >> attr( '\\' )
-        |   lit( "\\n" )  >> attr( '\n' )
-        |   lit( "\\t" )  >> attr( '\t' )
+        =   ((graph | space) - char_("\"\\"))
+        |   lit("\\\"") >> attr('"')
+        |   lit("\\\\") >> attr('\\')
+        |   lit("\\n")  >> attr('\n')
+        |   lit("\\t")  >> attr('\t')
         ;
 
-    identifier   = lexeme[ identifier_ >> &delimiter ];
-    number       = lexeme[ number_     >> &delimiter ];
-    character    = lexeme[ character_  >> &delimiter ];
-    dot          = lexeme[ '.'         >> &delimiter ];
-    boolean      = lexeme[ boolean_ ];
-    string       = lexeme[ string_ ];
-    lparen       = lexeme[ '('  ];
-    rparen       = lexeme[ ')'  ];
-    sharp_lparen = lexeme[ "#(" ];
-    single_quote = lexeme[ '\'' ];
-    back_quote   = lexeme[ '`' ];
-    comma        = lexeme[ ',' ];
-    comma_at     = lexeme[ ",@" ];
+    identifier   = lexeme[identifier_ >> &delimiter];
+    number       = lexeme[number_     >> &delimiter];
+    character    = lexeme[character_  >> &delimiter];
+    dot          = lexeme['.'         >> &delimiter];
+    boolean      = lexeme[boolean_];
+    string       = lexeme[string_];
+    lparen       = lexeme['(' ];
+    rparen       = lexeme[')' ];
+    sharp_lparen = lexeme["#("];
+    single_quote = lexeme['\''];
+    back_quote   = lexeme['`'];
+    comma        = lexeme[','];
+    comma_at     = lexeme[",@"];
 
-    identifier  .name( "identifier" );
-    boolean     .name( "boolean" );
-    number      .name( "number" );
-    character   .name( "character" );
-    string      .name( "string" );
-    lparen      .name( "lparen" );
-    rparen      .name( "rparen" );
-    sharp_lparen.name( "sharp_lparen" );
-    single_quote.name( "single_quote" );
-    back_quote  .name( "back_quote" );
-    comma       .name( "comma" );
-    comma_at    .name( "comma_at" );
-    dot         .name( "dot" );
+    identifier  .name("identifier");
+    boolean     .name("boolean");
+    number      .name("number");
+    character   .name("character");
+    string      .name("string");
+    lparen      .name("lparen");
+    rparen      .name("rparen");
+    sharp_lparen.name("sharp_lparen");
+    single_quote.name("single_quote");
+    back_quote  .name("back_quote");
+    comma       .name("comma");
+    comma_at    .name("comma_at");
+    dot         .name("dot");
 
-    BOOST_SPIRIT_DEBUG_NODE( identifier );
-    BOOST_SPIRIT_DEBUG_NODE( boolean );
-    BOOST_SPIRIT_DEBUG_NODE( number );
-    BOOST_SPIRIT_DEBUG_NODE( character );
-    BOOST_SPIRIT_DEBUG_NODE( string );
-    BOOST_SPIRIT_DEBUG_NODE( lparen );
-    BOOST_SPIRIT_DEBUG_NODE( rparen );
-    BOOST_SPIRIT_DEBUG_NODE( sharp_lparen );
+    BOOST_SPIRIT_DEBUG_NODE(identifier);
+    BOOST_SPIRIT_DEBUG_NODE(boolean);
+    BOOST_SPIRIT_DEBUG_NODE(number);
+    BOOST_SPIRIT_DEBUG_NODE(character);
+    BOOST_SPIRIT_DEBUG_NODE(string);
+    BOOST_SPIRIT_DEBUG_NODE(lparen);
+    BOOST_SPIRIT_DEBUG_NODE(rparen);
+    BOOST_SPIRIT_DEBUG_NODE(sharp_lparen);
 }
 
 }   //  namespace rose

@@ -12,7 +12,7 @@ namespace ascii = boost::spirit::ascii;
 
 template<typename Iterator>
 character<Iterator>::character() :
-    character::base_type( start )
+    character::base_type(start)
 {
     using ascii::graph;
     using qi::attr;
@@ -26,23 +26,23 @@ character<Iterator>::character() :
     // matched first.
     //
     start
-        =   "#\\" >> ( character_name | graph )
+        =   "#\\" >> (character_name | graph)
         ;
 
     character_name
         =   no_case
             [
-                "space"   >> attr( ' ' )
-            |   "newline" >> attr( '\n' )
-            |   "tab"     >> attr( '\t' )
+                "space"   >> attr(' ')
+            |   "newline" >> attr('\n')
+            |   "tab"     >> attr('\t')
             ]
         ;
 
-    start           .name( "character" );
-    character_name  .name( "character_name" );
+    start         .name("character");
+    character_name.name("character_name");
 
-    BOOST_SPIRIT_DEBUG_NODE( start );
-    BOOST_SPIRIT_DEBUG_NODE( character_name );
+    BOOST_SPIRIT_DEBUG_NODE(start);
+    BOOST_SPIRIT_DEBUG_NODE(character_name);
 }
 
 }   //  namespace rose
