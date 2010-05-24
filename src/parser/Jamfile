@@ -1,6 +1,6 @@
 project
     :   requirements
-            <define>BOOST_SPIRIT_DEBUG
+            <variant>debug:<define>BOOST_SPIRIT_DEBUG
     ;
 
 lib rose-parser
@@ -9,5 +9,6 @@ lib rose-parser
 
 install install-rose-parser
     :   rose-parser
-    :   <location>$(PROJECT_ROOT)/dist
+    :   <variant>debug:<location>$(PROJECT_ROOT)/dist/debug
+        <variant>release:<location>$(PROJECT_ROOT)/dist/release
     ;

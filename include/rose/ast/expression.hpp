@@ -4,7 +4,10 @@
 #include "rose/ast/datum.hpp"
 
 #include <boost/fusion/include/adapt_struct.hpp>
+#include <boost/optional.hpp>
 #include <boost/variant.hpp>
+
+#include <algorithm>
 
 namespace rose {
 namespace ast {
@@ -14,6 +17,14 @@ struct conditional;
 struct procedure_call;
 
 struct nil {};
+
+inline bool operator==(nil const&, nil const&) {
+    return true;
+}
+
+inline bool operator<(nil const&, nil const&) {
+    return false;
+}
 
 struct quotation {
     quotation() :
@@ -25,6 +36,10 @@ struct quotation {
     {}
 
     datum value;
+
+    bool operator==(quotation const& rhs) const {
+        return value == rhs.value;
+    }
 
 };  //  struct quotation
 
@@ -49,6 +64,10 @@ struct expression {
         expr(e)
     {}
 
+    bool operator==(expression const& rhs) const {
+        return expr == rhs.expr;
+    }
+
     type expr;
 
 };  // struct expression
@@ -70,6 +89,10 @@ struct procedure_call {
     procedure_call(expression const& procedure) :
         procedure(procedure)
     {}
+
+    bool operator==(procedure_call const& rhs) const {
+        return procedure == rhs.procedure && arguments == rhs.arguments;
+    }
 
     expression procedure;
     std::vector<expression> arguments;
@@ -102,9 +125,15 @@ struct conditional {
         alternate(alternate)
     {}
 
+    bool operator==(conditional const& rhs) const {
+        return test == rhs.test &&
+            consequent == rhs.consequent &&
+            alternate == rhs.alternate;
+    }
+
     expression test;
     expression consequent;
-    expression alternate;
+    boost::optional<expression> alternate;
 
 };  //  struct conditional
 
@@ -121,6 +150,10 @@ struct assignment {
         variable(variable),
         expr(expr)
     {}
+
+    bool operator==(assignment const& rhs) const {
+        return variable == rhs.variable && expr == rhs.expr;
+    }
 
     std::string variable;
     expression expr;
@@ -184,7 +217,7 @@ BOOST_FUSION_ADAPT_STRUCT(
     rose::ast::conditional,
     (rose::ast::expression, test)
     (rose::ast::expression, consequent)
-    (rose::ast::expression, alternate)
+    (boost::optional<rose::ast::expression>, alternate)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
