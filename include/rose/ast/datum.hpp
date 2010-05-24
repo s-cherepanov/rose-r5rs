@@ -1,9 +1,12 @@
 #ifndef __ROSE_AST_DATUM_HPP__
 #define __ROSE_AST_DATUM_HPP__
 
+#include "rose/ast/tagged_string.hpp"
+
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/variant.hpp>
 
+#include <iostream>
 #include <list>
 #include <string>
 #include <vector>
@@ -14,35 +17,13 @@ namespace ast {
 struct list;
 struct vector;
 
-template<typename Tag>
-struct tagged_string : public std::string {
-    typedef Tag tag;
-
-    tagged_string() :
-        std::string()
-    {}
-
-    tagged_string(std::string const& s) :
-        std::string(s)
-    {}
-
-    tagged_string& operator=(std::string const& that) {
-        if (this != &that) {
-            *static_cast<std::string*>(this) = that;
-        }
-
-        return *this;
-    }
-
-};  //  struct tagged_string
-
-struct string_tag {};
+struct string_tag     {};
 struct identifier_tag {};
-struct symbol_tag {};
+struct symbol_tag     {};
 
-typedef tagged_string<string_tag> string;
+typedef tagged_string<string_tag>     string;
 typedef tagged_string<identifier_tag> identifier;
-typedef tagged_string<symbol_tag> symbol;
+typedef tagged_string<symbol_tag>     symbol;
 
 typedef
     boost::variant<
@@ -52,23 +33,33 @@ typedef
     >
     datum;
 
-struct list {
-    std::list<datum> value;
+template<typename Container>
+struct container {
+    typedef Container container_type;
 
-    void push_back(datum const& d) {
+    typedef typename container_type::value_type value_type; 
+
+    typedef typename container_type::iterator iterator;
+
+    typedef typename container_type::const_iterator const_iterator;
+
+    typedef container<container_type> this_type;
+
+    void push_back(value_type const& d) {
         value.push_back(d);
     }
 
-};
-
-struct vector {
-    std::vector<datum> value;
-
-    void push_back(datum const& d) {
-        value.push_back(d);
+    bool operator==(this_type const& rhs) const {
+        return value == rhs.value;
     }
 
-};
+    container_type value;
+
+};  //  struct container
+
+struct list : public container<std::list<datum> > {};
+
+struct vector : public container<std::vector<datum> > {};
 
 }   //  namespace ast
 }   //  namespace rose

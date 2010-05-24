@@ -1,6 +1,6 @@
 project
     :   requirements
-            # <define>BOOST_SPIRIT_DEBUG
+            <variant>debug:<define>BOOST_SPIRIT_DEBUG
 
             <library>/boost//prg_exec_monitor
             <library>/boost//unit_test_framework

@@ -83,15 +83,20 @@ expression<Iterator, Skipper>::expression() :
         ;
 
     formals
-        =   token.lparen >> *variable >> token.rparen
+        =   token.lparen
+            >> *variable
+            >> token.rparen
         |   variable
         |   token.lparen
-            >> +variable >> token.dot >> variable
+            >> +variable
+            >> token.dot
+            >> variable
             >> token.rparen
         ;
 
     body
-        =  *definition >> sequence
+        =   *(definition | procedure_def)
+            >> sequence
         ;
 
     definition
@@ -100,12 +105,20 @@ expression<Iterator, Skipper>::expression() :
             >> variable
             >> expression_
             >> token.rparen
-        |   token.lparen
+        ;
+
+    procedure_def
+        =   token.lparen
             >> no_case["define"]
             >> token.lparen
             >> variable >> def_formals
             >> token.rparen
             >> body >> token.rparen
+        ;
+
+    def_formals
+        =   *variable
+            >>  -(token.dot >> variable)
         ;
 
     sequence

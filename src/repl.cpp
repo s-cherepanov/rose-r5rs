@@ -47,8 +47,6 @@ void repl() {
             std::cerr << "error" << std::endl;
         }
     }
-
-    std::cout << "; EXIT" << std::endl;
 }
 
 }   //  namespace rose

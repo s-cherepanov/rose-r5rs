@@ -22,7 +22,7 @@ r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
     using qi::char_;
 
     program
-        =  +command_or_definition
+        =   +command_or_definition
         ;
 
     command_or_definition
