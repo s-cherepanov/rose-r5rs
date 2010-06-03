@@ -86,16 +86,10 @@ expression<Iterator, Skipper>::expression() :
         =   token.lparen
             >> *variable
             >> token.rparen
-        |   variable
-        |   token.lparen
-            >> +variable
-            >> token.dot
-            >> variable
-            >> token.rparen
         ;
 
     body
-        =   *(definition | procedure_def)
+        =   *definition
             >> sequence
         ;
 
@@ -105,15 +99,6 @@ expression<Iterator, Skipper>::expression() :
             >> variable
             >> expression_
             >> token.rparen
-        ;
-
-    procedure_def
-        =   token.lparen
-            >> no_case["define"]
-            >> token.lparen
-            >> variable >> def_formals
-            >> token.rparen
-            >> body >> token.rparen
         ;
 
     def_formals
@@ -181,4 +166,4 @@ expression<Iterator, Skipper>::expression() :
 
 #endif  //  __ROSE_IMPL_EXPRESSION_IPP__
 
-// vim:ft=cpp et
+// vim:ft=cpp

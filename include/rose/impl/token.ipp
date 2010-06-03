@@ -104,3 +104,5 @@ token<Iterator, Skipper>::token() :
 }   //  namespace rose
 
 #endif  //  __ROSE_IMPL_TOKEN_IPP__
+
+// vim:ft=cpp

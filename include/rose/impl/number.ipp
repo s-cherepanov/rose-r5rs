@@ -24,3 +24,5 @@ number<Iterator>::number() :
 }   //  namespace rose
 
 #endif  //  __ROSE_IMPL_NUMBER_IPP__
+
+// vim:ft=cpp
