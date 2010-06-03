@@ -48,3 +48,5 @@ intertoken_space<Iterator>::intertoken_space() :
 }   //  namespace rose
 
 #endif  //  __ROSE_IMPL_INTERTOKEN_SPACE_HPP__
+
+// vim:ft=cpp

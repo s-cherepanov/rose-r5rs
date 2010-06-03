@@ -117,10 +117,8 @@ BOOST_AUTO_TEST_CASE(conditional_test) {
 
 BOOST_AUTO_TEST_CASE(lambda_expression_test) {
     BOOST_CHECK(is_expression("(lambda (x) (+ x 1))"));
-    BOOST_CHECK(is_expression("(lambda x (+ x 1))"));
     BOOST_CHECK(is_expression("(lambda () 1)"));
     BOOST_CHECK(is_expression("(lambda (x y) (+ x 1))"));
-    BOOST_CHECK(is_expression("(lambda (x . y) (+ x y))"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

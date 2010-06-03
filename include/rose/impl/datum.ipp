@@ -52,18 +52,18 @@ datum<Iterator, Skipper>::datum() :
 
     list
         =   token.lparen
-            >> *datum_                  [push_back(_val, _1)]
+            >> *datum_                      [push_back(at_c<0>(_val), _1)]
             >> token.rparen
         |   token.lparen
-            >> +datum_                  [push_back(_val, _1)]
+            >> +datum_                      [push_back(at_c<0>(_val), _1)]
             >> token.dot
-            >> datum_                   [push_back(_val, _1)]
+            >> datum_                       [at_c<1>(_val) = _1]
             >> token.rparen
         |   abbreviation
         ;
 
     abbreviation
-        =   abbrev_prefix >> datum_     [_val = _1]
+        =   abbrev_prefix >> datum_
         ;
 
     // NOTE: `comma_at' must comes before `comma'
@@ -76,7 +76,7 @@ datum<Iterator, Skipper>::datum() :
 
     vector
         =   token.sharp_lparen
-            >> *datum_                  [push_back(_val, _1)]
+            >> *datum_                      [push_back(_val, _1)]
             >> token.rparen
         ;
 
@@ -93,3 +93,5 @@ datum<Iterator, Skipper>::datum() :
 }   //  namespace rose
 
 #endif  //  __ROSE_IMPL_DATUM_IPP__
+
+// vim:ft=cpp

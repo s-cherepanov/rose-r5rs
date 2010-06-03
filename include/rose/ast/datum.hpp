@@ -4,6 +4,7 @@
 #include "rose/ast/tagged_string.hpp"
 
 #include <boost/fusion/include/adapt_struct.hpp>
+#include <boost/optional.hpp>
 #include <boost/variant.hpp>
 
 #include <iostream>
@@ -14,9 +15,6 @@
 namespace rose {
 namespace ast {
 
-struct list;
-struct vector;
-
 struct string_tag     {};
 struct identifier_tag {};
 struct symbol_tag     {};
@@ -24,6 +22,9 @@ struct symbol_tag     {};
 typedef tagged_string<string_tag>     string;
 typedef tagged_string<identifier_tag> identifier;
 typedef tagged_string<symbol_tag>     symbol;
+
+struct list;
+struct vector;
 
 typedef
     boost::variant<
@@ -33,33 +34,24 @@ typedef
     >
     datum;
 
-template<typename Container>
-struct container {
-    typedef Container container_type;
+struct list {
+    typedef std::list<datum> impl_type;
 
-    typedef typename container_type::value_type value_type; 
+    typedef impl_type::iterator iterator;
 
-    typedef typename container_type::iterator iterator;
+    typedef impl_type::const_iterator const_iterator;
 
-    typedef typename container_type::const_iterator const_iterator;
+    impl_type proper;
 
-    typedef container<container_type> this_type;
+    boost::optional<datum> improper;
 
-    void push_back(value_type const& d) {
-        value.push_back(d);
+    bool operator==(list const& rhs) const {
+        return proper == rhs.proper && improper == rhs.improper;
     }
 
-    bool operator==(this_type const& rhs) const {
-        return value == rhs.value;
-    }
+};  //  struct list
 
-    container_type value;
-
-};  //  struct container
-
-struct list : public container<std::list<datum> > {};
-
-struct vector : public container<std::vector<datum> > {};
+struct vector : std::vector<datum> {};
 
 }   //  namespace ast
 }   //  namespace rose
@@ -67,13 +59,15 @@ struct vector : public container<std::vector<datum> > {};
 namespace boost {
 
 template<typename T>
-inline T get(rose::ast::list const& l) {
-    return boost::get<T>(l.value);
+inline T get(rose::ast::list const& v) {
+    typedef std::list<rose::ast::datum> base_type;
+    return boost::get<T>(static_cast<base_type>(v));
 }
 
 template<typename T>
 inline T get(rose::ast::vector const& v) {
-    return boost::get<T>(v.value);
+    typedef std::vector<rose::ast::datum> base_type;
+    return boost::get<T>(static_cast<base_type>(v));
 }
 
 namespace spirit {
@@ -91,5 +85,11 @@ struct not_is_variant<rose::ast::vector> : mpl::false_ {};
 }   //  namespace traits
 }   //  namespace spirit
 }   //  namespace boost
+
+BOOST_FUSION_ADAPT_STRUCT(
+    rose::ast::list,
+    (rose::ast::list::impl_type, proper)
+    (boost::optional<rose::ast::datum>, improper)
+)
 
 #endif  //  __ROSE_AST_DATUM_HPP__
