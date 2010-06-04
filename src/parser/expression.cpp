@@ -1,7 +1,8 @@
-#include "rose/intertoken_space.hpp"
-#include "rose/impl/expression.ipp"
+#include "rose/parser/intertoken_space.hpp"
+#include "rose/parser/impl/expression.ipp"
 
 namespace rose {
+namespace parser {
 
 void instantiate_expression() {
     typedef
@@ -15,4 +16,5 @@ void instantiate_expression() {
     expression<iterator_type, skipper_type> e;
 }
 
+}   //  namespace parser
 }   //  namespace rose

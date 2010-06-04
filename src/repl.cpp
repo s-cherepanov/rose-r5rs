@@ -1,6 +1,6 @@
-#include "rose/intertoken_space.hpp"
+#include "rose/parser/intertoken_space.hpp"
+#include "rose/parser/r5rs_grammar.hpp"
 #include "rose/repl.hpp"
-#include "rose/r5rs_grammar.hpp"
 
 #include <boost/format.hpp>
 #include <boost/spirit/include/qi.hpp>
@@ -19,7 +19,7 @@ void repl() {
         iterator_type;
 
     typedef
-        rose::intertoken_space<iterator_type>
+        rose::parser::intertoken_space<iterator_type>
         skipper_type;
 
     std::string prompt = default_prompt;
@@ -32,7 +32,7 @@ void repl() {
         iterator_type last = source.end();
 
         typedef
-            rose::r5rs_grammar<iterator_type, skipper_type>
+            rose::parser::r5rs_grammar<iterator_type, skipper_type>
             r5rs_grammar;
 
         r5rs_grammar grammar;

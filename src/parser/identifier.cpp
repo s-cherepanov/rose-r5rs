@@ -1,6 +1,7 @@
-#include "rose/impl/identifier.ipp"
+#include "rose/parser/impl/identifier.ipp"
 
 namespace rose {
+namespace parser {
 
 void instantiate_identifier() {
     typedef
@@ -10,4 +11,5 @@ void instantiate_identifier() {
     identifier<iterator_type> i;
 }
 
+}   //  namespace parser
 }   //  namespace rose

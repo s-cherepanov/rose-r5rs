@@ -1,4 +1,4 @@
-#include "rose/number.hpp"
+#include "rose/parser/number.hpp"
 
 #include <boost/test/unit_test.hpp>
 
@@ -11,7 +11,7 @@ typedef
     iterator_type;
 
 typedef
-    rose::number<iterator_type>
+    rose::parser::number<iterator_type>
     number;
 
 void check_number(

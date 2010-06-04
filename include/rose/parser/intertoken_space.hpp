@@ -5,6 +5,7 @@
 #include <boost/spirit/include/qi.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 
@@ -21,6 +22,7 @@ struct intertoken_space :
 
 };  //  struct intertoken_space
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_INTERTOKEN_SPACE_HPP__

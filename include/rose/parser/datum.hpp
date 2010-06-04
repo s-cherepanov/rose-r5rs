@@ -2,12 +2,13 @@
 #define __ROSE_DATUM_HPP__
 
 #include "rose/ast/datum.hpp"
-#include "rose/token.hpp"
+#include "rose/parser/token.hpp"
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 
@@ -20,7 +21,7 @@ struct datum :
 {
     datum();
 
-    rose::token<Iterator, Skipper> token;
+    parser::token<Iterator, Skipper> token;
 
     qi::rule<Iterator, ast::datum(),  Skipper> datum_;
     qi::rule<Iterator, ast::datum(),  Skipper> simple_datum;
@@ -33,6 +34,7 @@ struct datum :
 
 };  //  struct datum
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_DATUM_HPP__

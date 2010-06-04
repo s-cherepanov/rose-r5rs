@@ -5,6 +5,7 @@
 #include <boost/spirit/include/qi.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 
@@ -18,6 +19,7 @@ struct character :
     qi::rule<Iterator, char()> character_name;
 };
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_CHARACTER_HPP__

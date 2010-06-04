@@ -1,11 +1,12 @@
 #ifndef __ROSE_IMPL_NUMBER_IPP__
 #define __ROSE_IMPL_NUMBER_IPP__
 
-#include "rose/number.hpp"
+#include "rose/parser/number.hpp"
 
 #include <boost/spirit/include/phoenix_operator.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
@@ -21,8 +22,9 @@ number<Iterator>::number() :
         ;
 }
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_IMPL_NUMBER_IPP__
 
-// vim:ft=cpp
+// vim:ft=cpp et

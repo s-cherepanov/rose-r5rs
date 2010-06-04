@@ -1,8 +1,9 @@
-#include "rose/impl/character.ipp"
-#include "rose/impl/token.ipp"
-#include "rose/intertoken_space.hpp"
+#include "rose/parser/impl/character.ipp"
+#include "rose/parser/impl/token.ipp"
+#include "rose/parser/intertoken_space.hpp"
 
 namespace rose {
+namespace parser {
 
 void instantiate_token() {
     typedef
@@ -10,11 +11,12 @@ void instantiate_token() {
         iterator_type;
 
     typedef
-        rose::intertoken_space<iterator_type>
+        rose::parser::intertoken_space<iterator_type>
         skipper_type;
 
-    rose::token<iterator_type, skipper_type> t;
-    rose::character<iterator_type> c;
+    rose::parser::token<iterator_type, skipper_type> t;
+    rose::parser::character<iterator_type> c;
 }
 
+}   //  namespace parser
 }   //  namespace rose

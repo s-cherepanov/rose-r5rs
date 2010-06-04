@@ -1,4 +1,4 @@
-#include "rose/identifier.hpp"
+#include "rose/parser/identifier.hpp"
 
 #include <boost/test/unit_test.hpp>
 
@@ -11,7 +11,7 @@ typedef
     iterator_type;
 
 typedef
-    rose::identifier<iterator_type>
+    rose::parser::identifier<iterator_type>
     identifier;
 
 bool is_identifier( std::string const& str ) {

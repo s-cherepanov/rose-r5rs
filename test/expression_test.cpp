@@ -1,6 +1,6 @@
 #include "rose/ast/expression.hpp"
-#include "rose/expression.hpp"
-#include "rose/intertoken_space.hpp"
+#include "rose/parser/expression.hpp"
+#include "rose/parser/intertoken_space.hpp"
 
 #include <boost/assign.hpp>
 #include <boost/test/unit_test.hpp>
@@ -17,11 +17,11 @@ typedef
     iterator_type;
 
 typedef
-    rose::intertoken_space<iterator_type>
+    rose::parser::intertoken_space<iterator_type>
     skipper_type;
 
 typedef
-    rose::expression<iterator_type, skipper_type>
+    rose::parser::expression<iterator_type, skipper_type>
     expression;
 
 bool is_expression(std::string const& input) {

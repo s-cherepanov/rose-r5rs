@@ -1,7 +1,8 @@
-#include "rose/intertoken_space.hpp"
-#include "rose/impl/datum.ipp"
+#include "rose/parser/intertoken_space.hpp"
+#include "rose/parser/impl/datum.ipp"
 
 namespace rose {
+namespace parser {
 
 void instantiate_datum() {
     typedef
@@ -15,4 +16,5 @@ void instantiate_datum() {
     datum<iterator_type, skipper_type> d;
 }
 
+}   //  namespace parser
 }   //  namespace rose

@@ -31,5 +31,4 @@ project
     ;
 
 build-project src ;
-build-project src/parser ;
 build-project test ;

@@ -1,7 +1,7 @@
 #ifndef __ROSE_IMPL_EXPRESSION_IPP__
 #define __ROSE_IMPL_EXPRESSION_IPP__
 
-#include "rose/expression.hpp"
+#include "rose/parser/expression.hpp"
 
 #include <boost/spirit/include/phoenix_fusion.hpp>
 #include <boost/spirit/include/phoenix_object.hpp>
@@ -9,6 +9,7 @@
 #include <boost/spirit/include/phoenix_stl.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 namespace spirit = boost::spirit;
@@ -162,8 +163,9 @@ expression<Iterator, Skipper>::expression() :
     assignment       .name("assignment");
 }
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_IMPL_EXPRESSION_IPP__
 
-// vim:ft=cpp
+// vim:ft=cpp et

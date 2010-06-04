@@ -1,13 +1,14 @@
 #ifndef __ROSE_R5RS_GRAMMAR_HPP__
 #define __ROSE_R5RS_GRAMMAR_HPP__
 
-#include "rose/datum.hpp"
-#include "rose/expression.hpp"
+#include "rose/parser/datum.hpp"
+#include "rose/parser/expression.hpp"
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 
@@ -20,7 +21,7 @@ struct r5rs_grammar :
 {
     r5rs_grammar();
 
-    rose::expression<Iterator, Skipper> expression;
+    parser::expression<Iterator, Skipper> expression;
 
     qi::rule<Iterator, Skipper> program;
     qi::rule<Iterator, Skipper> command_or_definition;
@@ -28,6 +29,7 @@ struct r5rs_grammar :
 
 };  //  struct r5rs_grammar
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_R5RS_GRAMMAR_HPP__

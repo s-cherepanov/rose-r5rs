@@ -1,11 +1,12 @@
 #ifndef __ROSE_IMPL_IDENTIFIER_IPP__
 #define __ROSE_IMPL_IDENTIFIER_IPP__
 
-#include "rose/identifier.hpp"
+#include "rose/parser/identifier.hpp"
 
 #include <boost/spirit/include/phoenix_operator.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace ascii = boost::spirit::ascii;
 namespace qi = boost::spirit::qi;
@@ -63,8 +64,9 @@ identifier<Iterator>::identifier() :
     BOOST_SPIRIT_DEBUG_NODE(subsequent);
 }
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_IMPL_IDENTIFIER_IPP__
 
-// vim:ft=cpp
+// vim:ft=cpp et
