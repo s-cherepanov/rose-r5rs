@@ -8,6 +8,7 @@
 #include <complex>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 
@@ -21,6 +22,7 @@ struct number :
     
 };  //  struct number
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_NUMBER_HPP__

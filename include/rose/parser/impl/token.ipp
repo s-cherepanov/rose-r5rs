@@ -1,11 +1,12 @@
 #ifndef __ROSE_IMPL_TOKEN_IPP__
 #define __ROSE_IMPL_TOKEN_IPP__
 
-#include "rose/token.hpp"
+#include "rose/parser/token.hpp"
 
 #include <boost/spirit/include/phoenix_operator.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
@@ -101,8 +102,9 @@ token<Iterator, Skipper>::token() :
     BOOST_SPIRIT_DEBUG_NODE(sharp_lparen);
 }
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_IMPL_TOKEN_IPP__
 
-// vim:ft=cpp
+// vim:ft=cpp et

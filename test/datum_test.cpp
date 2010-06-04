@@ -1,5 +1,5 @@
-#include "rose/datum.hpp"
-#include "rose/intertoken_space.hpp"
+#include "rose/parser/datum.hpp"
+#include "rose/parser/intertoken_space.hpp"
 
 #include <boost/test/unit_test.hpp>
 
@@ -12,11 +12,11 @@ typedef
     iterator_type;
 
 typedef
-    rose::intertoken_space<iterator_type>
+    rose::parser::intertoken_space<iterator_type>
     skipper_type;
 
 typedef
-    rose::datum<iterator_type, skipper_type>
+    rose::parser::datum<iterator_type, skipper_type>
     datum;
 
 bool is_datum( std::string const& input ) {

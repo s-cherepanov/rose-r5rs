@@ -1,4 +1,4 @@
-#include "rose/character.hpp"
+#include "rose/parser/character.hpp"
 
 #include <boost/test/unit_test.hpp>
 
@@ -11,7 +11,7 @@ typedef
     iterator_type;
 
 typedef
-    rose::character<iterator_type>
+    rose::parser::character<iterator_type>
     character;
 
 void check_character( std::string const& input, char expected ) {

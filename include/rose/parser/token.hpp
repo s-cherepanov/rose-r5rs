@@ -2,15 +2,16 @@
 #define __ROSE_TOKEN_HPP__
 
 #include "rose/ast/datum.hpp"
-#include "rose/character.hpp"
-#include "rose/identifier.hpp"
-#include "rose/number.hpp"
+#include "rose/parser/character.hpp"
+#include "rose/parser/identifier.hpp"
+#include "rose/parser/number.hpp"
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 
@@ -39,9 +40,9 @@ struct token :
     qi::rule<Iterator, Skipper> dot;
 
 private:
-    rose::identifier<Iterator> identifier_;
-    rose::number<Iterator>     number_;
-    rose::character<Iterator>  character_;
+    parser::identifier<Iterator> identifier_;
+    parser::number<Iterator>     number_;
+    parser::character<Iterator>  character_;
 
     qi::rule<Iterator, bool()>        boolean_;
     qi::rule<Iterator, ast::string()> string_;
@@ -49,6 +50,7 @@ private:
 
 };  //  struct token
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_TOKEN_HPP__

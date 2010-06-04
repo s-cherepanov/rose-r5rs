@@ -1,11 +1,12 @@
 #ifndef __ROSE_IMPL_CHARACTER_IPP__
 #define __ROSE_IMPL_CHARACTER_IPP__
 
-#include "rose/character.hpp"
+#include "rose/parser/character.hpp"
 
 #include <boost/spirit/include/phoenix_operator.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
@@ -45,6 +46,9 @@ character<Iterator>::character() :
     BOOST_SPIRIT_DEBUG_NODE(character_name);
 }
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_IMPL_CHARACTER_IPP__
+
+// vim:ft=cpp et

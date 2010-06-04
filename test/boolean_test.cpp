@@ -1,5 +1,5 @@
-#include "rose/intertoken_space.hpp"
-#include "rose/token.hpp"
+#include "rose/parser/intertoken_space.hpp"
+#include "rose/parser/token.hpp"
 
 #include <boost/test/unit_test.hpp>
 
@@ -12,11 +12,11 @@ typedef
     iterator_type;
 
 typedef
-    rose::intertoken_space<iterator_type>
+    rose::parser::intertoken_space<iterator_type>
     skipper_type;
 
 typedef
-    rose::token<iterator_type, skipper_type>
+    rose::parser::token<iterator_type, skipper_type>
     token_type;
 
 bool is_boolean(

@@ -5,6 +5,7 @@
 #include <boost/spirit/include/qi.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
@@ -25,6 +26,7 @@ struct identifier :
 
 };  //  struct identifier
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_IDENTIFIER_HPP__

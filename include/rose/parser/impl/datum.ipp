@@ -1,7 +1,7 @@
 #ifndef __ROSE_IMPL_DATUM_IPP__
 #define __ROSE_IMPL_DATUM_IPP__
 
-#include "rose/datum.hpp"
+#include "rose/parser/datum.hpp"
 
 #include <boost/spirit/include/phoenix_fusion.hpp>
 #include <boost/spirit/include/phoenix_object.hpp>
@@ -9,6 +9,7 @@
 #include <boost/spirit/include/phoenix_stl.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 namespace spirit = boost::spirit;
@@ -90,8 +91,9 @@ datum<Iterator, Skipper>::datum() :
     vector        .name("vector");
 }
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_IMPL_DATUM_IPP__
 
-// vim:ft=cpp
+// vim:ft=cpp et

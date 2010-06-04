@@ -2,13 +2,14 @@
 #define __ROSE_EXPRESSION_HPP__
 
 #include "rose/ast/expression.hpp"
-#include "rose/token.hpp"
-#include "rose/datum.hpp"
+#include "rose/parser/token.hpp"
+#include "rose/parser/datum.hpp"
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 
 namespace rose {
+namespace parser {
 
 namespace qi = boost::spirit::qi;
 
@@ -21,8 +22,8 @@ struct expression :
 {
     expression();
 
-    rose::token<Iterator, Skipper> token;
-    rose::datum<Iterator, Skipper> datum;
+    parser::token<Iterator, Skipper> token;
+    parser::datum<Iterator, Skipper> datum;
 
     qi::rule<Iterator, ast::expression(),     Skipper> expression_;
     qi::rule<Iterator, ast::identifier(),     Skipper> variable;
@@ -48,6 +49,7 @@ struct expression :
 
 };  //  struct expression
 
+}   //  namespace parser
 }   //  namespace rose
 
 #endif  //  __ROSE_EXPRESSION_HPP__
