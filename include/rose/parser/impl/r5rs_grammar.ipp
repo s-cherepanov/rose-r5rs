@@ -23,25 +23,20 @@ r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
     using qi::char_;
 
     program
-        =   +command_or_definition
+        =   +(command | definition)
         ;
 
-    command_or_definition
-        =   command
-        |   expression.definition
+    definition
+        =   expression.definition
         ;
 
     command
         =   expression
         ;
 
-    program              .name("program");
-    command_or_definition.name("command_or_definition");
-    command              .name("command");
-
-    BOOST_SPIRIT_DEBUG_NODE(program);
-    BOOST_SPIRIT_DEBUG_NODE(command_or_definition);
-    BOOST_SPIRIT_DEBUG_NODE(command);
+    program   .name("program");
+    definition.name("definition");
+    command   .name("command");
 }
 
 }   //  namespace rose

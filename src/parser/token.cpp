@@ -14,8 +14,8 @@ void instantiate_token() {
         rose::parser::intertoken_space<iterator_type>
         skipper_type;
 
-    rose::parser::token<iterator_type, skipper_type> t;
-    rose::parser::character<iterator_type> c;
+    rose::parser::token<iterator_type, skipper_type>();
+    rose::parser::character<iterator_type>();
 }
 
 }   //  namespace parser

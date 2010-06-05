@@ -5,6 +5,7 @@ project
             <library>/boost//prg_exec_monitor
             <library>/boost//unit_test_framework
             <library>/rose/parser//rose-parser
+            <library>/rose/generator//rose-generator
     ;
 
 run

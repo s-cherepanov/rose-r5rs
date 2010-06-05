@@ -8,6 +8,19 @@
 #include <boost/spirit/include/qi.hpp>
 
 namespace rose {
+namespace ast {
+
+typedef
+    std::vector<
+        boost::variant<
+            ast::expression,
+            ast::definition
+        >
+    >
+    program;
+
+}   //  namespace ast
+
 namespace parser {
 
 namespace qi = boost::spirit::qi;
@@ -17,15 +30,15 @@ template<
     typename Skipper
 >
 struct r5rs_grammar :
-    qi::grammar<Iterator, Skipper>
+    qi::grammar<Iterator, ast::program(), Skipper>
 {
     r5rs_grammar();
 
     parser::expression<Iterator, Skipper> expression;
 
-    qi::rule<Iterator, Skipper> program;
-    qi::rule<Iterator, Skipper> command_or_definition;
-    qi::rule<Iterator, Skipper> command;
+    qi::rule<Iterator, ast::program(),    Skipper> program;
+    qi::rule<Iterator, ast::definition(), Skipper> definition;
+    qi::rule<Iterator, ast::expression(), Skipper> command;
 
 };  //  struct r5rs_grammar
 
