@@ -12,6 +12,7 @@
 namespace rose {
 namespace ast {
 
+struct lambda_expression;
 struct assignment;
 struct conditional;
 struct procedure_call;
@@ -49,6 +50,7 @@ struct expression {
             nil,
             datum,
             quotation,
+            boost::recursive_wrapper<lambda_expression>,
             boost::recursive_wrapper<procedure_call>,
             boost::recursive_wrapper<conditional>,
             boost::recursive_wrapper<assignment>
@@ -155,7 +157,7 @@ struct assignment {
         return variable == rhs.variable && expr == rhs.expr;
     }
 
-    std::string variable;
+    identifier variable;
     expression expr;
 
 };  //  struct assignment
@@ -174,10 +176,48 @@ struct definition {
         expr(expr)
     {}
 
-    std::string variable;
+    bool operator==(definition const& rhs) const {
+        return variable == rhs.variable && expr == rhs.expr;
+    }
+
+    identifier variable;
     expression expr;
 
 };  //  struct definition
+
+struct body {
+    bool operator==(body const& rhs) const {
+        return definitions == rhs.definitions &&
+            sequence == rhs.sequence;
+    }
+
+    std::vector<definition> definitions;
+    std::vector<expression> sequence;
+
+};  //  struct body
+
+struct lambda_expression {
+    lambda_expression() :
+        formals(),
+        body()
+    {}
+
+    lambda_expression(
+            std::vector<identifier> const& formals,
+            rose::ast::body const& body)
+    :
+        formals(formals),
+        body(body)
+    {}
+
+    bool operator==(lambda_expression const& rhs) const {
+        return formals == rhs.formals && body == rhs.body;
+    }
+
+    std::vector<identifier> formals;
+    rose::ast::body body;
+
+};  //  struct lambda_expression
 
 }   //  namespace ast
 }   //  namespace rose
@@ -228,8 +268,20 @@ BOOST_FUSION_ADAPT_STRUCT(
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast::definition,
-    (std::string, variable)
+    (rose::ast::identifier, variable)
     (rose::ast::expression, expr)
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    rose::ast::body,
+    (std::vector<rose::ast::definition>, definitions)
+    (std::vector<rose::ast::expression>, sequence)
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    rose::ast::lambda_expression,
+    (std::vector<rose::ast::identifier>, formals)
+    (rose::ast::body, body)
 )
 
 #endif  //  __ROSE_AST_EXPRESSION_HPP__

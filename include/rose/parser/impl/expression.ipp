@@ -31,12 +31,12 @@ expression<Iterator, Skipper>::expression() :
     using phoenix::push_back;
 
     expression_
-        =   variable                        [_val = _1]
-        |   literal                         [_val = _1]
+       %=   variable
+        |   literal
         |   lambda_expression
-        |   procedure_call                  [_val = _1]
-        |   conditional                     [_val = _1]
-        |   assignment                      [_val = _1]
+        |   procedure_call
+        |   conditional
+        |   assignment
         ;
 
     variable
@@ -79,26 +79,28 @@ expression<Iterator, Skipper>::expression() :
 
     lambda_expression
         =   token.lparen
-            >> no_case["lambda"] >> formals >> body
+            >> no_case["lambda"]
+            >> formals                      [at_c<0>(_val) = _1]
+            >> body                         [at_c<1>(_val) = _1]
             >> token.rparen
         ;
 
     formals
         =   token.lparen
-            >> *variable
+            >> *variable                    [push_back(_val, _1)]
             >> token.rparen
         ;
 
     body
-        =   *definition
-            >> sequence
+        =   *definition                     [push_back(at_c<0>(_val), _1)]
+            >> sequence                     [at_c<1>(_val) = _1]
         ;
 
     definition
         =   token.lparen
             >> no_case["define"]
-            >> variable
-            >> expression_
+            >> variable                     [at_c<0>(_val) = _1]
+            >> expression_                  [at_c<1>(_val) = _1]
             >> token.rparen
         ;
 
@@ -108,7 +110,7 @@ expression<Iterator, Skipper>::expression() :
         ;
 
     sequence
-        =   +command
+        =   +command                        [push_back(_val, _1)]
         ;
 
     command
