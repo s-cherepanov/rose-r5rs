@@ -25,6 +25,7 @@ struct token :
     qi::rule<Iterator> delimiter;
 
     qi::rule<Iterator, ast::identifier(), Skipper> identifier;
+    qi::rule<Iterator, ast::variable(),   Skipper> variable;
     qi::rule<Iterator, int(),             Skipper> number;
     qi::rule<Iterator, char(),            Skipper> character;
     qi::rule<Iterator, ast::string(),     Skipper> string;
@@ -44,9 +45,13 @@ private:
     parser::number<Iterator>     number_;
     parser::character<Iterator>  character_;
 
-    qi::rule<Iterator, bool()>        boolean_;
-    qi::rule<Iterator, ast::string()> string_;
-    qi::rule<Iterator, char()>        string_element;
+    qi::rule<Iterator, bool()>          boolean_;
+    qi::rule<Iterator, ast::string()>   string_;
+    qi::rule<Iterator, char()>          string_element;
+    qi::rule<Iterator, ast::variable()> variable_;
+
+    qi::rule<Iterator> expression_keyword;
+    qi::rule<Iterator> syntactic_keyword;
 
 };  //  struct token
 

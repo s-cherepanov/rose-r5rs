@@ -41,9 +41,6 @@ character<Iterator>::character() :
 
     start         .name("character");
     character_name.name("character_name");
-
-    BOOST_SPIRIT_DEBUG_NODE(start);
-    BOOST_SPIRIT_DEBUG_NODE(character_name);
 }
 
 }   //  namespace parser

@@ -18,17 +18,20 @@ namespace ast {
 struct string_tag     {};
 struct identifier_tag {};
 struct symbol_tag     {};
+struct variable_tag   {};
 
 typedef tagged_string<string_tag>     string;
 typedef tagged_string<identifier_tag> identifier;
 typedef tagged_string<symbol_tag>     symbol;
+typedef tagged_string<variable_tag>   variable;
 
 struct list;
 struct vector;
 
 typedef
     boost::variant<
-        bool, int, char, string, identifier, symbol,
+        bool, int, char,
+        string, symbol, identifier, variable,
         boost::recursive_wrapper<list>,
         boost::recursive_wrapper<vector>
     >

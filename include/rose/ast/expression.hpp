@@ -29,17 +29,17 @@ inline bool operator<(nil const&, nil const&) {
 
 struct quotation {
     quotation() :
-        value()
+        quoted()
     {}
 
-    quotation(datum const& value) :
-        value(value)
+    quotation(datum const& quoted) :
+        quoted(quoted)
     {}
 
-    datum value;
+    datum quoted;
 
     bool operator==(quotation const& rhs) const {
-        return value == rhs.value;
+        return quoted == rhs.quoted;
     }
 
 };  //  struct quotation
@@ -141,46 +141,46 @@ struct conditional {
 
 struct assignment {
     assignment() :
-        variable(),
+        var(),
         expr()
     {}
 
     assignment(
-            std::string const& variable,
+            variable const& var,
             expression const& expr)
     :
-        variable(variable),
+        var(var),
         expr(expr)
     {}
 
     bool operator==(assignment const& rhs) const {
-        return variable == rhs.variable && expr == rhs.expr;
+        return var == rhs.var && expr == rhs.expr;
     }
 
-    identifier variable;
+    variable var;
     expression expr;
 
 };  //  struct assignment
 
 struct definition {
     definition() :
-        variable(),
+        var(),
         expr()
     {}
 
     definition(
-            std::string const& variable,
+            variable const& var,
             expression const& expr)
     :
-        variable(variable),
+        var(var),
         expr(expr)
     {}
 
     bool operator==(definition const& rhs) const {
-        return variable == rhs.variable && expr == rhs.expr;
+        return var == rhs.var && expr == rhs.expr;
     }
 
-    identifier variable;
+    variable var;
     expression expr;
 
 };  //  struct definition
@@ -244,7 +244,7 @@ struct not_is_variant<rose::ast::expression> : mpl::false_ {};
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast::quotation,
-    (rose::ast::datum, value)
+    (rose::ast::datum, quoted)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
@@ -262,13 +262,13 @@ BOOST_FUSION_ADAPT_STRUCT(
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast::assignment,
-    (std::string, variable)
+    (rose::ast::variable, var)
     (rose::ast::expression, expr)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast::definition,
-    (rose::ast::identifier, variable)
+    (rose::ast::variable, var)
     (rose::ast::expression, expr)
 )
 
