@@ -40,7 +40,7 @@ expression<Iterator, Skipper>::expression() :
         ;
 
     variable
-       %=   token.identifier
+       %=   token.variable
         ;
 
     literal

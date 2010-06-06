@@ -13,8 +13,8 @@ namespace ast {
 typedef
     std::vector<
         boost::variant<
-            ast::expression,
-            ast::definition
+            ast::definition,
+            ast::expression
         >
     >
     program;

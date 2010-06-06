@@ -27,7 +27,7 @@ struct expression :
     parser::datum<Iterator, Skipper> datum;
 
     qi::rule<Iterator, ast::expression(),        Skipper> expression_;
-    qi::rule<Iterator, ast::identifier(),        Skipper> variable;
+    qi::rule<Iterator, ast::variable(),          Skipper> variable;
     qi::rule<Iterator, ast::expression(),        Skipper> literal;
     qi::rule<Iterator, ast::lambda_expression(), Skipper> lambda_expression;
     qi::rule<Iterator, ast::procedure_call(),    Skipper> procedure_call;

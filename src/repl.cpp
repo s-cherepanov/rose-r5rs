@@ -5,6 +5,7 @@
 #include <boost/format.hpp>
 #include <boost/spirit/include/qi.hpp>
 
+#include <algorithm>
 #include <iostream>
 
 namespace rose {
@@ -12,6 +13,35 @@ namespace rose {
 namespace qi = boost::spirit::qi;
 
 const std::string default_prompt("rose> ");
+
+struct interpreter : boost::static_visitor<> {
+    void operator()(ast::expression& e) const {
+        std::cout
+            <<  boost::format( "expression: %1%" )
+                % "*expression-placeholder*"
+            << std::endl;
+    }
+
+    void operator()(ast::definition& d) const {
+        std::cout
+            <<  boost::format("definition: var={%1%}, expr={%2%}")
+                % d.var
+                % "*expression-placeholder*"
+            <<  std::endl;
+    }
+
+};  //  struct interpreter
+
+typedef
+    boost::variant<
+        ast::definition,
+        ast::expression
+    >
+    statement;
+
+void interpret(statement& p) {
+    boost::apply_visitor(interpreter(), p);
+}
 
 void repl() {
     typedef
@@ -37,14 +67,18 @@ void repl() {
 
         r5rs_grammar grammar;
         skipper_type skipper;
+        ast::program program;
 
-        bool match = qi::phrase_parse(first,last, grammar, skipper);
+        bool match = qi::phrase_parse(first,last, grammar, skipper, program);
         bool full_match = match && first == last;
 
         source.clear();
 
         if (!full_match) {
             std::cerr << "error" << std::endl;
+        }
+        else {
+            std::for_each(program.begin(), program.end(), &interpret);
         }
     }
 }

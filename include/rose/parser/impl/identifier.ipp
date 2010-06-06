@@ -55,13 +55,6 @@ identifier<Iterator>::identifier() :
     special_initial    .name("special_initial");
     special_subsequent .name("special_subsequent");
     subsequent         .name("subsequent");
-
-    BOOST_SPIRIT_DEBUG_NODE(start);
-    BOOST_SPIRIT_DEBUG_NODE(initial);
-    BOOST_SPIRIT_DEBUG_NODE(peculiar_identifier);
-    BOOST_SPIRIT_DEBUG_NODE(special_initial);
-    BOOST_SPIRIT_DEBUG_NODE(special_subsequent);
-    BOOST_SPIRIT_DEBUG_NODE(subsequent);
 }
 
 }   //  namespace parser

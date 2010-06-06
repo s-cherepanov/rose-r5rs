@@ -64,7 +64,22 @@ token<Iterator, Skipper>::token() :
         |   lit("\\t")  >> attr('\t')
         ;
 
+    expression_keyword
+        =   lit("quote") | "lambda" | "if" | "set!" | "begin" | "cond" |
+            "and" | "or" | "case" | "let" | "let*" | "letrec" | "do" |
+            "delay" | "quasiquote"
+        ;
+
+    syntactic_keyword
+        =   expression_keyword | "else " | "=>" | "define"
+        ;
+
+    variable_
+        =   identifier_ - syntactic_keyword
+        ;
+
     identifier   = lexeme[identifier_ >> &delimiter];
+    variable     = lexeme[variable_   >> &delimiter];
     number       = lexeme[number_     >> &delimiter];
     character    = lexeme[character_  >> &delimiter];
     dot          = lexeme['.'         >> &delimiter];
@@ -78,28 +93,20 @@ token<Iterator, Skipper>::token() :
     comma        = lexeme[','];
     comma_at     = lexeme[",@"];
 
-    identifier  .name("identifier");
+    back_quote  .name("back_quote");
     boolean     .name("boolean");
-    number      .name("number");
     character   .name("character");
-    string      .name("string");
+    comma_at    .name("comma_at");
+    comma       .name("comma");
+    dot         .name("dot");
+    identifier  .name("identifier");
     lparen      .name("lparen");
+    number      .name("number");
     rparen      .name("rparen");
     sharp_lparen.name("sharp_lparen");
     single_quote.name("single_quote");
-    back_quote  .name("back_quote");
-    comma       .name("comma");
-    comma_at    .name("comma_at");
-    dot         .name("dot");
-
-    BOOST_SPIRIT_DEBUG_NODE(identifier);
-    BOOST_SPIRIT_DEBUG_NODE(boolean);
-    BOOST_SPIRIT_DEBUG_NODE(number);
-    BOOST_SPIRIT_DEBUG_NODE(character);
-    BOOST_SPIRIT_DEBUG_NODE(string);
-    BOOST_SPIRIT_DEBUG_NODE(lparen);
-    BOOST_SPIRIT_DEBUG_NODE(rparen);
-    BOOST_SPIRIT_DEBUG_NODE(sharp_lparen);
+    string      .name("string");
+    variable    .name("variable");
 }
 
 }   //  namespace parser

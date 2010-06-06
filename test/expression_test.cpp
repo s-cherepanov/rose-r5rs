@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(variable_test) {
 }
 
 BOOST_AUTO_TEST_CASE(variable_ast_test) {
-    ast::expression e(ast::identifier("abc"));
+    ast::expression e(ast::variable("abc"));
     BOOST_CHECK(test_expression_ast("abc", e));
 }
 
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE(procedure_call_test) {
 }
 
 BOOST_AUTO_TEST_CASE(procedure_call_ast_test) {
-    ast::expression op(ast::identifier("+"));
+    ast::expression op(ast::variable("+"));
     std::vector<ast::expression> args;
 
     args.push_back(ast::expression(1));
