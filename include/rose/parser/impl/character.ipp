@@ -1,5 +1,5 @@
-#ifndef __ROSE_IMPL_CHARACTER_IPP__
-#define __ROSE_IMPL_CHARACTER_IPP__
+#ifndef __ROSE_PARSER_IMPL_CHARACTER_IPP__
+#define __ROSE_PARSER_IMPL_CHARACTER_IPP__
 
 #include "rose/parser/character.hpp"
 
@@ -46,6 +46,6 @@ character<Iterator>::character() :
 }   //  namespace parser
 }   //  namespace rose
 
-#endif  //  __ROSE_IMPL_CHARACTER_IPP__
+#endif  //  __ROSE_PARSER_IMPL_CHARACTER_IPP__
 
 // vim:ft=cpp et

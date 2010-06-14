@@ -1,4 +1,6 @@
+#include "rose/parser/impl/boolean.ipp"
 #include "rose/parser/impl/character.ipp"
+#include "rose/parser/impl/string.ipp"
 #include "rose/parser/impl/token.ipp"
 #include "rose/parser/intertoken_space.hpp"
 
@@ -14,8 +16,10 @@ void instantiate_token() {
         rose::parser::intertoken_space<iterator_type>
         skipper_type;
 
-    rose::parser::token<iterator_type, skipper_type>();
+    rose::parser::boolean<iterator_type>();
     rose::parser::character<iterator_type>();
+    rose::parser::string<iterator_type>();
+    rose::parser::token<iterator_type, skipper_type>();
 }
 
 }   //  namespace parser

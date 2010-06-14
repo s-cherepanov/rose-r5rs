@@ -1,5 +1,5 @@
-#ifndef __ROSE_CHARACTER_HPP__
-#define __ROSE_CHARACTER_HPP__
+#ifndef __ROSE_PARSER_CHARACTER_HPP__
+#define __ROSE_PARSER_CHARACTER_HPP__
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
@@ -10,9 +10,7 @@ namespace parser {
 namespace qi = boost::spirit::qi;
 
 template<typename Iterator>
-struct character :
-    qi::grammar<Iterator, char()>
-{
+struct character : qi::grammar<Iterator, char()> {
     character();
 
     qi::rule<Iterator, char()> start;
@@ -22,4 +20,4 @@ struct character :
 }   //  namespace parser
 }   //  namespace rose
 
-#endif  //  __ROSE_CHARACTER_HPP__
+#endif  //  __ROSE_PARSER_CHARACTER_HPP__
