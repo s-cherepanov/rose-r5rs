@@ -2,9 +2,11 @@
 #define __ROSE_TOKEN_HPP__
 
 #include "rose/ast/datum.hpp"
+#include "rose/parser/boolean.hpp"
 #include "rose/parser/character.hpp"
 #include "rose/parser/identifier.hpp"
 #include "rose/parser/number.hpp"
+#include "rose/parser/string.hpp"
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
@@ -25,11 +27,11 @@ struct token :
     qi::rule<Iterator> delimiter;
 
     qi::rule<Iterator, ast::identifier(), Skipper> identifier;
-    qi::rule<Iterator, ast::variable(),   Skipper> variable;
-    qi::rule<Iterator, int(),             Skipper> number;
-    qi::rule<Iterator, char(),            Skipper> character;
     qi::rule<Iterator, ast::string(),     Skipper> string;
+    qi::rule<Iterator, ast::variable(),   Skipper> variable;
     qi::rule<Iterator, bool(),            Skipper> boolean;
+    qi::rule<Iterator, char(),            Skipper> character;
+    qi::rule<Iterator, int(),             Skipper> number;
 
     qi::rule<Iterator, Skipper> lparen;
     qi::rule<Iterator, Skipper> rparen;
@@ -41,13 +43,12 @@ struct token :
     qi::rule<Iterator, Skipper> dot;
 
 private:
+    parser::boolean<Iterator>    boolean_;
+    parser::character<Iterator>  character_;
     parser::identifier<Iterator> identifier_;
     parser::number<Iterator>     number_;
-    parser::character<Iterator>  character_;
+    parser::string<Iterator>     string_;
 
-    qi::rule<Iterator, bool()>          boolean_;
-    qi::rule<Iterator, ast::string()>   string_;
-    qi::rule<Iterator, char()>          string_element;
     qi::rule<Iterator, ast::variable()> variable_;
 
     qi::rule<Iterator> expression_keyword;

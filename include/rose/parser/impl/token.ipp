@@ -8,8 +8,8 @@
 namespace rose {
 namespace parser {
 
-namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
+namespace qi = boost::spirit::qi;
 
 template<typename Iterator, typename Skipper>
 token<Iterator, Skipper>::token() :
@@ -44,30 +44,10 @@ token<Iterator, Skipper>::token() :
         =   space | char_("()\";") | eoi
         ;
 
-    boolean_
-        =   no_case
-            [
-                "#t" >> attr(true)
-            |   "#f" >> attr(false)
-            ]
-        ;
-
-    string_
-        =   '"' >> *(string_element - '"') >> '"'
-        ;
-
-    string_element
-        =   ((graph | space) - char_("\"\\"))
-        |   lit("\\\"") >> attr('"')
-        |   lit("\\\\") >> attr('\\')
-        |   lit("\\n")  >> attr('\n')
-        |   lit("\\t")  >> attr('\t')
-        ;
-
     expression_keyword
-        =   lit("quote") | "lambda" | "if" | "set!" | "begin" | "cond" |
-            "and" | "or" | "case" | "let" | "let*" | "letrec" | "do" |
-            "delay" | "quasiquote"
+        =   lit("quote") | "lambda" | "if" | "set!" | "begin" | "cond"
+        |   "and" | "or" | "case" | "let" | "let*" | "letrec" | "do"
+        |   "delay" | "quasiquote"
         ;
 
     syntactic_keyword
@@ -75,7 +55,7 @@ token<Iterator, Skipper>::token() :
         ;
 
     variable_
-        =   identifier_ - syntactic_keyword
+        =   identifier_ - no_case[syntactic_keyword]
         ;
 
     identifier   = lexeme[identifier_ >> &delimiter];
