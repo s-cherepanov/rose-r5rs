@@ -3,45 +3,16 @@
 
 #include "rose/ast/datum.hpp"
 
-#include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/shared_ptr.hpp>
 
 namespace rose {
 namespace ast {
 
-struct pair {
-    typedef datum value_type;
+typedef boost::shared_ptr<datum> datum_ptr;
 
-    pair() :
-        head(), tail()
-    {}
+typedef std::pair<datum_ptr, datum_ptr> pair;
 
-    pair(pair const& that) :
-        head(that.head),
-        tail(that.tail)
-    {}
-
-    pair(datum const& head) :
-        head(new datum(head)),
-        tail()
-    {}
-
-    pair(datum const& head, datum const& tail) :
-        head(new datum(head)),
-        tail(new datum(tail))
-    {}
-
-    boost::shared_ptr<datum> head;
-
-    boost::shared_ptr<datum> tail;
-
-    bool operator==(pair const& rhs) const {
-        return *head == *(rhs.head) && *tail == *(rhs.tail);
-    }
-
-    // TODO: Provide push_back/insert/end
-
-};  //  struct pair
+typedef boost::shared_ptr<pair> pair_ptr;
 
 }   //  namespace ast
 }   //  namespace rose

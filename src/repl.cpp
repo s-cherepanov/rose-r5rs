@@ -1,3 +1,4 @@
+#include "rose/generator/token.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/r5rs_grammar.hpp"
 #include "rose/repl.hpp"
@@ -7,6 +8,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <stdexcept>
 
 namespace rose {
 
@@ -14,27 +16,121 @@ namespace qi = boost::spirit::qi;
 
 const std::string default_prompt("rose> ");
 
-struct evaluator : boost::static_visitor<> {
-    void operator()(ast::expression& e) const {
-        std::cout
-            <<  boost::format( "expression: %1%" )
-                % "*expression-placeholder*"
-            << std::endl;
+struct eval_datum : boost::static_visitor<std::string> {
+    template<typename Type>
+    std::string operator()(Type&) const {
+        return "{not-implemented}";
     }
 
-    void operator()(ast::definition& d) const {
-        std::cout
-            <<  boost::format("definition: var={%1%}, expr={%2%}")
-                % d.var
-                % "*expression-placeholder*"
-            <<  std::endl;
+    std::string operator()(bool& v) const {
+        return v ? "#t" : "#f";
+    }
+
+    std::string operator()(int& v) const {
+        std::ostringstream oss;
+        oss << v;
+        return oss.str();
+    }
+
+    std::string operator()(char& v) const {
+        namespace karma = boost::spirit::karma;
+
+        typedef
+            std::back_insert_iterator<std::string>
+            iterator_type;
+
+        std::string output;
+        iterator_type sink(output);
+        rose::generator::character<iterator_type> g;
+        karma::generate(sink, g, v);
+
+        return output;
+    }
+
+    std::string operator()(ast::string& v) const {
+        namespace karma = boost::spirit::karma;
+
+        typedef
+            std::back_insert_iterator<std::string>
+            iterator_type;
+
+        std::string output;
+        iterator_type sink(output);
+        rose::generator::string<iterator_type> g;
+        karma::generate(sink, g, v);
+
+        return output;
+    }
+
+    template<typename Tag>
+    std::string operator()(ast::tagged_string<Tag>& v) const {
+        return v;
+    }
+
+};  //  struct eval_datum
+
+struct eval_expression : boost::static_visitor<std::string> {
+    template<typename Type>
+    std::string operator()(Type&) const {
+        return "{not-implemented}";
+    }
+
+    std::string operator()(ast::datum& v) const {
+        return boost::apply_visitor(eval_datum(), v);
+    }
+
+    std::string operator()(ast::quotation& v) const {
+        std::ostringstream oss;
+        oss << boost::format("(quote %1%)")
+               % boost::apply_visitor(eval_datum(), v.quoted);
+        return oss.str();
+    }
+
+    std::string operator()(ast::conditional& v) const {
+        std::ostringstream oss;
+
+        if (v.alternate) {
+            oss << boost::format("(if %1% %2% %3%)")
+                   % boost::apply_visitor(eval_expression(), v.test.expr)
+                   % boost::apply_visitor(eval_expression(), v.consequent.expr)
+                   % boost::apply_visitor(eval_expression(), v.alternate->expr);
+        }
+        else {
+            oss << boost::format("(if %1% %2%)")
+                   % boost::apply_visitor(eval_expression(), v.test.expr)
+                   % boost::apply_visitor(eval_expression(), v.consequent.expr);
+        }
+
+        return oss.str();
+    }
+
+    std::string operator()(ast::assignment& v) const {
+        std::ostringstream oss;
+        oss << boost::format("(set! %1% %2%)")
+               % v.var
+               % boost::apply_visitor(eval_expression(), v.expr.expr);
+        return oss.str();
+    }
+
+};  //  struct eval_expression
+
+struct evaluator : boost::static_visitor<std::string> {
+    std::string operator()(ast::expression& v) const {
+        return boost::apply_visitor(eval_expression(), v.expr);
+    }
+
+    std::string operator()(ast::definition& v) const {
+        std::ostringstream oss;
+        oss << boost::format("(define %1% %2%)")
+               % v.var
+               % boost::apply_visitor(eval_expression(), v.expr.expr);
+        return oss.str();
     }
 
 };  //  struct evaluator
 
-template<typename T>
-void evalutate(T& t) {
-    boost::apply_visitor(evaluator(), t);
+void evaluate(ast::command_or_definition& v) {
+    std::cout << boost::apply_visitor(evaluator(), v) << std::endl;
 }
 
 void repl() {
