@@ -10,8 +10,9 @@ void instantiate_character() {
         std::back_insert_iterator<std::string>
         iterator_type;
 
-    character<iterator_type> c;
-    string<iterator_type> s;
+    boolean<iterator_type>();
+    character<iterator_type>();
+    string<iterator_type>();
 }
 
 }   //  namespace generator
