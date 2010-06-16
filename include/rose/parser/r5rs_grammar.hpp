@@ -13,7 +13,7 @@ namespace ast {
 
 typedef
     boost::variant<ast::definition, ast::expression>
-    command_or_definition
+    command_or_definition;
 
 typedef
     std::vector<command_or_definition>

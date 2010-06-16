@@ -45,8 +45,6 @@ struct string :
     
 };  //  struct string
 
-};  //  struct datum
-
 }   //  namespace generator
 }   //  namespace rose
 

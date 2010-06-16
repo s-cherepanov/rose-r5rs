@@ -45,7 +45,7 @@ token<Iterator, Skipper>::token() :
         ;
 
     expression_keyword
-        =   nocase[
+        =   no_case[
                 lit("quote")
             |   "lambda"
             |   "if"
@@ -65,7 +65,7 @@ token<Iterator, Skipper>::token() :
         ;
 
     syntactic_keyword
-        =   no_case["else " | "=>" | "define"]
+        =   no_case[lit("else") | "=>" | "define"]
         |   expression_keyword
         ;
 
