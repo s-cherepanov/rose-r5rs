@@ -14,7 +14,7 @@ namespace qi = boost::spirit::qi;
 
 const std::string default_prompt("rose> ");
 
-struct interpreter : boost::static_visitor<> {
+struct evaluator : boost::static_visitor<> {
     void operator()(ast::expression& e) const {
         std::cout
             <<  boost::format( "expression: %1%" )
@@ -30,17 +30,11 @@ struct interpreter : boost::static_visitor<> {
             <<  std::endl;
     }
 
-};  //  struct interpreter
+};  //  struct evaluator
 
-typedef
-    boost::variant<
-        ast::definition,
-        ast::expression
-    >
-    statement;
-
-void interpret(statement& p) {
-    boost::apply_visitor(interpreter(), p);
+template<typename T>
+void evalutate(T& t) {
+    boost::apply_visitor(evaluator(), t);
 }
 
 void repl() {
@@ -78,7 +72,7 @@ void repl() {
             std::cerr << "error" << std::endl;
         }
         else {
-            std::for_each(program.begin(), program.end(), &interpret);
+            std::for_each(program.begin(), program.end(), &evaluate);
         }
     }
 }

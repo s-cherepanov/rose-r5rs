@@ -45,17 +45,32 @@ token<Iterator, Skipper>::token() :
         ;
 
     expression_keyword
-        =   lit("quote") | "lambda" | "if" | "set!" | "begin" | "cond"
-        |   "and" | "or" | "case" | "let" | "let*" | "letrec" | "do"
-        |   "delay" | "quasiquote"
+        =   nocase[
+                lit("quote")
+            |   "lambda"
+            |   "if"
+            |   "set!"
+            |   "begin"
+            |   "cond"
+            |   "and"
+            |   "or"
+            |   "case"
+            |   "let"
+            |   "let*"
+            |   "letrec"
+            |   "do"
+            |   "delay"
+            |   "quasiquote"
+            ]
         ;
 
     syntactic_keyword
-        =   expression_keyword | "else " | "=>" | "define"
+        =   no_case["else " | "=>" | "define"]
+        |   expression_keyword
         ;
 
     variable_
-        =   identifier_ - no_case[syntactic_keyword]
+        =   identifier_ - syntactic_keyword
         ;
 
     identifier   = lexeme[identifier_ >> &delimiter];
@@ -72,21 +87,6 @@ token<Iterator, Skipper>::token() :
     back_quote   = lexeme['`'];
     comma        = lexeme[','];
     comma_at     = lexeme[",@"];
-
-    back_quote  .name("back_quote");
-    boolean     .name("boolean");
-    character   .name("character");
-    comma_at    .name("comma_at");
-    comma       .name("comma");
-    dot         .name("dot");
-    identifier  .name("identifier");
-    lparen      .name("lparen");
-    number      .name("number");
-    rparen      .name("rparen");
-    sharp_lparen.name("sharp_lparen");
-    single_quote.name("single_quote");
-    string      .name("string");
-    variable    .name("variable");
 }
 
 }   //  namespace parser
