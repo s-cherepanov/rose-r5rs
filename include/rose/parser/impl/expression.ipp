@@ -20,7 +20,7 @@ template<
     typename Skipper
 >
 expression<Iterator, Skipper>::expression() :
-    expression::base_type(expression_)
+    expression::base_type(start)
 {
     using qi::char_;
     using qi::no_case;
@@ -30,13 +30,17 @@ expression<Iterator, Skipper>::expression() :
     using phoenix::at_c;
     using phoenix::push_back;
 
-    expression_
+    start
        %=   variable
         |   literal
         |   lambda_expression
         |   procedure_call
         |   conditional
         |   assignment
+        ;
+
+    expression_
+        =   start.alias()
         ;
 
     variable
@@ -99,14 +103,9 @@ expression<Iterator, Skipper>::expression() :
     definition
         =   token.lparen
             >> no_case["define"]
-            >> variable                     [at_c<0>(_val) = _1]
+            >> token.variable               [at_c<0>(_val) = _1]
             >> expression_                  [at_c<1>(_val) = _1]
             >> token.rparen
-        ;
-
-    def_formals
-        =   *variable
-            >>  -(token.dot >> variable)
         ;
 
     sequence

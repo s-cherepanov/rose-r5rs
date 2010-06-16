@@ -26,7 +26,6 @@ struct expression :
     parser::token<Iterator, Skipper> token;
     parser::datum<Iterator, Skipper> datum;
 
-    qi::rule<Iterator, ast::expression(),        Skipper> expression_;
     qi::rule<Iterator, ast::variable(),          Skipper> variable;
     qi::rule<Iterator, ast::expression(),        Skipper> literal;
     qi::rule<Iterator, ast::lambda_expression(), Skipper> lambda_expression;
@@ -44,6 +43,8 @@ private:
         std::vector<ast::expression>
         sequece_attr_type;
 
+    qi::rule<Iterator, ast::expression(),   Skipper> start;
+    qi::rule<Iterator, ast::expression(),   Skipper> expression_;
     qi::rule<Iterator, formals_attr_type(), Skipper> formals;
     qi::rule<Iterator, sequece_attr_type(), Skipper> sequence;
     qi::rule<Iterator, ast::body(),         Skipper> body;
@@ -51,8 +52,6 @@ private:
     qi::rule<Iterator, ast::quotation(),    Skipper> quotation;
     qi::rule<Iterator, ast::expression(),   Skipper> operator_;
     qi::rule<Iterator, ast::expression(),   Skipper> operand;
-    qi::rule<Iterator,                      Skipper> procedure_def;
-    qi::rule<Iterator,                      Skipper> def_formals;
     qi::rule<Iterator, ast::expression(),   Skipper> command;
     qi::rule<Iterator, ast::expression(),   Skipper> test;
     qi::rule<Iterator, ast::expression(),   Skipper> consequent;

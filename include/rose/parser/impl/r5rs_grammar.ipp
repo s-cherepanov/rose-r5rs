@@ -16,27 +16,19 @@ template<
     typename Skipper
 >
 r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
-    r5rs_grammar::base_type(program)
+    r5rs_grammar::base_type(start)
 {
     using spirit::lexeme;
     using spirit::raw;
     using qi::char_;
 
-    program
+    start
         =   +(command | definition)
-        ;
-
-    definition
-        =   expression.definition
         ;
 
     command
         =   expression
         ;
-
-    program   .name("program");
-    definition.name("definition");
-    command   .name("command");
 }
 
 }   //  namespace rose
