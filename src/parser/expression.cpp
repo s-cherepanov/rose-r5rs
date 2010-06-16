@@ -13,7 +13,7 @@ void instantiate_expression() {
         intertoken_space<iterator_type>
         skipper_type;
 
-    expression<iterator_type, skipper_type> e;
+    expression<iterator_type, skipper_type>();
 }
 
 }   //  namespace parser

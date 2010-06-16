@@ -13,7 +13,7 @@ void instantiate_r5rs_grammar() {
         intertoken_space<iterator_type>
         skipper_type;
 
-    r5rs_grammar<iterator_type, skipper_type> grammar;
+    r5rs_grammar<iterator_type, skipper_type>();
 }
 
 }   //  namespace parser

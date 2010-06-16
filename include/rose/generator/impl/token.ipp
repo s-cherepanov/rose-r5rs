@@ -10,6 +10,20 @@ namespace ascii = boost::spirit::ascii;
 namespace karma = boost::spirit::karma;
 
 template<typename OutputIterator>
+boolean<OutputIterator>::boolean() :
+    boolean::base_type(boolean_)
+{
+    boolean_
+        =   boolean_sym
+        ;
+
+    boolean_sym.add
+        (true,  "#t")
+        (false, "#f")
+        ;
+}
+
+template<typename OutputIterator>
 character<OutputIterator>::character() :
     character::base_type(character_)
 {

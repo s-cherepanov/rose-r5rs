@@ -13,6 +13,17 @@ namespace karma = boost::spirit::karma;
 namespace ast = rose::ast;
 
 template<typename OutputIterator>
+struct boolean :
+    karma::grammar<OutputIterator, bool()>
+{
+    boolean();
+
+    karma::rule<OutputIterator, bool()> boolean_;
+    karma::symbols<bool, char const*> boolean_sym;
+    
+};  //  struct boolean
+
+template<typename OutputIterator>
 struct character :
     karma::grammar<OutputIterator, char()>
 {
