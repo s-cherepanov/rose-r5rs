@@ -1,7 +1,8 @@
 #ifndef __ROSE_R5RS_GRAMMAR_HPP__
 #define __ROSE_R5RS_GRAMMAR_HPP__
 
-#include "rose/parser/datum.hpp"
+#include "rose/ast/expression.hpp"
+#include "rose/parser/definition.hpp"
 #include "rose/parser/expression.hpp"
 
 #include <boost/config/warning_disable.hpp>
@@ -34,10 +35,11 @@ struct r5rs_grammar :
 {
     r5rs_grammar();
 
+private:
+    parser::definition<Iterator, Skipper> definition;
     parser::expression<Iterator, Skipper> expression;
 
-    qi::rule<Iterator, ast::program(),    Skipper> program;
-    qi::rule<Iterator, ast::definition(), Skipper> definition;
+    qi::rule<Iterator, ast::program(),    Skipper> start;
     qi::rule<Iterator, ast::expression(), Skipper> command;
 
 };  //  struct r5rs_grammar
