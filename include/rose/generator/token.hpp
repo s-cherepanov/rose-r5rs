@@ -18,7 +18,7 @@ struct boolean :
 {
     boolean();
 
-    karma::rule<OutputIterator, bool()> boolean_;
+    karma::rule<OutputIterator, bool()> start;
     karma::symbols<bool, char const*> boolean_sym;
     
 };  //  struct boolean
@@ -29,7 +29,7 @@ struct character :
 {
     character();
 
-    karma::rule<OutputIterator, char()> character_;
+    karma::rule<OutputIterator, char()> start;
     karma::rule<OutputIterator, char()> character_name;
 
 };  //  struct character
@@ -40,10 +40,12 @@ struct string :
 {
     string();
 
-    karma::rule<OutputIterator, ast::string()> string_;
+    karma::rule<OutputIterator, ast::string()> start;
     karma::rule<OutputIterator, char()>        string_element;
     
 };  //  struct string
+
+};  //  struct datum
 
 }   //  namespace generator
 }   //  namespace rose

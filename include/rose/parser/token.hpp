@@ -24,7 +24,7 @@ struct token :
     token();
 
     qi::rule<Iterator, Skipper> start;
-    qi::rule<Iterator> delimiter;
+    qi::rule<Iterator>          delimiter;
 
     qi::rule<Iterator, ast::identifier(), Skipper> identifier;
     qi::rule<Iterator, ast::string(),     Skipper> string;

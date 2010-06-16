@@ -11,9 +11,9 @@ namespace karma = boost::spirit::karma;
 
 template<typename OutputIterator>
 boolean<OutputIterator>::boolean() :
-    boolean::base_type(boolean_)
+    boolean::base_type(start)
 {
-    boolean_
+    start
         =   boolean_sym
         ;
 
@@ -25,12 +25,12 @@ boolean<OutputIterator>::boolean() :
 
 template<typename OutputIterator>
 character<OutputIterator>::character() :
-    character::base_type(character_)
+    character::base_type(start)
 {
     using karma::char_;
     using karma::graph;
 
-    character_
+    start
         =   "#\\" << (character_name | graph)
         ;
 
@@ -43,13 +43,13 @@ character<OutputIterator>::character() :
 
 template<typename OutputIterator>
 string<OutputIterator>::string() :
-    string::base_type(string_)
+    string::base_type(start)
 {
     using ascii::space;
     using karma::char_;
     using karma::graph;
 
-    string_
+    start
         =   '"' << *string_element << '"'
         ;
 

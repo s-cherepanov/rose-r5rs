@@ -12,12 +12,11 @@ namespace rose {
 namespace ast {
 
 typedef
-    std::vector<
-        boost::variant<
-            ast::definition,
-            ast::expression
-        >
-    >
+    boost::variant<ast::definition, ast::expression>
+    command_or_definition
+
+typedef
+    std::vector<command_or_definition>
     program;
 
 }   //  namespace ast
