@@ -1,4 +1,4 @@
-#include "rose/ast/expression.hpp"
+#include "rose/ast/program.hpp"
 
 #include <boost/test/unit_test.hpp>
 

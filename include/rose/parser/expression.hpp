@@ -1,9 +1,9 @@
 #ifndef __ROSE_EXPRESSION_HPP__
 #define __ROSE_EXPRESSION_HPP__
 
-#include "rose/ast/expression.hpp"
-#include "rose/parser/token.hpp"
+#include "rose/ast/program.hpp"
 #include "rose/parser/datum.hpp"
+#include "rose/parser/token.hpp"
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>

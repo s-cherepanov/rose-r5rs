@@ -1,6 +1,7 @@
 #ifndef __ROSE_AST_DATUM_HPP__
 #define __ROSE_AST_DATUM_HPP__
 
+#include "rose/ast/pair.hpp"
 #include "rose/ast/tagged_string.hpp"
 
 #include <boost/fusion/include/adapt_struct.hpp>
@@ -38,13 +39,13 @@ typedef
     datum;
 
 struct list {
-    typedef std::list<datum> impl_type;
+    typedef std::vector<datum> container_type;
 
-    typedef impl_type::iterator iterator;
+    typedef container_type::iterator iterator;
 
-    typedef impl_type::const_iterator const_iterator;
+    typedef container_type::const_iterator const_iterator;
 
-    impl_type proper;
+    container_type proper;
 
     boost::optional<datum> improper;
 

@@ -1,5 +1,4 @@
 #include "rose/repl.hpp"
-#include "rose/ast/expression.hpp"
 
 #include <iostream>
 #include <stdexcept>

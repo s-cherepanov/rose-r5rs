@@ -219,6 +219,14 @@ struct lambda_expression {
 
 };  //  struct lambda_expression
 
+typedef
+    boost::variant<ast::definition, ast::expression>
+    command_or_definition;
+
+typedef
+    std::vector<command_or_definition>
+    program;
+
 }   //  namespace ast
 }   //  namespace rose
 
