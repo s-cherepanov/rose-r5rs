@@ -1,7 +1,7 @@
 #ifndef __ROSE_PARSER_DEFINITION_HPP__
 #define __ROSE_PARSER_DEFINITION_HPP__
 
-#include "rose/ast/expression.hpp"
+#include "rose/ast/program.hpp"
 #include "rose/parser/token.hpp"
 #include "rose/parser/expression.hpp"
 

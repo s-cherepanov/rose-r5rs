@@ -1,7 +1,7 @@
 #ifndef __ROSE_R5RS_GRAMMAR_HPP__
 #define __ROSE_R5RS_GRAMMAR_HPP__
 
-#include "rose/ast/expression.hpp"
+#include "rose/ast/program.hpp"
 #include "rose/parser/definition.hpp"
 #include "rose/parser/expression.hpp"
 
@@ -9,18 +9,6 @@
 #include <boost/spirit/include/qi.hpp>
 
 namespace rose {
-namespace ast {
-
-typedef
-    boost::variant<ast::definition, ast::expression>
-    command_or_definition;
-
-typedef
-    std::vector<command_or_definition>
-    program;
-
-}   //  namespace ast
-
 namespace parser {
 
 namespace qi = boost::spirit::qi;
