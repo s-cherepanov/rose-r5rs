@@ -1,7 +1,6 @@
 #ifndef __ROSE_AST_DATUM_HPP__
 #define __ROSE_AST_DATUM_HPP__
 
-#include "rose/ast/pair.hpp"
 #include "rose/ast/tagged_string.hpp"
 
 #include <boost/fusion/include/adapt_struct.hpp>
@@ -92,7 +91,7 @@ struct not_is_variant<rose::ast::vector> : mpl::false_ {};
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast::list,
-    (rose::ast::list::impl_type, proper)
+    (rose::ast::list::container_type, proper)
     (boost::optional<rose::ast::datum>, improper)
 )
 
