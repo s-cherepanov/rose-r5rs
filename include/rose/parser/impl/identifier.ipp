@@ -48,13 +48,6 @@ identifier<Iterator>::identifier() :
     peculiar_identifier
         =   char_("+-") | "..."
         ;
-
-    start              .name("identifier");
-    initial            .name("initial");
-    peculiar_identifier.name("peculiar_identifier");
-    special_initial    .name("special_initial");
-    special_subsequent .name("special_subsequent");
-    subsequent         .name("subsequent");
 }
 
 }   //  namespace parser
