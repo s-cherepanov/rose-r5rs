@@ -19,16 +19,16 @@ const std::string default_prompt("rose> ");
 struct eval_datum : boost::static_visitor<std::string> {
     template<typename Type>
     std::string operator()(Type&) const {
-        return "{not-implemented}";
+        return "{D}";
     }
 
     std::string operator()(bool& v) const {
-        return v ? "#t" : "#f";
+        return v ? "{b}#t" : "{b}#f";
     }
 
     std::string operator()(int& v) const {
         std::ostringstream oss;
-        oss << v;
+        oss << "{n}" << v;
         return oss.str();
     }
 
@@ -44,7 +44,7 @@ struct eval_datum : boost::static_visitor<std::string> {
         rose::generator::character<iterator_type> g;
         karma::generate(sink, g, v);
 
-        return output;
+        return "{c}" + output;
     }
 
     std::string operator()(ast::string& v) const {
@@ -59,12 +59,19 @@ struct eval_datum : boost::static_visitor<std::string> {
         rose::generator::string<iterator_type> g;
         karma::generate(sink, g, v);
 
-        return output;
+        return "{S}" + output;
     }
 
-    template<typename Tag>
-    std::string operator()(ast::tagged_string<Tag>& v) const {
-        return v;
+    std::string operator()(ast::identifier& v) const {
+        return "{i}" + v;
+    }
+
+    std::string operator()(ast::symbol& v) const {
+        return "{s}" + v;
+    }
+
+    std::string operator()(ast::variable& v) const {
+        return "{v}" + v;
     }
 
 };  //  struct eval_datum
@@ -72,7 +79,7 @@ struct eval_datum : boost::static_visitor<std::string> {
 struct eval_expression : boost::static_visitor<std::string> {
     template<typename Type>
     std::string operator()(Type&) const {
-        return "{not-implemented}";
+        return "{E}";
     }
 
     std::string operator()(ast::datum& v) const {
@@ -81,7 +88,7 @@ struct eval_expression : boost::static_visitor<std::string> {
 
     std::string operator()(ast::quotation& v) const {
         std::ostringstream oss;
-        oss << boost::format("(quote %1%)")
+        oss << boost::format("{Q}(quote %1%)")
                % boost::apply_visitor(eval_datum(), v.quoted);
         return oss.str();
     }
@@ -90,13 +97,13 @@ struct eval_expression : boost::static_visitor<std::string> {
         std::ostringstream oss;
 
         if (v.alternate) {
-            oss << boost::format("(if %1% %2% %3%)")
+            oss << boost::format("{C}(if %1% %2% %3%)")
                    % boost::apply_visitor(eval_expression(), v.test.expr)
                    % boost::apply_visitor(eval_expression(), v.consequent.expr)
                    % boost::apply_visitor(eval_expression(), v.alternate->expr);
         }
         else {
-            oss << boost::format("(if %1% %2%)")
+            oss << boost::format("{C}(if %1% %2%)")
                    % boost::apply_visitor(eval_expression(), v.test.expr)
                    % boost::apply_visitor(eval_expression(), v.consequent.expr);
         }
@@ -106,7 +113,7 @@ struct eval_expression : boost::static_visitor<std::string> {
 
     std::string operator()(ast::assignment& v) const {
         std::ostringstream oss;
-        oss << boost::format("(set! %1% %2%)")
+        oss << boost::format("{A}(set! {v}%1% %2%)")
                % v.var
                % boost::apply_visitor(eval_expression(), v.expr.expr);
         return oss.str();
@@ -121,7 +128,7 @@ struct evaluator : boost::static_visitor<std::string> {
 
     std::string operator()(ast::definition& v) const {
         std::ostringstream oss;
-        oss << boost::format("(define %1% %2%)")
+        oss << boost::format("{D}(define {v}%1% %2%)")
                % v.var
                % boost::apply_visitor(eval_expression(), v.expr.expr);
         return oss.str();
