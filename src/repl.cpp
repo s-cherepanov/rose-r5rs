@@ -98,14 +98,14 @@ struct eval_expression : boost::static_visitor<std::string> {
 
         if (v.alternate) {
             oss << boost::format("{C}(if %1% %2% %3%)")
-                   % boost::apply_visitor(eval_expression(), v.test.expr)
-                   % boost::apply_visitor(eval_expression(), v.consequent.expr)
-                   % boost::apply_visitor(eval_expression(), v.alternate->expr);
+                   % boost::apply_visitor(eval_expression(), v.test)
+                   % boost::apply_visitor(eval_expression(), v.consequent)
+                   % boost::apply_visitor(eval_expression(), *v.alternate);
         }
         else {
             oss << boost::format("{C}(if %1% %2%)")
-                   % boost::apply_visitor(eval_expression(), v.test.expr)
-                   % boost::apply_visitor(eval_expression(), v.consequent.expr);
+                   % boost::apply_visitor(eval_expression(), v.test)
+                   % boost::apply_visitor(eval_expression(), v.consequent);
         }
 
         return oss.str();
@@ -115,7 +115,7 @@ struct eval_expression : boost::static_visitor<std::string> {
         std::ostringstream oss;
         oss << boost::format("{A}(set! {v}%1% %2%)")
                % v.var
-               % boost::apply_visitor(eval_expression(), v.expr.expr);
+               % boost::apply_visitor(eval_expression(), v.expr);
         return oss.str();
     }
 
@@ -123,14 +123,14 @@ struct eval_expression : boost::static_visitor<std::string> {
 
 struct evaluator : boost::static_visitor<std::string> {
     std::string operator()(ast::expression& v) const {
-        return boost::apply_visitor(eval_expression(), v.expr);
+        return boost::apply_visitor(eval_expression(), v);
     }
 
     std::string operator()(ast::definition& v) const {
         std::ostringstream oss;
         oss << boost::format("{D}(define {v}%1% %2%)")
                % v.var
-               % boost::apply_visitor(eval_expression(), v.expr.expr);
+               % boost::apply_visitor(eval_expression(), v.expr);
         return oss.str();
     }
 

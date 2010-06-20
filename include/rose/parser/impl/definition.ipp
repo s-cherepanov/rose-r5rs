@@ -26,3 +26,5 @@ definition<Iterator, Skipper>::definition() :
 }   //  namespace rose
 
 #endif  //  __ROSE_PARSER_IMPL_DEFINITION_IPP__
+
+// vim:ft=cpp et
