@@ -19,8 +19,8 @@ struct boolean :
     boolean();
 
     karma::rule<OutputIterator, bool()> start;
-    karma::symbols<bool, char const*> boolean_sym;
-    
+    karma::symbols<bool, char const*>   boolean_sym;
+
 };  //  struct boolean
 
 template<typename OutputIterator>
@@ -42,7 +42,7 @@ struct string :
 
     karma::rule<OutputIterator, ast::string()> start;
     karma::rule<OutputIterator, char()>        string_element;
-    
+
 };  //  struct string
 
 }   //  namespace generator

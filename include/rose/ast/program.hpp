@@ -44,35 +44,17 @@ struct quotation {
 
 };  //  struct quotation
 
-struct expression {
-    typedef
-        boost::variant<
-            nil,
-            datum,
-            quotation,
-            boost::recursive_wrapper<lambda_expression>,
-            boost::recursive_wrapper<procedure_call>,
-            boost::recursive_wrapper<conditional>,
-            boost::recursive_wrapper<assignment>
-        >
-        type;
-
-    expression() :
-        expr(nil())
-    {}
-
-    template<typename Expression>
-    expression(Expression const& e) :
-        expr(e)
-    {}
-
-    bool operator==(expression const& rhs) const {
-        return expr == rhs.expr;
-    }
-
-    type expr;
-
-};  // struct expression
+typedef
+    boost::variant<
+        nil,
+        datum,
+        quotation,
+        boost::recursive_wrapper<lambda_expression>,
+        boost::recursive_wrapper<procedure_call>,
+        boost::recursive_wrapper<conditional>,
+        boost::recursive_wrapper<assignment>
+    >
+    expression;
 
 struct procedure_call {
     procedure_call() :
@@ -229,26 +211,6 @@ typedef
 
 }   //  namespace ast
 }   //  namespace rose
-
-namespace boost {
-
-template<typename T>
-inline T get(rose::ast::expression const& expr) {
-    return boost::get<T>(expr.expr);
-}
-
-namespace spirit {
-namespace traits {
-
-template<typename T>
-struct not_is_variant;
-
-template<>
-struct not_is_variant<rose::ast::expression> : mpl::false_ {};
-
-}   //  namespace traits
-}   //  namespace spirit
-}   //  namespace boost
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast::quotation,

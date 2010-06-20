@@ -34,6 +34,7 @@ r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
 }   //  namespace rose
 
 }   //  namespace parser
+
 #endif  //  __ROSE_IMPL_R5RS_GRAMMAR_HPP__
 
 // vim:ft=cpp et
