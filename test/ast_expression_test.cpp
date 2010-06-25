@@ -1,5 +1,6 @@
 #include "rose/ast/program.hpp"
 
+#include <boost/spirit/include/qi_parse.hpp>
 #include <boost/test/unit_test.hpp>
 
 using namespace rose::ast;

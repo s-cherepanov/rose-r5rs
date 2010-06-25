@@ -1,5 +1,6 @@
 #include "rose/generator/token.hpp"
 
+#include <boost/spirit/include/karma_generate.hpp>
 #include <boost/test/unit_test.hpp>
 
 namespace karma = boost::spirit::karma;

@@ -3,6 +3,8 @@
 
 #include "rose/generator/token.hpp"
 
+#include <boost/spirit/include/karma.hpp>
+
 namespace rose {
 namespace generator {
 

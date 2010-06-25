@@ -4,6 +4,7 @@
 #include "rose/parser/string.hpp"
 
 #include <boost/spirit/include/phoenix_operator.hpp>
+#include <boost/spirit/include/qi.hpp>
 
 namespace rose {
 namespace parser {

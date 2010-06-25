@@ -7,6 +7,7 @@
 #include <boost/spirit/include/phoenix_object.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/phoenix_stl.hpp>
+#include <boost/spirit/include/qi.hpp>
 
 namespace rose {
 namespace parser {
@@ -80,15 +81,6 @@ datum<Iterator, Skipper>::datum() :
             >> *datum_                      [push_back(_val, _1)]
             >> token.rparen
         ;
-
-    datum_        .name("datum");
-    simple_datum  .name("simple_datum");
-    symbol        .name("symbol");
-    compound_datum.name("compound_datum");
-    list          .name("list");
-    abbreviation  .name("abbreviation");
-    abbrev_prefix .name("abbrev_prefix");
-    vector        .name("vector");
 }
 
 }   //  namespace parser

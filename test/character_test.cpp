@@ -1,5 +1,6 @@
 #include "rose/parser/character.hpp"
 
+#include <boost/spirit/include/qi_parse.hpp>
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE( character_suite )

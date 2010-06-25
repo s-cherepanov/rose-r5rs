@@ -3,10 +3,6 @@
 
 #include "rose/parser/definition.hpp"
 
-#include <boost/spirit/include/phoenix_fusion.hpp>
-#include <boost/spirit/include/phoenix_operator.hpp>
-#include <boost/spirit/include/phoenix_stl.hpp>
-
 namespace rose {
 namespace parser {
 

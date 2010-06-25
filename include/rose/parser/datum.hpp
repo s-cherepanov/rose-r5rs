@@ -5,7 +5,8 @@
 #include "rose/parser/token.hpp"
 
 #include <boost/config/warning_disable.hpp>
-#include <boost/spirit/include/qi.hpp>
+#include <boost/spirit/include/qi_grammar.hpp>
+#include <boost/spirit/include/qi_rule.hpp>
 
 namespace rose {
 namespace parser {

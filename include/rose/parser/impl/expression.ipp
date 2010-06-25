@@ -7,6 +7,7 @@
 #include <boost/spirit/include/phoenix_object.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/phoenix_stl.hpp>
+#include <boost/spirit/include/qi.hpp>
 
 namespace rose {
 namespace parser {
@@ -142,26 +143,6 @@ expression<Iterator, Skipper>::expression() :
             >> no_case["set!"] >> variable >> expression_
             >> token.rparen
         ;
-
-    expression_      .name("expression");
-    variable         .name("variable");
-    literal          .name("literal");
-    self_evaluating  .name("self_evaluating");
-    quotation        .name("quotation");
-    procedure_call   .name("procedure_call");
-    operator_        .name("operator");
-    operand          .name("operand");
-    lambda_expression.name("lambda_expression");
-    formals          .name("formals");
-    body             .name("body");
-    definition       .name("definition");
-    sequence         .name("sequence");
-    command          .name("command");
-    conditional      .name("conditional");
-    test             .name("test");
-    consequent       .name("consequent");
-    alternate        .name("alternate");
-    assignment       .name("assignment");
 }
 
 }   //  namespace parser

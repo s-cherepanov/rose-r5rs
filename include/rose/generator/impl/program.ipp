@@ -3,6 +3,8 @@
 
 #include "rose/generator/program.hpp"
 
+#include <boost/spirit/include/karma.hpp>
+
 namespace boost {
 namespace spirit {
 namespace traits {
@@ -36,7 +38,6 @@ template<
 program<OutputIterator, Delimiter>::program() :
     program::base_type(start)
 {
-    using karma::attr_cast;
     using karma::lit;
     using karma::string;
 
@@ -56,7 +57,7 @@ program<OutputIterator, Delimiter>::program() :
         ;
 
     expression
-        =   attr_cast<ast::expression>(string)
+        =   karma::attr_cast(string)
         ;
 }
 

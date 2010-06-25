@@ -4,7 +4,8 @@
 #include "rose/ast/program.hpp"
 
 #include <boost/config/warning_disable.hpp>
-#include <boost/spirit/include/karma.hpp>
+#include <boost/spirit/include/karma_grammar.hpp>
+#include <boost/spirit/include/karma_rule.hpp>
 
 namespace rose {
 namespace generator {

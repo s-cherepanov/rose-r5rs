@@ -1,6 +1,7 @@
 #include "rose/parser/datum.hpp"
 #include "rose/parser/intertoken_space.hpp"
 
+#include <boost/spirit/include/qi_parse.hpp>
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE( datum_suite )
