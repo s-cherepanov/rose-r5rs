@@ -4,10 +4,7 @@
 #include "rose/ast/datum.hpp"
 
 #include <boost/config/warning_disable.hpp>
-#include <boost/spirit/include/karma_char_.hpp>
-#include <boost/spirit/include/karma_grammar.hpp>
-#include <boost/spirit/include/karma_rule.hpp>
-#include <boost/spirit/include/karma_symbols.hpp>
+#include <boost/spirit/include/karma.hpp>
 
 namespace rose {
 namespace generator {

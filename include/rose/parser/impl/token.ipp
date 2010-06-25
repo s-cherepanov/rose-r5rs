@@ -4,7 +4,6 @@
 #include "rose/parser/token.hpp"
 
 #include <boost/spirit/include/phoenix_operator.hpp>
-#include <boost/spirit/include/qi.hpp>
 
 namespace rose {
 namespace parser {
@@ -73,6 +72,21 @@ token<Iterator, Skipper>::token() :
     variable_
         =   identifier_ - syntactic_keyword
         ;
+
+    identifier   = lexeme[identifier_ >> &delimiter];
+    variable     = lexeme[variable_   >> &delimiter];
+    number       = lexeme[number_     >> &delimiter];
+    character    = lexeme[character_  >> &delimiter];
+    dot          = lexeme['.'         >> &delimiter];
+    boolean      = lexeme[boolean_];
+    string       = lexeme[string_];
+    lparen       = lexeme['(' ];
+    rparen       = lexeme[')' ];
+    sharp_lparen = lexeme["#("];
+    single_quote = lexeme['\''];
+    back_quote   = lexeme['`'];
+    comma        = lexeme[','];
+    comma_at     = lexeme[",@"];
 }
 
 }   //  namespace parser

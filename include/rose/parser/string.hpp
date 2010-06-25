@@ -4,8 +4,7 @@
 #include "rose/ast/datum.hpp"
 
 #include <boost/config/warning_disable.hpp>
-#include <boost/spirit/include/qi_grammar.hpp>
-#include <boost/spirit/include/qi_rule.hpp>
+#include <boost/spirit/include/qi.hpp>
 
 namespace rose {
 namespace parser {
