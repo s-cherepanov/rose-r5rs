@@ -167,16 +167,24 @@ struct definition {
 
 };  //  struct definition
 
+typedef
+    std::vector<ast::expression>
+    sequence;
+
 struct body {
     bool operator==(body const& rhs) const {
         return definitions == rhs.definitions &&
-            sequence == rhs.sequence;
+            seq== rhs.seq;
     }
 
     std::vector<definition> definitions;
-    std::vector<expression> sequence;
+    sequence seq;
 
 };  //  struct body
+
+typedef
+    std::vector<ast::variable>
+    formals;
 
 struct lambda_expression {
     lambda_expression() :
@@ -185,7 +193,7 @@ struct lambda_expression {
     {}
 
     lambda_expression(
-            std::vector<identifier> const& formals,
+            std::vector<variable> const& formals,
             rose::ast::body const& body)
     :
         formals(formals),
@@ -196,7 +204,7 @@ struct lambda_expression {
         return formals == rhs.formals && body == rhs.body;
     }
 
-    std::vector<identifier> formals;
+    std::vector<variable> formals;
     rose::ast::body body;
 
 };  //  struct lambda_expression
@@ -245,12 +253,12 @@ BOOST_FUSION_ADAPT_STRUCT(
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast::body,
     (std::vector<rose::ast::definition>, definitions)
-    (std::vector<rose::ast::expression>, sequence)
+    (std::vector<rose::ast::expression>, seq)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast::lambda_expression,
-    (std::vector<rose::ast::identifier>, formals)
+    (std::vector<rose::ast::variable>, formals)
     (rose::ast::body, body)
 )
 

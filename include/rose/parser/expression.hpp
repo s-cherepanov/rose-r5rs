@@ -35,18 +35,10 @@ struct expression :
     qi::rule<Iterator, ast::definition(),        Skipper> definition;
 
 private:
-    typedef
-        std::vector<ast::identifier>
-        formals_attr_type;
-
-    typedef
-        std::vector<ast::expression>
-        sequece_attr_type;
-
     qi::rule<Iterator, ast::expression(),   Skipper> start;
     qi::rule<Iterator, ast::expression(),   Skipper> expression_;
-    qi::rule<Iterator, formals_attr_type(), Skipper> formals;
-    qi::rule<Iterator, sequece_attr_type(), Skipper> sequence;
+    qi::rule<Iterator, ast::formals(),      Skipper> formals;
+    qi::rule<Iterator, ast::sequence(),     Skipper> sequence;
     qi::rule<Iterator, ast::body(),         Skipper> body;
     qi::rule<Iterator, ast::datum(),        Skipper> self_evaluating;
     qi::rule<Iterator, ast::quotation(),    Skipper> quotation;
