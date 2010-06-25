@@ -39,13 +39,10 @@ typedef
 
 struct list {
     typedef std::vector<datum> container_type;
-
     typedef container_type::iterator iterator;
-
     typedef container_type::const_iterator const_iterator;
 
     container_type proper;
-
     boost::optional<datum> improper;
 
     bool operator==(list const& rhs) const {
