@@ -4,6 +4,7 @@
 #include "rose/repl.hpp"
 
 #include <boost/format.hpp>
+#include <boost/spirit/include/karma.hpp>
 #include <boost/spirit/include/qi.hpp>
 
 #include <algorithm>
