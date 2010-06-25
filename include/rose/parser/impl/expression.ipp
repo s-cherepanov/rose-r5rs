@@ -142,26 +142,6 @@ expression<Iterator, Skipper>::expression() :
             >> no_case["set!"] >> variable >> expression_
             >> token.rparen
         ;
-
-    expression_      .name("expression");
-    variable         .name("variable");
-    literal          .name("literal");
-    self_evaluating  .name("self_evaluating");
-    quotation        .name("quotation");
-    procedure_call   .name("procedure_call");
-    operator_        .name("operator");
-    operand          .name("operand");
-    lambda_expression.name("lambda_expression");
-    formals          .name("formals");
-    body             .name("body");
-    definition       .name("definition");
-    sequence         .name("sequence");
-    command          .name("command");
-    conditional      .name("conditional");
-    test             .name("test");
-    consequent       .name("consequent");
-    alternate        .name("alternate");
-    assignment       .name("assignment");
 }
 
 }   //  namespace parser
