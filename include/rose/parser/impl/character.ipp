@@ -4,7 +4,6 @@
 #include "rose/parser/character.hpp"
 
 #include <boost/spirit/include/phoenix_operator.hpp>
-#include <boost/spirit/include/qi.hpp>
 
 namespace rose {
 namespace parser {
@@ -39,6 +38,9 @@ character<Iterator>::character() :
             |   "tab"     >> attr('\t')
             ]
         ;
+
+    start         .name("character");
+    character_name.name("character_name");
 }
 
 }   //  namespace parser

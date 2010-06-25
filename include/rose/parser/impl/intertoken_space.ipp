@@ -4,7 +4,6 @@
 #include "rose/parser/intertoken_space.hpp"
 
 #include <boost/spirit/include/phoenix_operator.hpp>
-#include <boost/spirit/include/qi.hpp>
 
 namespace rose {
 namespace parser {
@@ -35,6 +34,11 @@ intertoken_space<Iterator>::intertoken_space() :
     comment
         =   ';' >> *(char_ - eol) >> eol
         ;
+
+    start     .name("intertoken_space");
+    atmosphere.name("atmosphere");
+    whitespace.name("whitespace");
+    comment   .name("comment");
 }
 
 }   //  namespace parser

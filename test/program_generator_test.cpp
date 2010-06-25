@@ -1,7 +1,5 @@
 #include "rose/generator/program.hpp"
 
-#include <boost/spirit/include/karma_char_class.hpp>
-#include <boost/spirit/include/karma_generate.hpp>
 #include <boost/test/unit_test.hpp>
 
 namespace ast = rose::ast;

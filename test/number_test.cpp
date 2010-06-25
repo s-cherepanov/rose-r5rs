@@ -1,6 +1,5 @@
 #include "rose/parser/number.hpp"
 
-#include <boost/spirit/include/qi_parse.hpp>
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE( number_suite )

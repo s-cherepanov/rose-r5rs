@@ -3,8 +3,6 @@
 
 #include "rose/generator/program.hpp"
 
-#include <boost/spirit/include/karma.hpp>
-
 namespace boost {
 namespace spirit {
 namespace traits {

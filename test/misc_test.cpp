@@ -1,4 +1,4 @@
-#include <boost/spirit/include/qi.hpp>
+#include <boost/spirit/home/qi.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <map>
