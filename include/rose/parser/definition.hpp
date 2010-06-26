@@ -24,8 +24,8 @@ struct definition :
     definition();
 
 private:
-    parser::token<Iterator, Skipper> token;
-    parser::expression<Iterator, Skipper> expression;
+	rose::parser::token<Iterator, Skipper> token;
+	rose::parser::expression<Iterator, Skipper> expression;
 
     qi::rule<Iterator, ast::definition(), Skipper> start;
 

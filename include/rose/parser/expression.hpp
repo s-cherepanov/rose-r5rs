@@ -23,8 +23,8 @@ struct expression :
 {
     expression();
 
-    parser::token<Iterator, Skipper> token;
-    parser::datum<Iterator, Skipper> datum;
+	rose::parser::token<Iterator, Skipper> token;
+    rose::parser::datum<Iterator, Skipper> datum;
 
     qi::rule<Iterator, ast::variable(),          Skipper> variable;
     qi::rule<Iterator, ast::expression(),        Skipper> literal;

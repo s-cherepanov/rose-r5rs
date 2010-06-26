@@ -23,8 +23,8 @@ struct r5rs_grammar :
     r5rs_grammar();
 
 private:
-    parser::definition<Iterator, Skipper> definition;
-    parser::expression<Iterator, Skipper> expression;
+    rose::parser::definition<Iterator, Skipper> definition;
+    rose::parser::expression<Iterator, Skipper> expression;
 
     qi::rule<Iterator, ast::program(),    Skipper> start;
     qi::rule<Iterator, ast::expression(), Skipper> command;

@@ -21,7 +21,7 @@ struct datum :
 {
     datum();
 
-    parser::token<Iterator, Skipper> token;
+	rose::parser::token<Iterator, Skipper> token;
 
     qi::rule<Iterator, ast::datum(),  Skipper> datum_;
     qi::rule<Iterator, ast::datum(),  Skipper> simple_datum;
