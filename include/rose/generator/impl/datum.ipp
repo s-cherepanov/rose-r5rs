@@ -16,6 +16,7 @@ datum<OutputIterator, Delimiter>::datum() :
 {
     using karma::int_;
     using karma::lit;
+    using karma::string;
     using karma::verbatim;
 
     start
@@ -26,6 +27,10 @@ datum<OutputIterator, Delimiter>::datum() :
         |   symbol
         |   list
         |   vector
+        ;
+
+    symbol
+        =   karma::attr_cast(string)
         ;
 
     list

@@ -11,33 +11,14 @@ template<
     typename OutputIterator,
     typename Delimiter
 >
-program<OutputIterator, Delimiter>::program() :
-    program::base_type(start)
+expression<OutputIterator, Delimiter>::expression() :
+    expression::base_type(start)
 {
     using karma::lit;
     using karma::string;
 
     start
-        =   +(command | definition)
-        ;
-
-    command
-        =   expression.alias()
-        ;
-
-    definition
-        =   lit('(') << "define"
-            << variable
-            << expression
-            << ')'
-        ;
-
-    variable
-        =   karma::attr_cast(string)
-        ;
-
-    expression
-        =   datum_
+        =   datum
         |   variable
         |   quotation
         |   lambda_expression
@@ -46,9 +27,13 @@ program<OutputIterator, Delimiter>::program() :
         |   assignment
         ;
 
+    variable
+        =   karma::attr_cast(string)
+        ;
+
     quotation
         =   lit('(') << "quote"
-            << datum_
+            << datum
             << ')'
         ;
 
@@ -67,29 +52,56 @@ program<OutputIterator, Delimiter>::program() :
 
     body
         =   *definition
-            << +expression
+            << +start
+        ;
+
+    definition
+        =   lit('(') << "define"
+            << variable
+            << start
+            << ')'
         ;
 
     procedure_call
         =   lit('(')
-            << expression
-            << *expression
+            << start
+            << *start
             << ')'
         ;
 
     conditional
         =   lit('(') << "if"
-            << expression
-            << expression
-            << -expression
+            << start
+            << start
+            << -start
             << ')'
         ;
 
     assignment
         =   lit('(') << "set!"
             << variable
-            << expression
+            << start
             << ')'
+        ;
+}
+
+template<
+    typename OutputIterator,
+    typename Delimiter
+>
+program<OutputIterator, Delimiter>::program() :
+    program::base_type(start)
+{
+    start
+        =   +(command | definition)
+        ;
+
+    command
+        =   expression
+        ;
+
+    definition
+        =   expression.definition
         ;
 }
 

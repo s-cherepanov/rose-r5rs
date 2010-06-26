@@ -20,6 +20,37 @@ template<
     typename OutputIterator,
     typename Delimiter
 >
+struct expression :
+    karma::grammar<OutputIterator, ast::expression(), Delimiter>
+{
+    expression();
+
+    rule<OutputIterator, ast::definition(), Delimiter> definition;
+
+private:
+    generator::datum<OutputIterator, Delimiter> datum;
+
+    rule<OutputIterator, ast::expression(),        Delimiter> start;
+    rule<OutputIterator, ast::quotation(),         Delimiter> quotation;
+    rule<OutputIterator, ast::lambda_expression(), Delimiter> lambda_expression;
+    rule<OutputIterator, ast::procedure_call(),    Delimiter> procedure_call;
+    rule<OutputIterator, ast::conditional(),       Delimiter> conditional;
+    rule<OutputIterator, ast::assignment(),        Delimiter> assignment;
+    rule<OutputIterator, ast::body(),              Delimiter> body;
+    rule<OutputIterator, ast::variable(),          Delimiter> variable;
+
+    typedef
+        std::vector<ast::variable>
+        formals_attr_type;
+
+    rule<OutputIterator, formals_attr_type(), Delimiter> formals;
+
+};  //  struct expression
+
+template<
+    typename OutputIterator,
+    typename Delimiter
+>
 struct program :
     karma::grammar<OutputIterator, ast::program(), Delimiter>
 {
@@ -27,26 +58,11 @@ struct program :
 
 private:
     generator::datum<OutputIterator, Delimiter> datum_;
+    generator::expression<OutputIterator, Delimiter> expression;
 
-    rule<OutputIterator, ast::program(),           Delimiter> start;
-    rule<OutputIterator, ast::expression(),        Delimiter> command;
-    rule<OutputIterator, ast::definition(),        Delimiter> definition;
-    rule<OutputIterator, ast::expression(),        Delimiter> expression;
-    rule<OutputIterator, ast::quotation(),         Delimiter> quotation;
-    rule<OutputIterator, ast::lambda_expression(), Delimiter> lambda_expression;
-    rule<OutputIterator, ast::procedure_call(),    Delimiter> procedure_call;
-    rule<OutputIterator, ast::conditional(),       Delimiter> conditional;
-    rule<OutputIterator, ast::assignment(),        Delimiter> assignment;
-    rule<OutputIterator, ast::variable(),          Delimiter> variable;
-    rule<OutputIterator, ast::symbol(),            Delimiter> symbol;
-    rule<OutputIterator, ast::identifier(),        Delimiter> identifier;
-    rule<OutputIterator, ast::body(),              Delimiter> body;
-
-    typedef
-        std::vector<ast::variable>
-        formals_attr_type;
-
-    rule<OutputIterator, formals_attr_type(), Delimiter> formals;
+    rule<OutputIterator, ast::program(),    Delimiter> start;
+    rule<OutputIterator, ast::expression(), Delimiter> command;
+    rule<OutputIterator, ast::definition(), Delimiter> definition;
 
 };  //  struct program
 
