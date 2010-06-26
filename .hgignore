@@ -7,3 +7,7 @@ tags
 *~
 doc/draft
 core.*
+build/Debug/*
+*.ncb
+*.suo
+*.vcproj.*.user

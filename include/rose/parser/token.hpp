@@ -43,11 +43,11 @@ struct token :
     qi::rule<Iterator, Skipper> dot;
 
 private:
-    parser::boolean<Iterator>    boolean_;
-    parser::character<Iterator>  character_;
-    parser::identifier<Iterator> identifier_;
-    parser::number<Iterator>     number_;
-    parser::string<Iterator>     string_;
+    rose::parser::boolean<Iterator>    boolean_;
+    rose::parser::character<Iterator>  character_;
+    rose::parser::identifier<Iterator> identifier_;
+    rose::parser::number<Iterator>     number_;
+    rose::parser::string<Iterator>     string_;
 
     qi::rule<Iterator, ast::variable()> variable_;
 

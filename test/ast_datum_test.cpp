@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_CASE(ast_datum_number_equality_test) {
     BOOST_CHECK(d1 == d2);
 }
 
-BOOST_AUTO_TEST_CASE(ast_datum_number_inequality_test) {
+BOOST_AUTO_TEST_CASE(ast_datum_number_Binequality_test) {
     datum d1(1), d2(2);
     BOOST_CHECK(!(d1 == d2));
 }

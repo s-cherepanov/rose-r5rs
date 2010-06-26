@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 std::string read_from_stream( std::istream& in );
 

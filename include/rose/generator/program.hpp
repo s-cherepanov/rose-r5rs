@@ -28,7 +28,7 @@ struct expression :
     rule<OutputIterator, ast::definition(), Delimiter> definition;
 
 private:
-    generator::datum<OutputIterator, Delimiter> datum;
+    rose::generator::datum<OutputIterator, Delimiter> datum;
 
     rule<OutputIterator, ast::expression(),        Delimiter> start;
     rule<OutputIterator, ast::quotation(),         Delimiter> quotation;
@@ -57,8 +57,8 @@ struct program :
     program();
 
 private:
-    generator::datum<OutputIterator, Delimiter> datum_;
-    generator::expression<OutputIterator, Delimiter> expression;
+    rose::generator::datum<OutputIterator, Delimiter> datum_;
+    rose::generator::expression<OutputIterator, Delimiter> expression;
 
     rule<OutputIterator, ast::program(),    Delimiter> start;
     rule<OutputIterator, ast::expression(), Delimiter> command;

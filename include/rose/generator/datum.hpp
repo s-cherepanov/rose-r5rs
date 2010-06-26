@@ -25,9 +25,9 @@ struct datum :
     datum();
 
 private:
-    generator::boolean<OutputIterator>   boolean_;
-    generator::character<OutputIterator> character_;
-    generator::string<OutputIterator>    string_;
+    rose::generator::boolean<OutputIterator>   boolean_;
+    rose::generator::character<OutputIterator> character_;
+    rose::generator::string<OutputIterator>    string_;
 
     rule<OutputIterator, ast::datum(),      Delimiter> start;
     rule<OutputIterator, ast::list(),       Delimiter> list;
