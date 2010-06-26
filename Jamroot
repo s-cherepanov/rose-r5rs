@@ -1,0 +1,33 @@
+import modules ;
+
+local BOOST_ROOT = [ modules.peek : BOOST_ROOT ] ;
+
+path-constant PROJECT_ROOT : . ;
+
+use-project /boost          : $(BOOST_ROOT) ;
+use-project /rose           : $(PROJECT_ROOT) ;
+use-project /rose/parser    : $(PROJECT_ROOT)/src/parser ;
+use-project /rose/generator : $(PROJECT_ROOT)/src/generator ;
+
+project
+    :   requirements
+            <toolset>gcc:<cxxflags>-Wno-unused-variable
+            <toolset>gcc:<cxxflags>-Wformat
+            <toolset>gcc:<cxxflags>-Wall
+            <toolset>gcc:<c++-template-depth>300
+
+            <include>include
+            <define>BOOST_SPIRIT_DONT_USE_MPL_ASSERT_MSG=0
+
+            <link>static
+            <threading>multi
+
+    :   default-build
+            debug
+
+    :   build-dir
+            bin
+    ;
+
+build-project src ;
+build-project test ;

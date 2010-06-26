@@ -1,0 +1,940 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<title>R5RS Scheme EBNF</title>
+<meta name="author" content="Lian Cheng &lt;rhythm.mail&#64;gmail.com&gt;" />
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 5196 2007-06-03 20:25:28Z wiemann $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left {
+  clear: left }
+
+img.align-right {
+  clear: right }
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font-family: serif ;
+  font-size: 100% }
+
+pre.literal-block, pre.doctest-block {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="document" id="r5rs-scheme-ebnf">
+<h1 class="title">R5RS Scheme EBNF</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Author:</th>
+<td>Lian Cheng &lt;<a class="reference external" href="mailto:rhythm.mail&#64;gmail.com">rhythm.mail&#64;gmail.com</a>&gt;</td></tr>
+<tr class="field"><th class="docinfo-name">Link:</th><td class="field-body"><a class="reference external" href="http://rose-r5rs.googlecode.com/hg/doc/r5rs-grammar.html">http://rose-r5rs.googlecode.com/hg/doc/r5rs-grammar.html</a></td>
+</tr>
+</tbody>
+</table>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#lexical-structure" id="id3">Lexical structure</a><ul>
+<li><a class="reference internal" href="#number" id="id4">Number</a><ul>
+<li><a class="reference internal" href="#binary-number" id="id5">Binary number</a></li>
+<li><a class="reference internal" href="#octal-number" id="id6">Octal number</a></li>
+<li><a class="reference internal" href="#decimal-number" id="id7">Decimal number</a></li>
+<li><a class="reference internal" href="#hexadecimal-number" id="id8">Hexadecimal number</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#external-representations" id="id9">External representations</a></li>
+<li><a class="reference internal" href="#expressions" id="id10">Expressions</a></li>
+<li><a class="reference internal" href="#quasiquotation" id="id11">Quasiquotation</a></li>
+<li><a class="reference internal" href="#transformers" id="id12">Transformers</a></li>
+<li><a class="reference internal" href="#programs-and-definitions" id="id13">Programs and definitions</a></li>
+</ul>
+</div>
+<div class="section" id="lexical-structure">
+<h1><a class="toc-backref" href="#id3">Lexical structure</a></h1>
+<pre class="literal-block" id="token">
+&lt;token&gt;
+    ::= &lt;<a class="reference internal" href="#identifier">identifier</a>&gt; | &lt;<a class="reference internal" href="#boolean">boolean</a>&gt; | &lt;<a class="reference internal" href="#id1">number</a>&gt;
+      | &lt;<a class="reference internal" href="#character">character</a>&gt; | &lt;<a class="reference internal" href="#string">string</a>&gt;
+      | {(} | {)} | {#(} | {'} | {`} | {,} | {,&#64;} | {.}
+</pre>
+<pre class="literal-block" id="delimiter">
+&lt;delimiter&gt;
+    ::= &lt;<a class="reference internal" href="#whitespace">whitespace</a>&gt; | {(} | {)} | {&quot;} | {;}
+</pre>
+<pre class="literal-block" id="whitespace">
+&lt;whitespace&gt;
+    ::= &lt;space or newline&gt;
+</pre>
+<pre class="literal-block" id="comment">
+&lt;comment&gt;
+    ::= {;} &lt;all subsequent characters up to line break&gt;
+</pre>
+<pre class="literal-block" id="atmosphere">
+&lt;atmosphere&gt;
+    ::= &lt;<a class="reference internal" href="#whitespace">whitespace</a>&gt; | &lt;<a class="reference internal" href="#comment">comment</a>&gt;
+</pre>
+<pre class="literal-block" id="intertoken-space">
+&lt;intertoken space&gt;
+    ::= &lt;<a class="reference internal" href="#atmosphere">atmosphere</a>&gt;*
+</pre>
+<pre class="literal-block" id="identifier">
+&lt;identifier&gt;
+    ::= &lt;<a class="reference internal" href="#initial">initial</a>&gt; &lt;<a class="reference internal" href="#subsequent">subsequent</a>&gt;*
+      | &lt;<a class="reference internal" href="#peculiar-identifier">peculiar identifier</a>&gt;
+</pre>
+<pre class="literal-block" id="initial">
+&lt;initial&gt;
+    ::= &lt;<a class="reference internal" href="#letter">letter</a>&gt; | &lt;<a class="reference internal" href="#special-initial">special initial</a>&gt;
+</pre>
+<pre class="literal-block" id="letter">
+&lt;letter&gt;
+    ::= {a} | ... | {z}
+</pre>
+<pre class="literal-block" id="special-initial">
+&lt;special initial&gt;
+    ::= {!} | {$} | {%} | {&amp;} | {*} | {/} | {:} | {&lt;} | {=}
+      | {&gt;} | {?} | {^} | {_} | {~}
+</pre>
+<pre class="literal-block" id="subsequent">
+&lt;subsequent&gt;
+    ::= &lt;<a class="reference internal" href="#initial">initial</a>&gt; | &lt;<a class="reference internal" href="#digit">digit</a>&gt;
+      | &lt;<a class="reference internal" href="#special-subsequent">special subsequent</a>&gt;
+</pre>
+<pre class="literal-block" id="digit">
+&lt;digit&gt;
+    ::= {0} | ... | {9}
+</pre>
+<pre class="literal-block" id="special-subsequent">
+&lt;special subsequent&gt;
+    ::= {+} | {-} | {.} | {&#64;}
+</pre>
+<pre class="literal-block" id="peculiar-identifier">
+&lt;peculiar identifier&gt;
+    ::= {+} | {-} | {...}
+</pre>
+<pre class="literal-block" id="syntactic-keyword">
+&lt;syntactic keyword&gt;
+    ::= &lt;<a class="reference internal" href="#expression-keyword">expression keyword</a>&gt;
+      | {else} | {=&gt;} | {define}
+      | {unquote} | {unquote-splicing}
+</pre>
+<pre class="literal-block" id="expression-keyword">
+&lt;expression keyword&gt;
+    ::= {quote} | {lambda} | {if}
+      | {set!} | {begin} | {cond} | {and} | {or} | {case}
+      | {let} | {let*} | {letrec} | {do} | {delay}
+      | {quasiquote}
+</pre>
+<pre class="literal-block" id="variable">
+&lt;variable&gt;
+    ::= &lt;any <a class="reference internal" href="#identifier">identifier</a> that isn't also a <a class="reference internal" href="#syntactic-keyword">syntactic keyword</a>&gt;
+</pre>
+<pre class="literal-block" id="boolean">
+&lt;boolean&gt;
+    ::= {#t} | {#f}
+</pre>
+<pre class="literal-block" id="character">
+&lt;characters&gt;
+    ::= {#\} &lt;any character&gt;
+      | {#\} &lt;<a class="reference internal" href="#character-name">character name</a>&gt;
+</pre>
+<pre class="literal-block" id="character-name">
+&lt;character name&gt;
+    ::= {space} | {newline}
+</pre>
+<pre class="literal-block" id="string">
+&lt;string&gt;
+    ::= {&quot;} &lt;<a class="reference internal" href="#string-element">string element</a>&gt;+ {&quot;}
+</pre>
+<pre class="literal-block" id="string-element">
+&lt;string element&gt;
+    ::= &lt;any character other than {&quot;} or {\}&gt;
+      | {\&quot;} | {\\}
+</pre>
+<div class="section" id="number">
+<h2><a class="toc-backref" href="#id4">Number</a></h2>
+<pre class="literal-block" id="id1">
+&lt;number&gt;
+    ::= &lt;<a class="reference internal" href="#num-2">num 2</a>&gt; | &lt;<a class="reference internal" href="#num-8">num 8</a>&gt; | &lt;<a class="reference internal" href="#num-10">num 10</a>&gt; | &lt;<a class="reference internal" href="#num-16">num 16</a>&gt;
+</pre>
+<pre class="literal-block" id="suffix">
+&lt;suffix&gt;
+    ::= &lt;empty&gt;
+      | &lt;<a class="reference internal" href="#exponent-marker">exponent marker</a>&gt; &lt;<a class="reference internal" href="#sign">sign</a>&gt; &lt;<a class="reference internal" href="#digit-10">digit 10</a>&gt;+
+</pre>
+<pre class="literal-block" id="exponent-marker">
+&lt;exponent marker&gt;
+    ::= {e} | {s} | {f} | {d} | {l}
+</pre>
+<pre class="literal-block" id="sign">
+&lt;sign&gt;
+    ::= &lt;empty&gt; | {+} | {-}
+</pre>
+<pre class="literal-block" id="exactness">
+&lt;exactness&gt;
+    ::= &lt;empty&gt; | {#i} | {#e}
+</pre>
+<div class="section" id="binary-number">
+<h3><a class="toc-backref" href="#id5">Binary number</a></h3>
+<pre class="literal-block" id="num-2">
+&lt;num 2&gt;
+    ::= &lt;<a class="reference internal" href="#prefix-2">prefix 2</a>&gt; &lt;<a class="reference internal" href="#complex-2">complex 2</a>&gt;
+</pre>
+<pre class="literal-block" id="complex-2">
+&lt;complex 2&gt;
+    ::= &lt;<a class="reference internal" href="#real-2">real 2</a>&gt; | &lt;<a class="reference internal" href="#real-2">real 2</a>&gt; {&#64;} &lt;<a class="reference internal" href="#real-2">real 2</a>&gt;
+      | &lt;<a class="reference internal" href="#real-2">real 2</a>&gt; {+} &lt;<a class="reference internal" href="#ureal-2">ureal 2</a>&gt; {i} | &lt;<a class="reference internal" href="#real-2">real 2</a>&gt; {-} &lt;<a class="reference internal" href="#ureal-2">ureal 2</a>&gt; {i}
+      | &lt;<a class="reference internal" href="#real-2">real 2</a>&gt; {+} {i} | &lt;<a class="reference internal" href="#real-2">real 2</a>&gt; {-} {i}
+      | {+} &lt;<a class="reference internal" href="#ureal-2">ureal 2</a>&gt; {i} | {-} &lt;<a class="reference internal" href="#ureal-2">ureal 2</a>&gt; {i} | {+} {i} | {-} {i}
+</pre>
+<pre class="literal-block" id="real-2">
+&lt;real 2&gt;
+    ::= &lt;<a class="reference internal" href="#sign">sign</a>&gt; &lt;<a class="reference internal" href="#ureal-2">ureal 2</a>&gt;
+</pre>
+<pre class="literal-block" id="ureal-2">
+&lt;ureal 2&gt;
+    ::= &lt;<a class="reference internal" href="#uinteger-2">uinteger 2</a>&gt;
+      | &lt;<a class="reference internal" href="#uinteger-2">uinteger 2</a>&gt; {/} &lt;<a class="reference internal" href="#uinteger-2">uinteger 2</a>&gt;
+</pre>
+<pre class="literal-block" id="uinteger-2">
+&lt;uinteger 2&gt;
+    ::= &lt;<a class="reference internal" href="#digit-2">digit 2</a>&gt;+ {#}*
+</pre>
+<pre class="literal-block" id="prefix-2">
+&lt;prefix 2&gt;
+    ::= &lt;<a class="reference internal" href="#radix-2">radix 2</a>&gt; &lt;<a class="reference internal" href="#exactness">exactness</a>&gt;
+      | &lt;<a class="reference internal" href="#exactness">exactness</a>&gt; &lt;<a class="reference internal" href="#radix-2">radix 2</a>&gt;
+</pre>
+<pre class="literal-block" id="radix-2">
+&lt;radix 2&gt;
+    ::= {#b}
+</pre>
+<pre class="literal-block" id="digit-2">
+&lt;digit 2&gt;
+    ::= {0} | {1}
+</pre>
+</div>
+<div class="section" id="octal-number">
+<h3><a class="toc-backref" href="#id6">Octal number</a></h3>
+<pre class="literal-block" id="num-8">
+&lt;num 8&gt;
+    ::= &lt;<a class="reference internal" href="#prefix-8">prefix 8</a>&gt; &lt;<a class="reference internal" href="#complex-8">complex 8</a>&gt;
+</pre>
+<pre class="literal-block" id="complex-8">
+&lt;complex 8&gt;
+    ::= &lt;<a class="reference internal" href="#real-8">real 8</a>&gt; | &lt;<a class="reference internal" href="#real-8">real 8</a>&gt; {&#64;} &lt;<a class="reference internal" href="#real-8">real 8</a>&gt;
+      | &lt;<a class="reference internal" href="#real-8">real 8</a>&gt; {+} &lt;<a class="reference internal" href="#ureal-8">ureal 8</a>&gt; {i} | &lt;<a class="reference internal" href="#real-8">real 8</a>&gt; {-} &lt;<a class="reference internal" href="#ureal-8">ureal 8</a>&gt; {i}
+      | &lt;<a class="reference internal" href="#real-8">real 8</a>&gt; {+} {i} | &lt;<a class="reference internal" href="#real-8">real 8</a>&gt; {-} {i}
+      | {+} &lt;<a class="reference internal" href="#ureal-8">ureal 8</a>&gt; {i} | {-} &lt;<a class="reference internal" href="#ureal-8">ureal 8</a>&gt; {i} | {+} {i} | {-} {i}
+</pre>
+<pre class="literal-block" id="real-8">
+&lt;real 8&gt;
+    ::= &lt;<a class="reference internal" href="#sign">sign</a>&gt; &lt;<a class="reference internal" href="#ureal-8">ureal 8</a>&gt;
+</pre>
+<pre class="literal-block" id="ureal-8">
+&lt;ureal 8&gt;
+    ::= &lt;<a class="reference internal" href="#uinteger-8">uinteger 8</a>&gt;
+      | &lt;<a class="reference internal" href="#uinteger-8">uinteger 8</a>&gt; {/} &lt;<a class="reference internal" href="#uinteger-8">uinteger 8</a>&gt;
+</pre>
+<pre class="literal-block" id="uinteger-8">
+&lt;uinteger 8&gt;
+    ::= &lt;<a class="reference internal" href="#digit-8">digit 8</a>&gt;+ {#}*
+</pre>
+<pre class="literal-block" id="prefix-8">
+&lt;prefix 8&gt;
+    ::= &lt;<a class="reference internal" href="#radix-8">radix 8</a>&gt; &lt;<a class="reference internal" href="#exactness">exactness</a>&gt;
+      | &lt;<a class="reference internal" href="#exactness">exactness</a>&gt; &lt;<a class="reference internal" href="#radix-8">radix 8</a>&gt;
+</pre>
+<pre class="literal-block" id="radix-8">
+&lt;radix 8&gt;
+    ::= #o
+</pre>
+<pre class="literal-block" id="digit-8">
+&lt;digit 8&gt;
+    ::= {0} | ... | {7}
+</pre>
+</div>
+<div class="section" id="decimal-number">
+<h3><a class="toc-backref" href="#id7">Decimal number</a></h3>
+<pre class="literal-block" id="num-10">
+&lt;num 10&gt;
+    ::= &lt;<a class="reference internal" href="#prefix-10">prefix 10</a>&gt; &lt;<a class="reference internal" href="#complex-10">complex 10</a>&gt;
+</pre>
+<pre class="literal-block" id="complex-10">
+&lt;complex 10&gt;
+    ::= &lt;<a class="reference internal" href="#real-10">real 10</a>&gt; | &lt;<a class="reference internal" href="#real-10">real 10</a>&gt; {&#64;} &lt;<a class="reference internal" href="#real-10">real 10</a>&gt;
+      | &lt;<a class="reference internal" href="#real-10">real 10</a>&gt; {+} &lt;<a class="reference internal" href="#ureal-10">ureal 10</a>&gt; {i} | &lt;<a class="reference internal" href="#real-10">real 10</a>&gt; {-} &lt;<a class="reference internal" href="#ureal-10">ureal 10</a>&gt; {i}
+      | &lt;<a class="reference internal" href="#real-10">real 10</a>&gt; {+} {i} | &lt;<a class="reference internal" href="#real-10">real 10</a>&gt; {-} {i}
+      | {+} &lt;<a class="reference internal" href="#ureal-10">ureal 10</a>&gt; {i} | {-} &lt;<a class="reference internal" href="#ureal-10">ureal 10</a>&gt; {i} | {+} {i} | {-} {i}
+</pre>
+<pre class="literal-block" id="real-10">
+&lt;real 10&gt;
+    ::= &lt;<a class="reference internal" href="#sign">sign</a>&gt; &lt;<a class="reference internal" href="#ureal-10">ureal 10</a>&gt;
+</pre>
+<pre class="literal-block" id="ureal-10">
+&lt;ureal 10&gt;
+    ::= &lt;<a class="reference internal" href="#uinteger-10">uinteger 10</a>&gt;
+      | &lt;<a class="reference internal" href="#uinteger-10">uinteger 10</a>&gt; {/} &lt;<a class="reference internal" href="#uinteger-10">uinteger 10</a>&gt;
+      | &lt;<a class="reference internal" href="#decimal-10">decimal 10</a>&gt;
+</pre>
+<pre class="literal-block" id="decimal-10">
+&lt;decimal 10&gt;
+    ::= &lt;<a class="reference internal" href="#uinteger-10">uinteger 10</a>&gt; &lt;<a class="reference internal" href="#suffix">suffix</a>&gt;
+      | {.} &lt;<a class="reference internal" href="#digit-10">digit 10</a>&gt;+ {.} {#}* &lt;<a class="reference internal" href="#suffix">suffix</a>&gt;
+      | &lt;<a class="reference internal" href="#digit-10">digit 10</a>&gt;+ {.} &lt;<a class="reference internal" href="#digit-10">digit 10</a>&gt;* {#}* &lt;<a class="reference internal" href="#suffix">suffix</a>&gt;
+      | &lt;<a class="reference internal" href="#digit-10">digit 10</a>&gt;+ {#}+ {.} {#}* &lt;<a class="reference internal" href="#suffix">suffix</a>&gt;
+</pre>
+<pre class="literal-block" id="uinteger-10">
+&lt;uinteger 10&gt;
+    ::= &lt;<a class="reference internal" href="#digit-10">digit 10</a>&gt;+ {#}*
+</pre>
+<pre class="literal-block" id="prefix-10">
+&lt;prefix 10&gt;
+    ::= &lt;<a class="reference internal" href="#radix-10">radix 10</a>&gt; &lt;<a class="reference internal" href="#exactness">exactness</a>&gt;
+      | &lt;<a class="reference internal" href="#exactness">exactness</a>&gt; &lt;<a class="reference internal" href="#radix-10">radix 10</a>&gt;
+</pre>
+<pre class="literal-block" id="radix-10">
+&lt;radix 10&gt;
+    ::= &lt;empty&gt; {#d}
+</pre>
+<pre class="literal-block" id="digit-10">
+&lt;digit 10&gt;
+    ::= &lt;<a class="reference internal" href="#digit">digit</a>&gt;
+</pre>
+</div>
+<div class="section" id="hexadecimal-number">
+<h3><a class="toc-backref" href="#id8">Hexadecimal number</a></h3>
+<pre class="literal-block" id="num-16">
+&lt;num 16&gt;
+    ::= &lt;<a class="reference internal" href="#prefix-16">prefix 16</a>&gt; &lt;<a class="reference internal" href="#complex-16">complex 16</a>&gt;
+</pre>
+<pre class="literal-block" id="complex-16">
+&lt;complex 16&gt;
+    ::= &lt;<a class="reference internal" href="#real-16">real 16</a>&gt; | &lt;<a class="reference internal" href="#real-16">real 16</a>&gt; {&#64;} &lt;<a class="reference internal" href="#real-16">real 16</a>&gt;
+      | &lt;<a class="reference internal" href="#real-16">real 16</a>&gt; {+} &lt;<a class="reference internal" href="#ureal-16">ureal 16</a>&gt; {i} | &lt;<a class="reference internal" href="#real-16">real 16</a>&gt; {-} &lt;<a class="reference internal" href="#ureal-16">ureal 16</a>&gt; {i}
+      | &lt;<a class="reference internal" href="#real-16">real 16</a>&gt; {+} {i} | &lt;<a class="reference internal" href="#real-16">real 16</a>&gt; {-} {i}
+      | {+} &lt;<a class="reference internal" href="#ureal-16">ureal 16</a>&gt; {i} | {-} &lt;<a class="reference internal" href="#ureal-16">ureal 16</a>&gt; {i} | {+} {i} | {-} {i}
+</pre>
+<pre class="literal-block" id="real-16">
+&lt;real 16&gt;
+    ::= &lt;<a class="reference internal" href="#sign">sign</a>&gt; &lt;<a class="reference internal" href="#ureal-16">ureal 16</a>&gt;
+</pre>
+<pre class="literal-block" id="ureal-16">
+&lt;ureal 16&gt;
+    ::= &lt;<a class="reference internal" href="#uinteger-16">uinteger 16</a>&gt;
+      | &lt;<a class="reference internal" href="#uinteger-16">uinteger 16</a>&gt; {/} &lt;<a class="reference internal" href="#uinteger-16">uinteger 16</a>&gt;
+</pre>
+<pre class="literal-block" id="uinteger-16">
+&lt;uinteger 16&gt;
+    ::= &lt;<a class="reference internal" href="#digit-16">digit 16</a>&gt;+ {#}*
+</pre>
+<pre class="literal-block" id="prefix-16">
+&lt;prefix 16&gt;
+    ::= &lt;<a class="reference internal" href="#radix-16">radix 16</a>&gt; &lt;<a class="reference internal" href="#exactness">exactness</a>&gt;
+      | &lt;<a class="reference internal" href="#exactness">exactness</a>&gt; &lt;<a class="reference internal" href="#radix-16">radix 16</a>&gt;
+</pre>
+<pre class="literal-block" id="radix-16">
+&lt;radix 16&gt;
+    ::= {#x}
+</pre>
+<pre class="literal-block" id="digit-16">
+&lt;digit 16&gt;
+    ::= &lt;<a class="reference internal" href="#digit-10">digit 10</a>&gt; | {a} | {b} | {c} | {d} | {e} | {f}
+</pre>
+</div>
+</div>
+</div>
+<div class="section" id="external-representations">
+<h1><a class="toc-backref" href="#id9">External representations</a></h1>
+<pre class="literal-block" id="datum">
+&lt;datum&gt;
+    ::= &lt;<a class="reference internal" href="#simple-datum">simple datum</a>&gt; | &lt;<a class="reference internal" href="#compound-datum">compound datum</a>&gt;
+</pre>
+<pre class="literal-block" id="simple-datum">
+&lt;simple datum&gt;
+    ::= &lt;<a class="reference internal" href="#boolean">boolean</a>&gt; | &lt;<a class="reference internal" href="#id1">number</a>&gt;
+      | &lt;<a class="reference internal" href="#character">character</a>&gt; | &lt;<a class="reference internal" href="#string">string</a>&gt; | &lt;<a class="reference internal" href="#symbol">symbol</a>&gt;
+</pre>
+<pre class="literal-block" id="symbol">
+&lt;symbol&gt;
+    ::= &lt;<a class="reference internal" href="#identifier">identifier</a>&gt;
+</pre>
+<pre class="literal-block" id="compound-datum">
+&lt;compound datum&gt;
+    ::= &lt;<a class="reference internal" href="#list">list</a>&gt; | &lt;<a class="reference internal" href="#vector">vector</a>&gt;
+</pre>
+<pre class="literal-block" id="list">
+&lt;list&gt;
+    ::= {(} &lt;<a class="reference internal" href="#datum">datum</a>&gt;* {)} | {(} &lt;<a class="reference internal" href="#datum">datum</a>&gt;+ {.} &lt;<a class="reference internal" href="#datum">datum</a>&gt; {)}
+      | &lt;<a class="reference internal" href="#abbreviation">abbreviation</a>&gt;
+</pre>
+<pre class="literal-block" id="abbreviation">
+&lt;abbreviation&gt;
+    ::= &lt;<a class="reference internal" href="#abbrev-prefix">abbrev prefix</a>&gt; &lt;<a class="reference internal" href="#datum">datum</a>&gt;
+</pre>
+<pre class="literal-block" id="abbrev-prefix">
+&lt;abbrev prefix&gt;
+    ::= {'} | {`} | {,} | {,&#64;}
+</pre>
+<pre class="literal-block" id="vector">
+&lt;vector&gt;
+    ::= {#(} &lt;<a class="reference internal" href="#datum">datum</a>&gt;* {)}
+</pre>
+</div>
+<div class="section" id="expressions">
+<h1><a class="toc-backref" href="#id10">Expressions</a></h1>
+<pre class="literal-block" id="expression">
+&lt;expression&gt;
+    ::= &lt;<a class="reference internal" href="#variable">variable</a>&gt;
+      | &lt;<a class="reference internal" href="#literal">literal</a>&gt;
+      | &lt;<a class="reference internal" href="#procedure-call">procedure call</a>&gt;
+      | &lt;<a class="reference internal" href="#lambda-expression">lambda expression</a>&gt;
+      | &lt;<a class="reference internal" href="#conditional">conditional</a>&gt;
+      | &lt;<a class="reference internal" href="#assignment">assignment</a>&gt;
+      | &lt;<a class="reference internal" href="#derived-expression">derived expression</a>&gt;
+      | &lt;<a class="reference internal" href="#macro-use">macro use</a>&gt;
+      | &lt;<a class="reference internal" href="#macro-block">macro block</a>&gt;
+</pre>
+<pre class="literal-block" id="literal">
+&lt;literal&gt;
+    ::= &lt;<a class="reference internal" href="#quotation">quotation</a>&gt; | &lt;<a class="reference internal" href="#self-evaluating">self-evaluating</a>&gt;
+</pre>
+<pre class="literal-block" id="self-evaluating">
+&lt;self-evaluating&gt;
+    ::= &lt;<a class="reference internal" href="#boolean">boolean</a>&gt; | &lt;<a class="reference internal" href="#id1">number</a>&gt;
+      | &lt;<a class="reference internal" href="#character">character</a>&gt; | &lt;<a class="reference internal" href="#string">string</a>&gt;
+</pre>
+<pre class="literal-block" id="quotation">
+&lt;quotation&gt;
+    ::= '&lt;<a class="reference internal" href="#datum">datum</a>&gt; | {(} {quote} &lt;<a class="reference internal" href="#datum">datum</a>&gt; {)}
+</pre>
+<pre class="literal-block" id="procedure-call">
+&lt;procedure call&gt;
+    ::= {(} &lt;<a class="reference internal" href="#operator">operator</a>&gt; &lt;<a class="reference internal" href="#operand">operand</a>&gt;* {)}
+</pre>
+<pre class="literal-block" id="operator">
+&lt;operator&gt;
+    ::= &lt;<a class="reference internal" href="#expression">expression</a>&gt;
+</pre>
+<pre class="literal-block" id="operand">
+&lt;operand&gt;
+    ::= &lt;<a class="reference internal" href="#expression">expression</a>&gt;
+</pre>
+<pre class="literal-block" id="lambda-expression">
+&lt;lambda expression&gt;
+    ::= {(} {lambda} &lt;<a class="reference internal" href="#formals">formals</a>&gt; &lt;<a class="reference internal" href="#body">body</a>&gt; {)}
+</pre>
+<pre class="literal-block" id="formals">
+&lt;formals&gt;
+    ::= {(} &lt;<a class="reference internal" href="#variable">variable</a>&gt;* {)} | &lt;<a class="reference internal" href="#variable">variable</a>&gt;
+      | {(} &lt;<a class="reference internal" href="#variable">variable</a>&gt;+ {.} &lt;<a class="reference internal" href="#variable">variable</a>&gt; {)}
+</pre>
+<pre class="literal-block" id="body">
+&lt;body&gt;
+    ::= &lt;<a class="reference internal" href="#definition">definition</a>&gt;* &lt;<a class="reference internal" href="#sequence">sequence</a>&gt;
+</pre>
+<pre class="literal-block" id="sequence">
+&lt;sequence&gt;
+    ::= &lt;<a class="reference internal" href="#command">command</a>&gt;* &lt;<a class="reference internal" href="#expression">expression</a>&gt;
+</pre>
+<pre class="literal-block" id="command">
+&lt;command&gt;
+    ::= &lt;<a class="reference internal" href="#expression">expression</a>&gt;
+</pre>
+<pre class="literal-block" id="conditional">
+&lt;conditional&gt;
+    ::= {(} {if} &lt;<a class="reference internal" href="#test">test</a>&gt; &lt;<a class="reference internal" href="#consequent">consequent</a>&gt; &lt;<a class="reference internal" href="#alternate">alternate</a>&gt; {)}
+</pre>
+<pre class="literal-block" id="test">
+&lt;test&gt;
+    ::= &lt;<a class="reference internal" href="#expression">expression</a>&gt;
+</pre>
+<pre class="literal-block" id="consequent">
+&lt;consequent&gt;
+    ::= &lt;<a class="reference internal" href="#expression">expression</a>&gt;
+</pre>
+<pre class="literal-block" id="alternate">
+&lt;alternate&gt;
+    ::= &lt;<a class="reference internal" href="#expression">expression</a>&gt; | &lt;empty&gt;
+</pre>
+<pre class="literal-block" id="assignment">
+&lt;assignment&gt;
+    ::= {(} {set!} &lt;<a class="reference internal" href="#variable">variable</a>&gt; &lt;<a class="reference internal" href="#expression">expression</a>&gt; {)}
+</pre>
+<pre class="literal-block" id="derived-expression">
+&lt;derived expression&gt;
+    ::= {(} {cond} &lt;<a class="reference internal" href="#cond-clause">cond clause</a>&gt;+ {)}
+      | {(} {cond} &lt;<a class="reference internal" href="#cond-clause">cond clause</a>&gt;* {(} else &lt;<a class="reference internal" href="#sequence">sequence</a>&gt; {)} {)}
+      | {(} {case} &lt;<a class="reference internal" href="#expression">expression</a>&gt;
+            &lt;<a class="reference internal" href="#case-clause">case clause</a>&gt;+ {)}
+      | {(} {case} &lt;<a class="reference internal" href="#expression">expression</a>&gt;
+            &lt;<a class="reference internal" href="#case-clause">case clause</a>&gt;*
+            {(} {else} &lt;sequence&gt; {)} {)}
+      | {(} {and} &lt;<a class="reference internal" href="#test">test</a>&gt;* {)}
+      | {(} {or} &lt;<a class="reference internal" href="#test">test</a>&gt;* {)}
+      | {(} {let} {(} &lt;<a class="reference internal" href="#binding-spec">binding spec</a>&gt;* {)} &lt;<a class="reference internal" href="#body">body</a>&gt; {)}
+      | {(} {let} &lt;<a class="reference internal" href="#variable">variable</a>&gt; {(} &lt;<a class="reference internal" href="#binding-spec">binding spec</a>&gt;* {)} &lt;<a class="reference internal" href="#body">body</a>&gt; {)}
+      | {(} {let*} {(} &lt;<a class="reference internal" href="#binding-spec">binding spec</a>&gt;* {)} &lt;<a class="reference internal" href="#body">body</a>&gt; {)}
+      | {(} {letrec} {(} &lt;<a class="reference internal" href="#binding-spec">binding spec</a>&gt;* {)} &lt;<a class="reference internal" href="#body">body</a>&gt; {)}
+      | {(} {begin} &lt;<a class="reference internal" href="#sequence">sequence</a>&gt; {)}
+      | {(} {do} {(} &lt;<a class="reference internal" href="#iteration-spec">iteration spec</a>&gt;* {)}
+            {(} &lt;<a class="reference internal" href="#test">test</a>&gt; &lt;<a class="reference internal" href="#do-result">do result</a>&gt; {)}
+            &lt;<a class="reference internal" href="#command">command</a>&gt;* {)}
+      | {(} {delay} &lt;<a class="reference internal" href="#expression">expression</a>&gt; {)}
+      | &lt;<a class="reference internal" href="#id2">quasiquotation</a>&gt;
+</pre>
+<pre class="literal-block" id="cond-clause">
+&lt;cond clause&gt;
+    ::= (&lt;<a class="reference internal" href="#test">test</a>&gt; &lt;<a class="reference internal" href="#sequence">sequence</a>&gt;)
+      | (&lt;<a class="reference internal" href="#test">test</a>&gt;)
+      | (&lt;<a class="reference internal" href="#test">test</a>&gt; {=&gt;} &lt;<a class="reference internal" href="#recipient">recipient</a>&gt;)
+</pre>
+<pre class="literal-block" id="recipient">
+&lt;recipient&gt;
+    ::= &lt;<a class="reference internal" href="#expression">expression</a>&gt;
+</pre>
+<pre class="literal-block" id="case-clause">
+&lt;case clause&gt;
+    ::= {(} {(} &lt;<a class="reference internal" href="#datum">datum</a>&gt;* {)} &lt;<a class="reference internal" href="#sequence">sequence</a>&gt; {)}
+</pre>
+<pre class="literal-block" id="binding-spec">
+&lt;binding spec&gt;
+    ::= {(} &lt;<a class="reference internal" href="#variable">variable</a>&gt; &lt;<a class="reference internal" href="#expression">expression</a>&gt; {)}
+</pre>
+<pre class="literal-block" id="iteration-spec">
+&lt;iteration spec&gt;
+    ::= {(} &lt;<a class="reference internal" href="#variable">variable</a>&gt; &lt;<a class="reference internal" href="#init">init</a>&gt; &lt;<a class="reference internal" href="#setup">setup</a>&gt; {)}
+      | {(} &lt;<a class="reference internal" href="#variable">variable</a>&gt; &lt;<a class="reference internal" href="#init">init</a>&gt; {)}
+</pre>
+<pre class="literal-block" id="init">
+&lt;init&gt;
+    ::= &lt;<a class="reference internal" href="#expression">expression</a>&gt;
+</pre>
+<pre class="literal-block" id="setup">
+&lt;setup&gt;
+    ::= &lt;<a class="reference internal" href="#expression">expression</a>&gt;
+</pre>
+<pre class="literal-block" id="do-result">
+&lt;do result&gt;
+    ::= &lt;<a class="reference internal" href="#sequence">sequence</a>&gt; | &lt;empty&gt;
+</pre>
+<pre class="literal-block" id="macro-use">
+&lt;macro use&gt;
+    ::= {(} &lt;<a class="reference internal" href="#keyword">keyword</a>&gt; &lt;<a class="reference internal" href="#datum">datum</a>&gt;* {)}
+</pre>
+<pre class="literal-block" id="keyword">
+&lt;keyword&gt;
+    ::= &lt;<a class="reference internal" href="#identifier">identifier</a>&gt;
+</pre>
+<pre class="literal-block" id="macro-block">
+&lt;macro block&gt;
+    ::= {(} {let-syntax} {(} &lt;<a class="reference internal" href="#syntax-spec">syntax spec</a>&gt;* {)} &lt;<a class="reference internal" href="#body">body</a>&gt; {)}
+      | {(} {letrec-syntax} {(} &lt;<a class="reference internal" href="#syntax-spec">syntax spec</a>&gt;* {)} &lt;<a class="reference internal" href="#body">body</a>&gt; {)}
+</pre>
+<pre class="literal-block" id="syntax-spec">
+&lt;syntax spec&gt;
+    ::= {(} &lt;<a class="reference internal" href="#keyword">keyword</a>&gt; &lt;<a class="reference internal" href="#transformer-spec">transformer spec</a>&gt; {)}
+</pre>
+</div>
+<div class="section" id="quasiquotation">
+<h1><a class="toc-backref" href="#id11">Quasiquotation</a></h1>
+<pre class="literal-block" id="id2">
+&lt;quasiquotation&gt;
+    ::= &lt;quasiquotation 1&gt;
+
+&lt;qq template 0&gt;
+    ::= &lt;expression&gt;
+</pre>
+<pre class="literal-block" id="quasiquotation-d">
+&lt;quasiquotation D&gt;
+    ::= {`} &lt;<a class="reference internal" href="#qq-template-d">qq template D</a>&gt;
+      | {(} {quasiquote} &lt;<a class="reference internal" href="#qq-template-d">qq template D</a>&gt; {)}
+</pre>
+<pre class="literal-block" id="qq-template-d">
+&lt;qq template D&gt;
+    ::= &lt;<a class="reference internal" href="#simple-datum">simple datum</a>&gt;
+      | &lt;<a class="reference internal" href="#list-qq-template-d">list qq template D</a>&gt;
+      | &lt;<a class="reference internal" href="#vector-qq-template-d">vector qq template D</a>&gt;
+      | &lt;<a class="reference internal" href="#unquotation-d">unquotation D</a>&gt;
+</pre>
+<pre class="literal-block" id="list-qq-template-d">
+&lt;list qq template D&gt;
+    ::= {(} &lt;<a class="reference internal" href="#qq-template-or-splice-d">qq template or splice D</a>&gt;* {)}
+      | {(} &lt;<a class="reference internal" href="#qq-template-or-splice-d">qq template or splice D</a>&gt;+ {.} &lt;<a class="reference internal" href="#qq-template-d">qq template D</a>&gt; {)}
+      | {'} &lt;<a class="reference internal" href="#qq-template-d">qq template D</a>&gt;
+      | &lt;<a class="reference internal" href="#quasiquotation-d">quasiquotation D</a>+1&gt;
+</pre>
+<pre class="literal-block" id="vector-qq-template-d">
+&lt;vector qq template D&gt;
+    ::= {#(} &lt;<a class="reference internal" href="#qq-template-or-splice-d">qq template or splice D</a>&gt;* {)}
+</pre>
+<pre class="literal-block" id="unquotation-d">
+&lt;unquotation D&gt;
+    ::= {,} &lt;<a class="reference internal" href="#qq-template-d">qq template D</a>-1&gt;
+      | {(} {unquote} &lt;<a class="reference internal" href="#qq-template-d">qq template D</a>-1&gt; {)}
+</pre>
+<pre class="literal-block" id="qq-template-or-splice-d">
+&lt;qq template or splice D&gt;
+    ::= &lt;<a class="reference internal" href="#qq-template-d">qq template D</a>&gt;
+      | &lt;<a class="reference internal" href="#splicing-unquotation-d">splicing unquotation D</a>&gt;
+</pre>
+<pre class="literal-block" id="splicing-unquotation-d">
+&lt;splicing unquotation D&gt;
+    ::= {,&#64;} &lt;<a class="reference internal" href="#qq-template-d">qq template D</a>-1&gt;
+      | {(} {unquote-splicing} &lt;<a class="reference internal" href="#qq-template-d">qq template D</a>-1&gt; {)}
+</pre>
+</div>
+<div class="section" id="transformers">
+<h1><a class="toc-backref" href="#id12">Transformers</a></h1>
+<pre class="literal-block" id="transformer-spec">
+&lt;transformer spec&gt;
+    ::= {(} {syntax-rules} {(} &lt;<a class="reference internal" href="#identifier">identifier</a>&gt;* {)} &lt;<a class="reference internal" href="#syntax-rule">syntax rule</a>&gt;* {)}
+</pre>
+<pre class="literal-block" id="syntax-rule">
+&lt;syntax rule&gt;
+    ::= {(} &lt;<a class="reference internal" href="#pattern">pattern</a>&gt; &lt;<a class="reference internal" href="#template">template</a>&gt; {)}
+</pre>
+<pre class="literal-block" id="pattern">
+&lt;pattern&gt;
+    ::= &lt;<a class="reference internal" href="#pattern-identifier">pattern identifier</a>&gt;
+      | {(} &lt;<a class="reference internal" href="#pattern">pattern</a>&gt;* {)}
+      | {(} &lt;<a class="reference internal" href="#pattern">pattern</a>&gt;+ {.} &lt;<a class="reference internal" href="#pattern">pattern</a>&gt; {)}
+      | {(} &lt;<a class="reference internal" href="#pattern">pattern</a>&gt;* &lt;<a class="reference internal" href="#pattern">pattern</a>&gt; &lt;<a class="reference internal" href="#ellipsis">ellipsis</a>&gt; {)}
+      | {#(} &lt;pattern&gt;* {)}
+      | {#(} &lt;<a class="reference internal" href="#pattern">pattern</a>&gt;* &lt;<a class="reference internal" href="#pattern">pattern</a>&gt; &lt;<a class="reference internal" href="#ellipsis">ellipsis</a>&gt; {)}
+      | &lt;<a class="reference internal" href="#pattern-datum">pattern datum</a>&gt;
+</pre>
+<pre class="literal-block" id="pattern-datum">
+&lt;pattern datum&gt;
+    ::= &lt;<a class="reference internal" href="#string">string</a>&gt;
+      | &lt;<a class="reference internal" href="#character">character</a>&gt;
+      | &lt;<a class="reference internal" href="#boolean">boolean</a>&gt;
+      | &lt;<a class="reference internal" href="#id1">number</a>&gt;
+</pre>
+<pre class="literal-block" id="template">
+&lt;template&gt;
+    ::= &lt;<a class="reference internal" href="#pattern-identifier">pattern identifier</a>&gt;
+      | {(} &lt;<a class="reference internal" href="#template-element">template element</a>&gt;* {)}
+      | {(} &lt;<a class="reference internal" href="#template-element">template element</a>&gt;+ {.} &lt;<a class="reference internal" href="#template">template</a>&gt; {)}
+      | {#(} &lt;<a class="reference internal" href="#template-element">template element</a>&gt;* {)}
+      | &lt;<a class="reference internal" href="#template-datum">template datum</a>&gt;
+</pre>
+<pre class="literal-block" id="template-element">
+&lt;template element&gt;
+    ::= &lt;<a class="reference internal" href="#template">template</a>&gt;
+      | &lt;<a class="reference internal" href="#template">template</a>&gt; &lt;<a class="reference internal" href="#ellipsis">ellipsis</a>&gt;
+</pre>
+<pre class="literal-block" id="template-datum">
+&lt;template datum&gt;
+    ::= &lt;<a class="reference internal" href="#pattern-datum">pattern datum</a>&gt;
+</pre>
+<pre class="literal-block" id="pattern-identifier">
+&lt;pattern identifier&gt;
+    ::= &lt;any identifier except {...}&gt;
+</pre>
+<pre class="literal-block" id="ellipsis">
+&lt;ellipsis&gt;
+    ::= {...}
+</pre>
+</div>
+<div class="section" id="programs-and-definitions">
+<h1><a class="toc-backref" href="#id13">Programs and definitions</a></h1>
+<pre class="literal-block" id="program">
+&lt;program&gt;
+    ::= &lt;<a class="reference internal" href="#command-or-definition">command or definition</a>&gt;*
+</pre>
+<pre class="literal-block" id="command-or-definition">
+&lt;command or definition&gt;
+    ::= &lt;<a class="reference internal" href="#command">command</a>&gt;
+      | &lt;<a class="reference internal" href="#definition">definition</a>&gt;
+      | &lt;<a class="reference internal" href="#syntax-definition">syntax definition</a>&gt;
+      | {(} {begin} &lt;<a class="reference internal" href="#command-or-definition">command or definition</a>&gt;+ {)}
+</pre>
+<pre class="literal-block" id="definition">
+&lt;definition&gt;
+    ::= {(} {define} &lt;<a class="reference internal" href="#variable">variable</a>&gt; &lt;<a class="reference internal" href="#expression">expression</a>&gt; {)}
+      | {(} {define} {(} &lt;<a class="reference internal" href="#variable">variable</a>&gt; &lt;<a class="reference internal" href="#def-formals">def formals</a>&gt; {)} &lt;<a class="reference internal" href="#body">body</a>&gt; {)}
+      | {(} {begin} &lt;<a class="reference internal" href="#definition">definition</a>&gt;* {)}
+</pre>
+<pre class="literal-block" id="def-formals">
+&lt;def formals&gt;
+    ::= &lt;<a class="reference internal" href="#variable">variable</a>&gt;*
+      | &lt;<a class="reference internal" href="#variable">variable</a>&gt;* {.} &lt;<a class="reference internal" href="#variable">variable</a>&gt;
+</pre>
+<pre class="literal-block" id="syntax-definition">
+&lt;syntax definition&gt;
+    ::= {(} {define-syntax} &lt;<a class="reference internal" href="#keyword">keyword</a>&gt; &lt;<a class="reference internal" href="#transformer-spec">transformer spec</a>&gt; {)}
+</pre>
+<!-- vim:ft=rst nowrap -->
+</div>
+</div>
+</body>
+</html>

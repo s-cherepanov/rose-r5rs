@@ -1,0 +1,17 @@
+project
+    :   requirements
+            <library>/boost//filesystem
+            <library>/boost//program_options
+    ;
+
+exe rose
+    :   [ glob-tree *.cpp ]
+        /rose/parser//rose-parser
+        /rose/generator//rose-generator
+    ;
+
+install install-rose
+    :   rose
+    :   <variant>debug:<location>$(PROJECT_ROOT)/dist/debug
+        <variant>release:<location>$(PROJECT_ROOT)/dist/release
+    ;
