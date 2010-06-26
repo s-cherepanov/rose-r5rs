@@ -10,37 +10,6 @@ namespace boost {
 namespace spirit {
 namespace traits {
 
-using rose::ast::datum;
-using rose::ast::expression;
-using rose::ast::quotation;
-using rose::ast::lambda_expression;
-using rose::ast::procedure_call;
-using rose::ast::conditional;
-using rose::ast::assignment;
-using rose::ast::list;
-using rose::ast::vector;
-
-#define ENABLE_ATTR_CAST(target, repr)\
-    template<>\
-    struct transform_attribute<target const, std::string> {\
-        typedef std::string type;\
-        static type pre(target const&) {\
-            return repr;\
-        }\
-    };
-
-ENABLE_ATTR_CAST(datum, "{D}")
-ENABLE_ATTR_CAST(expression, "{E}")
-ENABLE_ATTR_CAST(quotation, "{Q}")
-ENABLE_ATTR_CAST(lambda_expression, "{L}")
-ENABLE_ATTR_CAST(procedure_call, "{P}")
-ENABLE_ATTR_CAST(conditional, "{C}")
-ENABLE_ATTR_CAST(assignment, "{A}")
-ENABLE_ATTR_CAST(list, "{Li}")
-ENABLE_ATTR_CAST(vector, "{V}")
-
-#undef ENABLE_ATTR_CAST
-
 using rose::ast::identifier;
 
 template<>

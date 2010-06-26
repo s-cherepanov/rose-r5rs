@@ -30,8 +30,7 @@ struct vector;
 
 typedef
     boost::variant<
-        bool, int, char,
-        string, symbol, identifier, variable,
+        bool, int, char, string, symbol,
         boost::recursive_wrapper<list>,
         boost::recursive_wrapper<vector>
     >
