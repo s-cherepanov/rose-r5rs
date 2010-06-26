@@ -15,6 +15,7 @@ void instantiate_program() {
         iterator_type;
 
     program<iterator_type, space_type>();
+    expression<iterator_type, space_type>();
 }
 
 }   //  namespace generator
