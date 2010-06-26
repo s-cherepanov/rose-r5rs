@@ -46,21 +46,11 @@ token<Iterator, Skipper>::token() :
 
     expression_keyword
         =   no_case[
-                lit("quote")
-            |   "lambda"
-            |   "if"
-            |   "set!"
-            |   "begin"
-            |   "cond"
-            |   "and"
-            |   "or"
-            |   "case"
-            |   "let"
-            |   "let*"
-            |   "letrec"
-            |   "do"
-            |   "delay"
-            |   "quasiquote"
+                lit("if")   |   "lambda"    |   "quote"
+            |   "set!"      |   "begin"     |   "cond"
+            |   "and"       |   "or"        |   "case"
+            |   "let"       |   "let*"      |   "letrec"
+            |   "do"        |   "delay"     |   "quasiquote"
             ]
         ;
 

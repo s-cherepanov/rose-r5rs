@@ -60,7 +60,7 @@ expression<Iterator, Skipper>::expression() :
         ;
 
     quotation
-        =   token.single_quote >> datum
+        =   token.single_quote >> datum     [_val = _1]
         |   token.lparen
             >> no_case["quote"] >> datum    [_val = _1]
             >> token.rparen
