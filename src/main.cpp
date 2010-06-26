@@ -1,7 +1,6 @@
 #include "rose/generator/program.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/r5rs_grammar.hpp"
-#include "rose/repl.hpp"
 
 #include <boost/format.hpp>
 #include <boost/spirit/include/qi.hpp>

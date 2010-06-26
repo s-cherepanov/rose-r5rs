@@ -24,8 +24,6 @@ datum<OutputIterator, Delimiter>::datum() :
         |   character_
         |   string_
         |   symbol
-        |   identifier
-        |   variable
         |   list
         |   vector
         ;
@@ -33,7 +31,7 @@ datum<OutputIterator, Delimiter>::datum() :
     list
         =   lit('(')
             << *start
-            << ('.' << -start)
+            << -('.' << start)
             << ')'
         ;
 

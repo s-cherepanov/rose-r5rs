@@ -6,3 +6,4 @@ tags
 *.swp
 *~
 doc/draft
+core.*
