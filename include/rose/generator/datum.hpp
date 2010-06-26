@@ -33,8 +33,6 @@ private:
     rule<OutputIterator, ast::list(),       Delimiter> list;
     rule<OutputIterator, ast::vector(),     Delimiter> vector;
     rule<OutputIterator, ast::symbol(),     Delimiter> symbol;
-    rule<OutputIterator, ast::variable(),   Delimiter> variable;
-    rule<OutputIterator, ast::identifier(), Delimiter> identifier;
 
 };  //  struct datum
 

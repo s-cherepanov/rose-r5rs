@@ -139,7 +139,9 @@ expression<Iterator, Skipper>::expression() :
 
     assignment
         =   token.lparen
-            >> no_case["set!"] >> variable >> expression_
+            >> no_case["set!"]
+            >> variable
+            >> expression_
             >> token.rparen
         ;
 }
