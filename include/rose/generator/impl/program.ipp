@@ -38,6 +38,7 @@ program<OutputIterator, Delimiter>::program() :
 
     expression
         =   datum_
+        |   variable
         |   quotation
         |   lambda_expression
         |   procedure_call
@@ -65,10 +66,8 @@ program<OutputIterator, Delimiter>::program() :
         ;
 
     body
-        =   lit('(')
-            << *definition
+        =   *definition
             << +expression
-            << ')'
         ;
 
     procedure_call

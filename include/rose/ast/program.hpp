@@ -48,6 +48,7 @@ typedef
     boost::variant<
         nil,
         datum,
+        variable,
         quotation,
         boost::recursive_wrapper<lambda_expression>,
         boost::recursive_wrapper<procedure_call>,

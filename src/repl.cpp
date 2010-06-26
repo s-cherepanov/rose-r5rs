@@ -1,5 +1,4 @@
 #include "rose/generator/program.hpp"
-#include "rose/generator/token.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/r5rs_grammar.hpp"
 #include "rose/repl.hpp"
@@ -62,7 +61,8 @@ void repl() {
         skipper_type skipper;
         ast::program program;
 
-        bool match = qi::phrase_parse(first,last, grammar, skipper, program);
+        bool match = qi::phrase_parse(
+                first, last, grammar, skipper, program);
         bool full_match = match && first == last;
 
         source.clear();
