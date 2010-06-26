@@ -16,6 +16,11 @@ project
             <toolset>gcc:<cxxflags>-Wall
             <toolset>gcc:<c++-template-depth>300
 
+            <toolset>msvc:<cxxflags>/wd4345
+            <toolset>msvc:<cxxflags>/wd4800
+            <toolset>msvc:<cxxflags>/wd4819
+            <toolset>msvc:<cxxflags>/wd4996
+
             <include>include
             <define>BOOST_SPIRIT_DONT_USE_MPL_ASSERT_MSG=0
 
