@@ -31,6 +31,7 @@ private:
     rose::generator::datum<OutputIterator, Delimiter> datum;
 
     rule<OutputIterator, ast::expression(),        Delimiter> start;
+    rule<OutputIterator, ast::expression(),        Delimiter> expression_;
     rule<OutputIterator, ast::quotation(),         Delimiter> quotation;
     rule<OutputIterator, ast::lambda_expression(), Delimiter> lambda_expression;
     rule<OutputIterator, ast::procedure_call(),    Delimiter> procedure_call;

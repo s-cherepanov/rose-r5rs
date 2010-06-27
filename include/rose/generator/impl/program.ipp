@@ -18,6 +18,10 @@ expression<OutputIterator, Delimiter>::expression() :
     using karma::string;
 
     start
+        =   expression_.alias()
+        ;
+
+    expression_
         =   datum
         |   variable
         |   quotation
@@ -52,35 +56,35 @@ expression<OutputIterator, Delimiter>::expression() :
 
     body
         =   *definition
-            << +start
+            << +expression_
         ;
 
     definition
         =   lit('(') << "define"
             << variable
-            << start
+            << expression_
             << ')'
         ;
 
     procedure_call
         =   lit('(')
-            << start
-            << *start
+            << expression_
+            << *expression_
             << ')'
         ;
 
     conditional
         =   lit('(') << "if"
-            << start
-            << start
-            << -start
+            << expression_
+            << expression_
+            << -expression_
             << ')'
         ;
 
     assignment
         =   lit('(') << "set!"
             << variable
-            << start
+            << expression_
             << ')'
         ;
 }
