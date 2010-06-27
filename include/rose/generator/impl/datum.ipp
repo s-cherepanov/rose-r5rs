@@ -17,7 +17,6 @@ datum<OutputIterator, Delimiter>::datum() :
     using karma::int_;
     using karma::lit;
     using karma::string;
-    using karma::verbatim;
 
     start
         =   boolean_
