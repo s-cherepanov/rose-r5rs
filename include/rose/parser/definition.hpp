@@ -3,9 +3,9 @@
 
 #include "rose/ast/program.hpp"
 #include "rose/parser/token.hpp"
-#include "rose/parser/expression.hpp"
 
 #include <boost/config/warning_disable.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/spirit/include/qi.hpp>
 
 namespace rose {
@@ -18,14 +18,24 @@ template<
     typename Iterator,
     typename Skipper
 >
+struct expression;
+
+template<
+    typename Iterator,
+    typename Skipper
+>
 struct definition :
     qi::grammar<Iterator, ast::definition(), Skipper>
 {
-    definition();
+    typedef
+        rose::parser::expression<Iterator, Skipper>
+        expression_type;
+
+    definition(expression_type const*);
 
 private:
+    expression_type const* expression_ptr;
 	rose::parser::token<Iterator, Skipper> token;
-	rose::parser::expression<Iterator, Skipper> expression;
 
     qi::rule<Iterator, ast::definition(), Skipper> start;
 

@@ -2,6 +2,7 @@
 #define __ROSE_PARSER_IMPL_DEFINITION_IPP__
 
 #include "rose/parser/definition.hpp"
+#include "rose/parser/expression.hpp"
 
 #include <boost/spirit/include/phoenix_fusion.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
@@ -10,15 +11,30 @@
 namespace rose {
 namespace parser {
 
+namespace qi = boost::spirit::qi;
+namespace spirit = boost::spirit;
+namespace phoenix = boost::phoenix;
+
 template<
     typename Iterator,
     typename Skipper
 >
-definition<Iterator, Skipper>::definition() :
-    definition::base_type(start)
+definition<Iterator, Skipper>::
+    definition(expression_type const* e)
+:
+    definition::base_type(start),
+    expression_ptr(e)
 {
+    using namespace qi::labels;
+    using phoenix::at_c;
+    using qi::no_case;
+
     start
-        =   expression.definition
+        =   token.lparen
+            >> no_case["define"]
+            >> token.variable               [at_c<0>(_val) = _1]
+            >> (*expression_ptr)            [at_c<1>(_val) = _1]
+            >> token.rparen
         ;
 }
 
