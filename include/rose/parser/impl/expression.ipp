@@ -4,7 +4,6 @@
 #include "rose/parser/expression.hpp"
 
 #include <boost/spirit/include/phoenix_fusion.hpp>
-#include <boost/spirit/include/phoenix_object.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/phoenix_stl.hpp>
 
@@ -12,7 +11,6 @@ namespace rose {
 namespace parser {
 
 namespace qi = boost::spirit::qi;
-namespace spirit = boost::spirit;
 namespace phoenix = boost::phoenix;
 
 template<
@@ -20,7 +18,8 @@ template<
     typename Skipper
 >
 expression<Iterator, Skipper>::expression() :
-    expression::base_type(start)
+    expression::base_type(start),
+    lambda_expression(this)
 {
     using qi::char_;
     using qi::no_case;
@@ -80,41 +79,6 @@ expression<Iterator, Skipper>::expression() :
         ;
 
     operand
-       %=   expression_.alias()
-        ;
-
-    lambda_expression
-        =   token.lparen
-            >> no_case["lambda"]
-            >> formals                      [at_c<0>(_val) = _1]
-            >> body                         [at_c<1>(_val) = _1]
-            >> token.rparen
-        ;
-
-    formals
-        =   token.lparen
-            >> *variable                    [push_back(_val, _1)]
-            >> token.rparen
-        ;
-
-    body
-        =   *definition                     [push_back(at_c<0>(_val), _1)]
-            >> sequence                     [at_c<1>(_val) = _1]
-        ;
-
-    definition
-        =   token.lparen
-            >> no_case["define"]
-            >> token.variable               [at_c<0>(_val) = _1]
-            >> expression_                  [at_c<1>(_val) = _1]
-            >> token.rparen
-        ;
-
-    sequence
-        =   +command                        [push_back(_val, _1)]
-        ;
-
-    command
        %=   expression_.alias()
         ;
 

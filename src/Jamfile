@@ -5,7 +5,7 @@ project
     ;
 
 exe rose
-    :   [ glob-tree *.cpp ]
+    :   [ glob *.cpp ]
         /rose/parser//rose-parser
         /rose/generator//rose-generator
     ;

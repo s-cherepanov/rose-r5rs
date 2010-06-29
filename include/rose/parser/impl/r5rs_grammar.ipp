@@ -16,7 +16,8 @@ template<
     typename Skipper
 >
 r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
-    r5rs_grammar::base_type(start)
+    r5rs_grammar::base_type(start),
+    definition(&expression)
 {
     using spirit::lexeme;
     using spirit::raw;
