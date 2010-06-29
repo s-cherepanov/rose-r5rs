@@ -53,7 +53,7 @@ ast::program parse(std::string const& input) {
     bool match = qi::phrase_parse(
             first, last, grammar, skipper, program);
 
-    BOOST_CHECK(match);
+    BOOST_CHECK(match && first == last);
 
     return program;
 }

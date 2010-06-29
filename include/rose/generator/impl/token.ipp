@@ -9,8 +9,11 @@ namespace generator {
 namespace ascii = boost::spirit::ascii;
 namespace karma = boost::spirit::karma;
 
-template<typename OutputIterator>
-boolean<OutputIterator>::boolean() :
+template<
+    typename OutputIterator,
+    typename Delimiter
+>
+boolean<OutputIterator, Delimiter>::boolean() :
     boolean::base_type(start)
 {
     start
@@ -23,14 +26,36 @@ boolean<OutputIterator>::boolean() :
         ;
 }
 
-template<typename OutputIterator>
-character<OutputIterator>::character() :
+template<
+    typename OutputIterator,
+    typename Delimiter
+>
+number<OutputIterator, Delimiter>::number() :
+    number::base_type(start)
+{
+    using karma::int_;
+
+    start
+        =   int_
+        ;
+}
+
+template<
+    typename OutputIterator,
+    typename Delimiter
+>
+character<OutputIterator, Delimiter>::character() :
     character::base_type(start)
 {
     using karma::char_;
     using karma::graph;
+    using karma::verbatim;
 
     start
+        =   verbatim[character_]
+        ;
+
+    character_
         =   "#\\" << (character_name | graph)
         ;
 
@@ -41,15 +66,23 @@ character<OutputIterator>::character() :
         ;
 }
 
-template<typename OutputIterator>
-string<OutputIterator>::string() :
+template<
+    typename OutputIterator,
+    typename Delimiter
+>
+string<OutputIterator, Delimiter>::string() :
     string::base_type(start)
 {
     using ascii::space;
     using karma::char_;
     using karma::graph;
+    using karma::verbatim;
 
     start
+        =   verbatim[string_]
+        ;
+
+    string_
         =   '"' << *string_element << '"'
         ;
 

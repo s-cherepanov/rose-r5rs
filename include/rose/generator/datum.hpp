@@ -25,14 +25,16 @@ struct datum :
     datum();
 
 private:
-    rose::generator::boolean<OutputIterator>   boolean_;
-    rose::generator::character<OutputIterator> character_;
-    rose::generator::string<OutputIterator>    string_;
+    rose::generator::boolean<OutputIterator, Delimiter>   boolean;
+    rose::generator::number<OutputIterator, Delimiter>    number;
+    rose::generator::character<OutputIterator, Delimiter> character;
+    rose::generator::string<OutputIterator, Delimiter>    string;
 
-    rule<OutputIterator, ast::datum(),      Delimiter> start;
-    rule<OutputIterator, ast::list(),       Delimiter> list;
-    rule<OutputIterator, ast::vector(),     Delimiter> vector;
-    rule<OutputIterator, ast::symbol(),     Delimiter> symbol;
+    rule<OutputIterator, ast::datum(),  Delimiter> start;
+    rule<OutputIterator, ast::datum(),  Delimiter> datum_;
+    rule<OutputIterator, ast::list(),   Delimiter> list;
+    rule<OutputIterator, ast::vector(), Delimiter> vector;
+    rule<OutputIterator, ast::symbol(), Delimiter> symbol;
 
 };  //  struct datum
 

@@ -16,32 +16,35 @@ datum<OutputIterator, Delimiter>::datum() :
 {
     using karma::int_;
     using karma::lit;
-    using karma::string;
 
     start
-        =   boolean_
-        |   int_
-        |   character_
-        |   string_
+        =   datum_.alias()
+        ;
+
+    datum_
+        =   boolean
+        |   number
+        |   character
+        |   string
         |   symbol
         |   list
         |   vector
         ;
 
     symbol
-        =   karma::attr_cast(string)
+        =   karma::attr_cast(karma::string)
         ;
 
     list
         =   lit('(')
-            << *start
-            << -('.' << start)
+            << *datum_
+            << -('.' << datum_)
             << ')'
         ;
 
     vector
         =   lit("#(")
-            << *start
+            << *datum_
             << ')'
         ;
 }
