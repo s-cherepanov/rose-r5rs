@@ -11,9 +11,9 @@
 namespace rose {
 namespace parser {
 
+namespace phoenix = boost::phoenix;
 namespace qi = boost::spirit::qi;
 namespace spirit = boost::spirit;
-namespace phoenix = boost::phoenix;
 
 template<
     typename Iterator,

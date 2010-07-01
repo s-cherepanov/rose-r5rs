@@ -30,8 +30,12 @@ expression<Iterator, Skipper>::expression() :
     using phoenix::push_back;
 
     start
-       %=   variable
-        |   literal
+       %=   token.boolean
+        |   token.number
+        |   token.character
+        |   token.string
+        |   token.variable
+        |   quotation
         |   lambda_expression
         |   procedure_call
         |   conditional
@@ -40,22 +44,6 @@ expression<Iterator, Skipper>::expression() :
 
     expression_
         =   start.alias()
-        ;
-
-    variable
-       %=   token.variable
-        ;
-
-    literal
-       %=   quotation
-        |   self_evaluating
-        ;
-
-    self_evaluating
-       %=   token.boolean
-        |   token.number
-        |   token.character
-        |   token.string
         ;
 
     quotation
@@ -75,11 +63,8 @@ expression<Iterator, Skipper>::expression() :
         ;
 
     operator_
-       %=   expression_.alias()
-        ;
-
-    operand
-       %=   expression_.alias()
+        =   operand
+        =   expression_.alias()
         ;
 
     conditional
@@ -92,21 +77,15 @@ expression<Iterator, Skipper>::expression() :
         ;
 
     test
-        =   expression_.alias()
-        ;
-
-    consequent
-        =   expression_.alias()
-        ;
-
-    alternate
+        =   consequent
+        =   alternate
         =   expression_.alias()
         ;
 
     assignment
         =   token.lparen
             >> no_case["set!"]
-            >> variable
+            >> token.variable
             >> expression_
             >> token.rparen
         ;

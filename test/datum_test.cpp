@@ -3,7 +3,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE( datum_suite )
+BOOST_AUTO_TEST_SUITE(datum_suite)
 
 namespace qi = boost::spirit::qi;
 

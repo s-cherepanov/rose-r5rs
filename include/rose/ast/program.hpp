@@ -10,12 +10,11 @@
 #include <algorithm>
 
 namespace rose {
-namespace ast {
 
-struct lambda_expression;
-struct assignment;
-struct conditional;
-struct procedure_call;
+struct ast_lambda_expression;
+struct ast_assignment;
+struct ast_conditional;
+struct ast_procedure_call;
 
 struct nil {};
 
@@ -27,240 +26,244 @@ inline bool operator<(nil const&, nil const&) {
     return false;
 }
 
-struct quotation {
-    quotation() :
+struct ast_quotation {
+    ast_quotation() :
         quoted()
     {}
 
-    quotation(datum const& quoted) :
+    ast_quotation(ast_datum const& quoted) :
         quoted(quoted)
     {}
 
-    datum quoted;
+    ast_datum quoted;
 
-    bool operator==(quotation const& rhs) const {
+    bool operator==(ast_quotation const& rhs) const {
         return quoted == rhs.quoted;
     }
 
-};  //  struct quotation
+};  //  struct ast_quotation
 
 typedef
     boost::variant<
         nil,
-        datum,
-        variable,
-        quotation,
-        boost::recursive_wrapper<lambda_expression>,
-        boost::recursive_wrapper<procedure_call>,
-        boost::recursive_wrapper<conditional>,
-        boost::recursive_wrapper<assignment>
+        bool,
+        int,
+        char,
+        ast_string,
+        ast_variable,
+        ast_quotation,
+        boost::recursive_wrapper<ast_lambda_expression>,
+        boost::recursive_wrapper<ast_procedure_call>,
+        boost::recursive_wrapper<ast_conditional>,
+        boost::recursive_wrapper<ast_assignment>
     >
-    expression;
+    ast_expression;
 
-struct procedure_call {
-    procedure_call() :
+struct ast_procedure_call {
+    ast_procedure_call() :
         procedure(),
         arguments()
     {}
 
-    procedure_call(
-            expression const& procedure,
-            std::vector<expression> const& arguments)
+    ast_procedure_call(
+            ast_expression const& procedure,
+            std::vector<ast_expression> const& arguments)
     :
         procedure(procedure),
         arguments(arguments)
     {}
 
-    procedure_call(expression const& procedure) :
+    ast_procedure_call(ast_expression const& procedure) :
         procedure(procedure)
     {}
 
-    bool operator==(procedure_call const& rhs) const {
+    bool operator==(ast_procedure_call const& rhs) const {
         return procedure == rhs.procedure && arguments == rhs.arguments;
     }
 
-    expression procedure;
-    std::vector<expression> arguments;
+    ast_expression procedure;
+    std::vector<ast_expression> arguments;
 
-};  //  struct procedure_call
+};  //  struct ast_procedure_call
 
-struct conditional {
-    conditional() :
+struct ast_conditional {
+    ast_conditional() :
         test(),
         consequent(),
         alternate()
     {}
 
-    conditional(
-            expression const& test,
-            expression const& consequent)
+    ast_conditional(
+            ast_expression const& test,
+            ast_expression const& consequent)
     :
         test(test),
         consequent(consequent),
         alternate()
     {}
 
-    conditional(
-            expression const& test,
-            expression const& consequent,
-            expression const& alternate)
+    ast_conditional(
+            ast_expression const& test,
+            ast_expression const& consequent,
+            ast_expression const& alternate)
     :
         test(test),
         consequent(consequent),
         alternate(alternate)
     {}
 
-    bool operator==(conditional const& rhs) const {
+    bool operator==(ast_conditional const& rhs) const {
         return test == rhs.test &&
             consequent == rhs.consequent &&
             alternate == rhs.alternate;
     }
 
-    expression test;
-    expression consequent;
-    boost::optional<expression> alternate;
+    ast_expression test;
+    ast_expression consequent;
+    boost::optional<ast_expression> alternate;
 
-};  //  struct conditional
+};  //  struct ast_conditional
 
-struct assignment {
-    assignment() :
-        var(),
-        expr()
+struct ast_assignment {
+    ast_assignment() :
+        variable(),
+        expression()
     {}
 
-    assignment(
-            variable const& var,
-            expression const& expr)
+    ast_assignment(
+            ast_variable const& var,
+            ast_expression const& expr)
     :
-        var(var),
-        expr(expr)
+        variable(var),
+        expression(expr)
     {}
 
-    bool operator==(assignment const& rhs) const {
-        return var == rhs.var && expr == rhs.expr;
+    bool operator==(ast_assignment const& rhs) const {
+        return variable == rhs.variable &&
+               expression == rhs.expression;
     }
 
-    variable var;
-    expression expr;
+    ast_variable variable;
+    ast_expression expression;
 
-};  //  struct assignment
+};  //  struct ast_assignment
 
-struct definition {
-    definition() :
-        var(),
-        expr()
+struct ast_definition {
+    ast_definition() :
+        variable(),
+        expression()
     {}
 
-    definition(
-            variable const& var,
-            expression const& expr)
+    ast_definition(
+            ast_variable const& var,
+            ast_expression const& expr)
     :
-        var(var),
-        expr(expr)
+        variable(var),
+        expression(expr)
     {}
 
-    bool operator==(definition const& rhs) const {
-        return var == rhs.var && expr == rhs.expr;
+    bool operator==(ast_definition const& rhs) const {
+        return variable == rhs.variable &&
+            expression == rhs.expression;
     }
 
-    variable var;
-    expression expr;
+    ast_variable variable;
+    ast_expression expression;
 
 };  //  struct definition
 
 typedef
-    std::vector<ast::expression>
-    sequence;
+    std::vector<ast_expression>
+    ast_sequence;
 
-struct body {
-    bool operator==(body const& rhs) const {
+struct ast_body {
+    bool operator==(ast_body const& rhs) const {
         return definitions == rhs.definitions &&
-            seq== rhs.seq;
+               sequence== rhs.sequence;
     }
 
-    std::vector<definition> definitions;
-    sequence seq;
+    std::vector<ast_definition> definitions;
+    ast_sequence sequence;
 
 };  //  struct body
 
 typedef
-    std::vector<ast::variable>
-    formals;
+    std::vector<ast_variable>
+    ast_formals;
 
-struct lambda_expression {
-    lambda_expression() :
+struct ast_lambda_expression {
+    ast_lambda_expression() :
         formals(),
         body()
     {}
 
-    lambda_expression(
-            std::vector<variable> const& formals,
-            rose::ast::body const& body)
+    ast_lambda_expression(
+            ast_formals const& formals,
+            ast_body const& body)
     :
         formals(formals),
         body(body)
     {}
 
-    bool operator==(lambda_expression const& rhs) const {
+    bool operator==(ast_lambda_expression const& rhs) const {
         return formals == rhs.formals && body == rhs.body;
     }
 
-    std::vector<variable> formals;
-    rose::ast::body body;
+    ast_formals formals;
+    ast_body body;
 
 };  //  struct lambda_expression
 
 typedef
-    boost::variant<ast::definition, ast::expression>
-    command_or_definition;
+    boost::variant<ast_definition, ast_expression>
+    ast_command_or_definition;
 
 typedef
-    std::vector<command_or_definition>
-    program;
+    std::vector<ast_command_or_definition>
+    ast_program;
 
-}   //  namespace ast
 }   //  namespace rose
 
 BOOST_FUSION_ADAPT_STRUCT(
-    rose::ast::quotation,
-    (rose::ast::datum, quoted)
+    rose::ast_quotation,
+    (rose::ast_datum, quoted)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
-    rose::ast::procedure_call,
-    (rose::ast::expression, procedure)
-    (std::vector<rose::ast::expression>, arguments)
+    rose::ast_procedure_call,
+    (rose::ast_expression, procedure)
+    (std::vector<rose::ast_expression>, arguments)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
-    rose::ast::conditional,
-    (rose::ast::expression, test)
-    (rose::ast::expression, consequent)
-    (boost::optional<rose::ast::expression>, alternate)
+    rose::ast_conditional,
+    (rose::ast_expression, test)
+    (rose::ast_expression, consequent)
+    (boost::optional<rose::ast_expression>, alternate)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
-    rose::ast::assignment,
-    (rose::ast::variable, var)
-    (rose::ast::expression, expr)
+    rose::ast_assignment,
+    (rose::ast_variable, variable)
+    (rose::ast_expression, expression)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
-    rose::ast::definition,
-    (rose::ast::variable, var)
-    (rose::ast::expression, expr)
+    rose::ast_definition,
+    (rose::ast_variable, variable)
+    (rose::ast_expression, expression)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
-    rose::ast::body,
-    (std::vector<rose::ast::definition>, definitions)
-    (std::vector<rose::ast::expression>, seq)
+    rose::ast_body,
+    (std::vector<rose::ast_definition>, definitions)
+    (rose::ast_sequence, sequence)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
-    rose::ast::lambda_expression,
-    (std::vector<rose::ast::variable>, formals)
-    (rose::ast::body, body)
+    rose::ast_lambda_expression,
+    (rose::ast_formals, formals)
+    (rose::ast_body, body)
 )
 
 #endif  //  __ROSE_AST_EXPRESSION_HPP__

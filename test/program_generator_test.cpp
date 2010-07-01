@@ -6,15 +6,13 @@
 
 namespace ascii = boost::spirit::ascii;
 namespace karma = boost::spirit::karma;
-namespace qi    = boost::spirit::qi;
+namespace qi = boost::spirit::qi;
 
-namespace ast       = rose::ast;
-namespace parser    = rose::parser;
-namespace generator = rose::generator;
+using namespace rose;
 
 BOOST_AUTO_TEST_SUITE(program_generator_suite)
 
-std::string generate(ast::program const& program) {
+std::string generate(ast_program const& program) {
     using ascii::space;
     using ascii::space_type;
 
@@ -30,7 +28,7 @@ std::string generate(ast::program const& program) {
     return output;
 }
 
-ast::program parse(std::string const& input) {
+ast_program parse(std::string const& input) {
     typedef
         std::string::const_iterator
         iterator_type;
@@ -45,7 +43,7 @@ ast::program parse(std::string const& input) {
 
     r5rs_grammar grammar;
     skipper_type skipper;
-    ast::program program;
+    ast_program program;
 
     iterator_type first = input.begin();
     iterator_type last  = input.end();

@@ -18,7 +18,7 @@ namespace qi = boost::spirit::qi;
 
 const std::string default_prompt("rose> ");
 
-std::string generate_program(ast::program const& program) {
+std::string generate_program(ast_program const& program) {
     using ascii::space;
     using ascii::space_type;
     using karma::generate_delimited;
@@ -59,7 +59,7 @@ void repl() {
 
         r5rs_grammar grammar;
         skipper_type skipper;
-        ast::program program;
+        ast_program program;
 
         bool match = qi::phrase_parse(
                 first, last, grammar, skipper, program);

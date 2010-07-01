@@ -13,38 +13,37 @@
 namespace rose {
 namespace parser {
 
-namespace ast = rose::ast;
 namespace qi = boost::spirit::qi;
+
+using namespace rose;
+using qi::grammar;
+using qi::rule;
 
 template<
     typename Iterator,
     typename Skipper
 >
 struct expression :
-    qi::grammar<Iterator, ast::expression(), Skipper>
+    grammar<Iterator, ast_expression(), Skipper>
 {
     expression();
 
+private:
     rose::parser::datum<Iterator, Skipper>             datum;
 	rose::parser::lambda_expression<Iterator, Skipper> lambda_expression;
 	rose::parser::token<Iterator, Skipper>             token;
 
-    qi::rule<Iterator, ast::variable(),       Skipper> variable;
-    qi::rule<Iterator, ast::expression(),     Skipper> literal;
-    qi::rule<Iterator, ast::procedure_call(), Skipper> procedure_call;
-    qi::rule<Iterator, ast::conditional(),    Skipper> conditional;
-    qi::rule<Iterator, ast::assignment(),     Skipper> assignment;
-
-private:
-    qi::rule<Iterator, ast::expression(),   Skipper> start;
-    qi::rule<Iterator, ast::expression(),   Skipper> expression_;
-    qi::rule<Iterator, ast::datum(),        Skipper> self_evaluating;
-    qi::rule<Iterator, ast::quotation(),    Skipper> quotation;
-    qi::rule<Iterator, ast::expression(),   Skipper> operator_;
-    qi::rule<Iterator, ast::expression(),   Skipper> operand;
-    qi::rule<Iterator, ast::expression(),   Skipper> test;
-    qi::rule<Iterator, ast::expression(),   Skipper> consequent;
-    qi::rule<Iterator, ast::expression(),   Skipper> alternate;
+    rule<Iterator, ast_expression(),     Skipper> start;
+    rule<Iterator, ast_expression(),     Skipper> expression_;
+    rule<Iterator, ast_procedure_call(), Skipper> procedure_call;
+    rule<Iterator, ast_conditional(),    Skipper> conditional;
+    rule<Iterator, ast_assignment(),     Skipper> assignment;
+    rule<Iterator, ast_quotation(),      Skipper> quotation;
+    rule<Iterator, ast_expression(),     Skipper> operator_;
+    rule<Iterator, ast_expression(),     Skipper> operand;
+    rule<Iterator, ast_expression(),     Skipper> test;
+    rule<Iterator, ast_expression(),     Skipper> consequent;
+    rule<Iterator, ast_expression(),     Skipper> alternate;
 
 };  //  struct expression
 

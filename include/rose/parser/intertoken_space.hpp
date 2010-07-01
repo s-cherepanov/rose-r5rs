@@ -9,6 +9,9 @@ namespace parser {
 
 namespace qi = boost::spirit::qi;
 
+using qi::grammar;
+using qi::rule;
+
 template<typename Iterator>
 struct intertoken_space :
     qi::grammar<Iterator>

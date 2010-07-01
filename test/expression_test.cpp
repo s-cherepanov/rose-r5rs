@@ -8,9 +8,9 @@
 BOOST_AUTO_TEST_SUITE(expression_suite)
 
 namespace qi = boost::spirit::qi;
-namespace ast = rose::ast;
 
 using namespace boost::assign;
+using namespace rose;
 
 typedef
     std::string::const_iterator
@@ -22,13 +22,13 @@ typedef
 
 typedef
     rose::parser::expression<iterator_type, skipper_type>
-    expression;
+    expression_grammar;
 
 bool is_expression(std::string const& input) {
     iterator_type begin = input.begin();
     iterator_type end = input.end();
     skipper_type skipper;
-    expression grammar;
+    expression_grammar grammar;
 
     bool result = qi::phrase_parse(begin, end, grammar, skipper);
     return result && begin == end;
@@ -36,13 +36,13 @@ bool is_expression(std::string const& input) {
 
 bool test_expression_ast(
         std::string const& input,
-        ast::expression const& expected)
+        ast_expression const& expected)
 {
     iterator_type begin = input.begin();
     iterator_type end = input.end();
     skipper_type skipper;
-    expression grammar;
-    ast::expression actual;
+    expression_grammar grammar;
+    ast_expression actual;
 
     bool result = qi::phrase_parse(begin, end, grammar, skipper, actual);
     return result && begin == end && expected == actual;
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(variable_test) {
 }
 
 BOOST_AUTO_TEST_CASE(variable_ast_test) {
-    ast::expression e(ast::variable("abc"));
+    ast_expression e(ast_variable("abc"));
     BOOST_CHECK(test_expression_ast("abc", e));
 }
 
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(literal_quotation_test) {
 }
 
 BOOST_AUTO_TEST_CASE(literal_quotation_ast_test) {
-    ast::expression e(ast::quotation(ast::symbol("a")));
+    ast_expression e(ast_quotation(ast_symbol("a")));
     BOOST_CHECK(test_expression_ast("(quote a)", e));
 }
 
@@ -100,13 +100,13 @@ BOOST_AUTO_TEST_CASE(procedure_call_test) {
 }
 
 BOOST_AUTO_TEST_CASE(procedure_call_ast_test) {
-    ast::expression op(ast::variable("+"));
-    std::vector<ast::expression> args;
+    ast_expression op(ast_variable("+"));
+    std::vector<ast_expression> args;
 
-    args.push_back(ast::expression(1));
-    args.push_back(ast::expression(2));
+    args.push_back(ast_expression(1));
+    args.push_back(ast_expression(2));
 
-    ast::expression e(ast::procedure_call(op, args));
+    ast_expression e(ast_procedure_call(op, args));
     BOOST_CHECK(test_expression_ast("(+ 1 2)", e));
 }
 

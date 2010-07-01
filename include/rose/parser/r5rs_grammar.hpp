@@ -13,12 +13,16 @@ namespace parser {
 
 namespace qi = boost::spirit::qi;
 
+using namespace rose;
+using qi::grammar;
+using qi::rule;
+
 template<
     typename Iterator,
     typename Skipper
 >
 struct r5rs_grammar :
-    qi::grammar<Iterator, ast::program(), Skipper>
+    grammar<Iterator, ast_program(), Skipper>
 {
     r5rs_grammar();
 
@@ -26,8 +30,8 @@ private:
     rose::parser::expression<Iterator, Skipper> expression;
     rose::parser::definition<Iterator, Skipper> definition;
 
-    qi::rule<Iterator, ast::program(),    Skipper> start;
-    qi::rule<Iterator, ast::expression(), Skipper> command;
+    rule<Iterator, ast_program(),    Skipper> start;
+    rule<Iterator, ast_expression(), Skipper> command;
 
 };  //  struct r5rs_grammar
 

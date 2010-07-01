@@ -10,19 +10,22 @@ namespace rose {
 namespace generator {
 
 namespace karma = boost::spirit::karma;
-namespace ast = rose::ast;
+
+using karma::grammar;
+using karma::rule;
+using karma::symbols;
 
 template<
     typename OutputIterator,
     typename Delimiter
 >
 struct boolean :
-    karma::grammar<OutputIterator, bool(), Delimiter>
+    grammar<OutputIterator, bool(), Delimiter>
 {
     boolean();
 
-    karma::rule<OutputIterator, bool(), Delimiter> start;
-    karma::symbols<bool, char const*> boolean_sym;
+    rule<OutputIterator, bool(), Delimiter> start;
+    symbols<bool, char const*> boolean_sym;
 
 };  //  struct boolean
 
@@ -31,11 +34,11 @@ template<
     typename Delimiter
 >
 struct number :
-    karma::grammar<OutputIterator, int(), Delimiter>
+    grammar<OutputIterator, int(), Delimiter>
 {
     number();
 
-    karma::rule<OutputIterator, int(), Delimiter> start;
+    rule<OutputIterator, int(), Delimiter> start;
 
 };  //  struct boolean
 
@@ -44,13 +47,13 @@ template<
     typename Delimiter
 >
 struct character :
-    karma::grammar<OutputIterator, char(), Delimiter>
+    grammar<OutputIterator, char(), Delimiter>
 {
     character();
 
-    karma::rule<OutputIterator, char(), Delimiter> start;
-    karma::rule<OutputIterator, char()> character_;
-    karma::rule<OutputIterator, char()> character_name;
+    rule<OutputIterator, char(), Delimiter> start;
+    rule<OutputIterator, char()> character_;
+    rule<OutputIterator, char()> character_name;
 
 };  //  struct character
 
@@ -59,13 +62,13 @@ template<
     typename Delimiter
 >
 struct string :
-    karma::grammar<OutputIterator, ast::string(), Delimiter>
+    grammar<OutputIterator, ast_string(), Delimiter>
 {
     string();
 
-    karma::rule<OutputIterator, ast::string(), Delimiter> start;
-    karma::rule<OutputIterator, ast::string()> string_;
-    karma::rule<OutputIterator, char()> string_element;
+    rule<OutputIterator, ast_string(), Delimiter> start;
+    rule<OutputIterator, ast_string()> string_;
+    rule<OutputIterator, char()>       string_element;
 
 };  //  struct string
 

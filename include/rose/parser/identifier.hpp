@@ -10,18 +10,21 @@ namespace parser {
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 
+using qi::grammar;
+using qi::rule;
+
 template<typename Iterator>
 struct identifier :
     qi::grammar<Iterator, std::string()>
 {
     identifier();
 
-    qi::rule<Iterator, std::string()> start;
-    qi::rule<Iterator> initial;
-    qi::rule<Iterator> peculiar_identifier;
-    qi::rule<Iterator> special_initial;
-    qi::rule<Iterator> special_subsequent;
-    qi::rule<Iterator> subsequent;
+    rule<Iterator, std::string()> start;
+    rule<Iterator> initial;
+    rule<Iterator> peculiar_identifier;
+    rule<Iterator> special_initial;
+    rule<Iterator> special_subsequent;
+    rule<Iterator> subsequent;
 
 };  //  struct identifier
 

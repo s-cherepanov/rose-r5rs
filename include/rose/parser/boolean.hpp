@@ -9,11 +9,14 @@ namespace parser {
 
 namespace qi = boost::spirit::qi;
 
+using qi::grammar;
+using qi::rule;
+
 template<typename Iterator>
-struct boolean : qi::grammar<Iterator, bool()> {
+struct boolean : grammar<Iterator, bool()> {
     boolean();
 
-    qi::rule<Iterator, bool()> start;
+    rule<Iterator, bool()> start;
 
 };  //  struct boolean
 

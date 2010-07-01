@@ -12,13 +12,13 @@ typedef
 
 typedef
     rose::parser::identifier<iterator_type>
-    identifier;
+    identifier_grammar;
 
 bool is_identifier( std::string const& str ) {
     iterator_type first = str.begin();
     iterator_type last = str.end();
     std::string actual;
-    identifier grammar;
+    identifier_grammar grammar;
 
     bool result = qi::parse( first, last, grammar, actual );
     return result && first == last && str == actual;
