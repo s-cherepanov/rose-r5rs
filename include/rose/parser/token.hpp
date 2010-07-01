@@ -17,30 +17,33 @@ namespace parser {
 
 namespace qi = boost::spirit::qi;
 
+using qi::grammar;
+using qi::rule;
+
 template<typename Iterator, typename Skipper>
 struct token :
-    qi::grammar<Iterator, Skipper>
+    grammar<Iterator, Skipper>
 {
     token();
 
-    qi::rule<Iterator, Skipper> start;
-    qi::rule<Iterator>          delimiter;
+    rule<Iterator, Skipper> start;
+    rule<Iterator>          delimiter;
 
-    qi::rule<Iterator, ast::identifier(), Skipper> identifier;
-    qi::rule<Iterator, ast::string(),     Skipper> string;
-    qi::rule<Iterator, ast::variable(),   Skipper> variable;
-    qi::rule<Iterator, bool(),            Skipper> boolean;
-    qi::rule<Iterator, char(),            Skipper> character;
-    qi::rule<Iterator, int(),             Skipper> number;
+    rule<Iterator, ast_identifier(), Skipper> identifier;
+    rule<Iterator, ast_string(),     Skipper> string;
+    rule<Iterator, ast_variable(),   Skipper> variable;
+    rule<Iterator, bool(),           Skipper> boolean;
+    rule<Iterator, char(),           Skipper> character;
+    rule<Iterator, int(),            Skipper> number;
 
-    qi::rule<Iterator, Skipper> lparen;
-    qi::rule<Iterator, Skipper> rparen;
-    qi::rule<Iterator, Skipper> sharp_lparen;
-    qi::rule<Iterator, Skipper> single_quote;
-    qi::rule<Iterator, Skipper> back_quote;
-    qi::rule<Iterator, Skipper> comma;
-    qi::rule<Iterator, Skipper> comma_at;
-    qi::rule<Iterator, Skipper> dot;
+    rule<Iterator, Skipper> lparen;
+    rule<Iterator, Skipper> rparen;
+    rule<Iterator, Skipper> sharp_lparen;
+    rule<Iterator, Skipper> single_quote;
+    rule<Iterator, Skipper> back_quote;
+    rule<Iterator, Skipper> comma;
+    rule<Iterator, Skipper> comma_at;
+    rule<Iterator, Skipper> dot;
 
 private:
     rose::parser::boolean<Iterator>    boolean_;
@@ -49,10 +52,10 @@ private:
     rose::parser::number<Iterator>     number_;
     rose::parser::string<Iterator>     string_;
 
-    qi::rule<Iterator, ast::variable()> variable_;
+    rule<Iterator, ast_variable()> variable_;
 
-    qi::rule<Iterator> expression_keyword;
-    qi::rule<Iterator> syntactic_keyword;
+    rule<Iterator> expression_keyword;
+    rule<Iterator> syntactic_keyword;
 
 };  //  struct token
 

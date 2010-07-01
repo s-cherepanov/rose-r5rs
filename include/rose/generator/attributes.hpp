@@ -10,43 +10,43 @@ namespace boost {
 namespace spirit {
 namespace traits {
 
-using rose::ast::identifier;
+using rose::ast_identifier;
 
 template<>
-struct transform_attribute<identifier const, std::string> {
+struct transform_attribute<ast_identifier const, std::string> {
     typedef std::string type;
-    static type pre(identifier const& i) {
+    static type pre(ast_identifier const& i) {
         return static_cast<std::string>(i);
     }
 };
 
-using rose::ast::symbol;
+using rose::ast_symbol;
 
 template<>
-struct transform_attribute<symbol const, std::string> {
+struct transform_attribute<ast_symbol const, std::string> {
     typedef std::string type;
-    static type pre(symbol const& s) {
+    static type pre(ast_symbol const& s) {
         return static_cast<std::string>(s);
     }
 };
 
-using rose::ast::variable;
+using rose::ast_variable;
 
 template<>
-struct transform_attribute<variable const, std::string> {
+struct transform_attribute<ast_variable const, std::string> {
     typedef std::string type;
-    static type pre(variable const& v) {
+    static type pre(ast_variable const& v) {
         return static_cast<std::string>(v);
     }
 };
 
-using rose::ast::datum;
-using rose::ast::quotation;
+using rose::ast_datum;
+using rose::ast_quotation;
 
 template<>
-struct transform_attribute<quotation const, datum> {
-    typedef datum type;
-    static type pre(quotation const& q) {
+struct transform_attribute<ast_quotation const, ast_datum> {
+    typedef ast_datum type;
+    static type pre(ast_quotation const& q) {
         return q.quoted;
     }
 };

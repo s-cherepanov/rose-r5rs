@@ -12,13 +12,16 @@ namespace parser {
 
 namespace qi = boost::spirit::qi;
 
+using qi::grammar;
+using qi::rule;
+
 template<typename Iterator>
 struct number :
-    qi::grammar<Iterator, int()>
+    grammar<Iterator, int()>
 {
     number();
 
-    qi::rule<Iterator, int()> start;
+    rule<Iterator, int()> start;
     
 };  //  struct number
 

@@ -2,13 +2,13 @@
 
 #include <boost/test/unit_test.hpp>
 
-using namespace rose::ast;
+using namespace rose;
 
 BOOST_AUTO_TEST_SUITE(ast_expression_suite)
 
 BOOST_AUTO_TEST_CASE(ast_expression_test) {
-    expression e1;
-    expression e2;
+    ast_expression e1;
+    ast_expression e2;
     BOOST_CHECK( e1 == e2 );
 }
 

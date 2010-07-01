@@ -17,20 +17,20 @@ template<
     typename Skipper
 >
 struct datum :
-    qi::grammar<Iterator, ast::datum(), Skipper>
+    qi::grammar<Iterator, ast_datum(), Skipper>
 {
     datum();
 
 	rose::parser::token<Iterator, Skipper> token;
 
-    qi::rule<Iterator, ast::datum(),  Skipper> datum_;
-    qi::rule<Iterator, ast::datum(),  Skipper> simple_datum;
-    qi::rule<Iterator, ast::symbol(), Skipper> symbol;
-    qi::rule<Iterator, ast::datum(),  Skipper> compound_datum;
-    qi::rule<Iterator, ast::list(),   Skipper> list;
-    qi::rule<Iterator, ast::datum(),  Skipper> abbreviation;
-    qi::rule<Iterator,                Skipper> abbrev_prefix;
-    qi::rule<Iterator, ast::vector(), Skipper> vector;
+    qi::rule<Iterator, ast_datum(),  Skipper> abbreviation;
+    qi::rule<Iterator, ast_datum(),  Skipper> compound_datum;
+    qi::rule<Iterator, ast_datum(),  Skipper> datum_;
+    qi::rule<Iterator, ast_datum(),  Skipper> simple_datum;
+    qi::rule<Iterator, ast_list(),   Skipper> list;
+    qi::rule<Iterator, ast_symbol(), Skipper> symbol;
+    qi::rule<Iterator, ast_vector(), Skipper> vector;
+    qi::rule<Iterator,               Skipper> abbrev_prefix;
 
 };  //  struct datum
 

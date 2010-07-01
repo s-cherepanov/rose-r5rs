@@ -11,8 +11,11 @@
 namespace rose {
 namespace parser {
 
-namespace ast = rose::ast;
 namespace qi = boost::spirit::qi;
+
+using namespace rose;
+using qi::grammar;
+using qi::rule;
 
 template<
     typename Iterator,
@@ -25,7 +28,7 @@ template<
     typename Skipper
 >
 struct definition :
-    qi::grammar<Iterator, ast::definition(), Skipper>
+    grammar<Iterator, ast_definition(), Skipper>
 {
     typedef
         rose::parser::expression<Iterator, Skipper>
@@ -37,7 +40,7 @@ private:
     expression_type const* expression_ptr;
 	rose::parser::token<Iterator, Skipper> token;
 
-    qi::rule<Iterator, ast::definition(), Skipper> start;
+    rule<Iterator, ast_definition(), Skipper> start;
 
 };  //  struct definition
 

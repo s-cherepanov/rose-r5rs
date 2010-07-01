@@ -10,9 +10,9 @@
 namespace rose {
 namespace generator {
 
-namespace ast = rose::ast;
 namespace karma = boost::spirit::karma;
 
+using karma::grammar;
 using karma::rule;
 
 template<
@@ -20,7 +20,7 @@ template<
     typename Delimiter
 >
 struct datum :
-    karma::grammar<OutputIterator, ast::datum(), Delimiter>
+    grammar<OutputIterator, ast_datum(), Delimiter>
 {
     datum();
 
@@ -30,11 +30,11 @@ private:
     rose::generator::character<OutputIterator, Delimiter> character;
     rose::generator::string<OutputIterator, Delimiter>    string;
 
-    rule<OutputIterator, ast::datum(),  Delimiter> start;
-    rule<OutputIterator, ast::datum(),  Delimiter> datum_;
-    rule<OutputIterator, ast::list(),   Delimiter> list;
-    rule<OutputIterator, ast::vector(), Delimiter> vector;
-    rule<OutputIterator, ast::symbol(), Delimiter> symbol;
+    rule<OutputIterator, ast_datum(),  Delimiter> datum_;
+    rule<OutputIterator, ast_datum(),  Delimiter> start;
+    rule<OutputIterator, ast_list(),   Delimiter> list;
+    rule<OutputIterator, ast_symbol(), Delimiter> symbol;
+    rule<OutputIterator, ast_vector(), Delimiter> vector;
 
 };  //  struct datum
 

@@ -2,14 +2,14 @@
 
 #include <boost/test/unit_test.hpp>
 
-namespace ast = rose::ast;
+using namespace rose;
 
 namespace ascii = boost::spirit::ascii;
 namespace karma = boost::spirit::karma;
 
 BOOST_AUTO_TEST_SUITE(string_generator_suite)
 
-std::string generate(rose::ast::string const& s) {
+std::string generate(rose::ast_string const& s) {
     using ascii::space;
     using ascii::space_type;
 
@@ -26,7 +26,7 @@ std::string generate(rose::ast::string const& s) {
 }
 
 BOOST_AUTO_TEST_CASE(escaping_test) {
-    std::string actual = generate(ast::string("hello\nworld"));
+    std::string actual = generate(ast_string("hello\nworld"));
     std::string expected = "\"hello\nworld\" ";
     BOOST_CHECK_EQUAL(actual, expected);
 }
