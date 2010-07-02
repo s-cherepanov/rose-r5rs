@@ -16,59 +16,59 @@ using karma::rule;
 using karma::symbols;
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
 struct boolean :
-    grammar<OutputIterator, bool(), Delimiter>
+    grammar<Iterator, bool(), Delimiter>
 {
     boolean();
 
-    rule<OutputIterator, bool(), Delimiter> start;
+    rule<Iterator, bool(), Delimiter> start;
     symbols<bool, char const*> boolean_sym;
 
 };  //  struct boolean
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
 struct number :
-    grammar<OutputIterator, int(), Delimiter>
+    grammar<Iterator, int(), Delimiter>
 {
     number();
 
-    rule<OutputIterator, int(), Delimiter> start;
+    rule<Iterator, int(), Delimiter> start;
 
 };  //  struct boolean
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
 struct character :
-    grammar<OutputIterator, char(), Delimiter>
+    grammar<Iterator, char(), Delimiter>
 {
     character();
 
-    rule<OutputIterator, char(), Delimiter> start;
-    rule<OutputIterator, char()> character_;
-    rule<OutputIterator, char()> character_name;
+    rule<Iterator, char(), Delimiter> start;
+    rule<Iterator, char()> character_;
+    rule<Iterator, char()> character_name;
 
 };  //  struct character
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
 struct string :
-    grammar<OutputIterator, ast_string(), Delimiter>
+    grammar<Iterator, ast_string(), Delimiter>
 {
     string();
 
-    rule<OutputIterator, ast_string(), Delimiter> start;
-    rule<OutputIterator, ast_string()> string_;
-    rule<OutputIterator, char()>       string_element;
+    rule<Iterator, ast_string(), Delimiter> start;
+    rule<Iterator, ast_string()> string_;
+    rule<Iterator, char()>       string_element;
 
 };  //  struct string
 

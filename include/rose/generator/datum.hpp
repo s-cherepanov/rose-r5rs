@@ -16,25 +16,25 @@ using karma::grammar;
 using karma::rule;
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
 struct datum :
-    grammar<OutputIterator, ast_datum(), Delimiter>
+    grammar<Iterator, ast_datum(), Delimiter>
 {
     datum();
 
 private:
-    rose::generator::boolean<OutputIterator, Delimiter>   boolean;
-    rose::generator::number<OutputIterator, Delimiter>    number;
-    rose::generator::character<OutputIterator, Delimiter> character;
-    rose::generator::string<OutputIterator, Delimiter>    string;
+    rose::generator::boolean<Iterator, Delimiter>   boolean;
+    rose::generator::number<Iterator, Delimiter>    number;
+    rose::generator::character<Iterator, Delimiter> character;
+    rose::generator::string<Iterator, Delimiter>    string;
 
-    rule<OutputIterator, ast_datum(),  Delimiter> datum_;
-    rule<OutputIterator, ast_datum(),  Delimiter> start;
-    rule<OutputIterator, ast_list(),   Delimiter> list;
-    rule<OutputIterator, ast_symbol(), Delimiter> symbol;
-    rule<OutputIterator, ast_vector(), Delimiter> vector;
+    rule<Iterator, ast_datum(),  Delimiter> datum_;
+    rule<Iterator, ast_datum(),  Delimiter> start;
+    rule<Iterator, ast_list(),   Delimiter> list;
+    rule<Iterator, ast_symbol(), Delimiter> symbol;
+    rule<Iterator, ast_vector(), Delimiter> vector;
 
 };  //  struct datum
 
