@@ -8,10 +8,10 @@ namespace rose {
 namespace generator {
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
-datum<OutputIterator, Delimiter>::datum() :
+datum<Iterator, Delimiter>::datum() :
     datum::base_type(start)
 {
     using karma::int_;

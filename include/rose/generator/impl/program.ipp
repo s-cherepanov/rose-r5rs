@@ -8,10 +8,10 @@ namespace rose {
 namespace generator {
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
-expression<OutputIterator, Delimiter>::expression() :
+expression<Iterator, Delimiter>::expression() :
     expression::base_type(start)
 {
     using karma::lit;
@@ -90,10 +90,10 @@ expression<OutputIterator, Delimiter>::expression() :
 }
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
-program<OutputIterator, Delimiter>::program() :
+program<Iterator, Delimiter>::program() :
     program::base_type(start)
 {
     start

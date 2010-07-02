@@ -20,7 +20,7 @@ template<
     typename Skipper
 >
 datum<Iterator, Skipper>::datum() :
-    datum::base_type(datum_)
+    datum::base_type(start)
 {
     using qi::char_;
     using qi::lexeme;
@@ -28,6 +28,10 @@ datum<Iterator, Skipper>::datum() :
 
     using phoenix::at_c;
     using phoenix::push_back;
+
+    start
+        =   datum_.alias()
+        ;
 
     datum_
         =   simple_datum
@@ -80,6 +84,16 @@ datum<Iterator, Skipper>::datum() :
             >> *datum_                      [push_back(_val, _1)]
             >> token.rparen
         ;
+
+    abbreviation  .name("abbreviation");
+    compound_datum.name("compound_datum");
+    datum_        .name("datum");
+    simple_datum  .name("simple_datum");
+    start         .name("start");
+    list          .name("list");
+    symbol        .name("symbol");
+    vector        .name("vector");
+    abbrev_prefix .name("list");
 }
 
 }   //  namespace parser

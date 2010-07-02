@@ -34,11 +34,6 @@ intertoken_space<Iterator>::intertoken_space() :
     comment
         =   ';' >> *(char_ - eol) >> eol
         ;
-
-    start     .name("intertoken_space");
-    atmosphere.name("atmosphere");
-    whitespace.name("whitespace");
-    comment   .name("comment");
 }
 
 }   //  namespace parser

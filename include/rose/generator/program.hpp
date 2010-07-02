@@ -18,53 +18,53 @@ using karma::grammar;
 using karma::rule;
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
 struct expression :
-    grammar<OutputIterator, ast_expression(), Delimiter>
+    grammar<Iterator, ast_expression(), Delimiter>
 {
     expression();
 
-    rule<OutputIterator, ast_definition(), Delimiter> definition;
+    rule<Iterator, ast_definition(), Delimiter> definition;
 
 private:
-    rose::generator::datum<OutputIterator, Delimiter> datum;
+    rose::generator::datum<Iterator, Delimiter> datum;
 
-    rule<OutputIterator, ast_assignment(),        Delimiter> assignment;
-    rule<OutputIterator, ast_body(),              Delimiter> body;
-    rule<OutputIterator, ast_conditional(),       Delimiter> conditional;
-    rule<OutputIterator, ast_expression(),        Delimiter> expression_;
-    rule<OutputIterator, ast_expression(),        Delimiter> start;
-    rule<OutputIterator, ast_lambda_expression(), Delimiter> lambda_expression;
-    rule<OutputIterator, ast_procedure_call(),    Delimiter> procedure_call;
-    rule<OutputIterator, ast_quotation(),         Delimiter> quotation;
-    rule<OutputIterator, ast_variable(),          Delimiter> variable;
+    rule<Iterator, ast_assignment(),        Delimiter> assignment;
+    rule<Iterator, ast_body(),              Delimiter> body;
+    rule<Iterator, ast_conditional(),       Delimiter> conditional;
+    rule<Iterator, ast_expression(),        Delimiter> expression_;
+    rule<Iterator, ast_expression(),        Delimiter> start;
+    rule<Iterator, ast_lambda_expression(), Delimiter> lambda_expression;
+    rule<Iterator, ast_procedure_call(),    Delimiter> procedure_call;
+    rule<Iterator, ast_quotation(),         Delimiter> quotation;
+    rule<Iterator, ast_variable(),          Delimiter> variable;
 
     typedef
         std::vector<ast_variable>
         formals_attr_type;
 
-    rule<OutputIterator, formals_attr_type(), Delimiter> formals;
+    rule<Iterator, formals_attr_type(), Delimiter> formals;
 
 };  //  struct expression
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
 struct program :
-    grammar<OutputIterator, ast_program(), Delimiter>
+    grammar<Iterator, ast_program(), Delimiter>
 {
     program();
 
 private:
-    rose::generator::datum<OutputIterator, Delimiter> datum_;
-    rose::generator::expression<OutputIterator, Delimiter> expression;
+    rose::generator::datum<Iterator, Delimiter> datum_;
+    rose::generator::expression<Iterator, Delimiter> expression;
 
-    rule<OutputIterator, ast_program(),    Delimiter> start;
-    rule<OutputIterator, ast_expression(), Delimiter> command;
-    rule<OutputIterator, ast_definition(), Delimiter> definition;
+    rule<Iterator, ast_program(),    Delimiter> start;
+    rule<Iterator, ast_expression(), Delimiter> command;
+    rule<Iterator, ast_definition(), Delimiter> definition;
 
 };  //  struct program
 

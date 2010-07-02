@@ -27,6 +27,7 @@ struct datum :
     qi::rule<Iterator, ast_datum(),  Skipper> compound_datum;
     qi::rule<Iterator, ast_datum(),  Skipper> datum_;
     qi::rule<Iterator, ast_datum(),  Skipper> simple_datum;
+    qi::rule<Iterator, ast_datum(),  Skipper> start;
     qi::rule<Iterator, ast_list(),   Skipper> list;
     qi::rule<Iterator, ast_symbol(), Skipper> symbol;
     qi::rule<Iterator, ast_vector(), Skipper> vector;

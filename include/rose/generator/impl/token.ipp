@@ -10,10 +10,10 @@ namespace ascii = boost::spirit::ascii;
 namespace karma = boost::spirit::karma;
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
-boolean<OutputIterator, Delimiter>::boolean() :
+boolean<Iterator, Delimiter>::boolean() :
     boolean::base_type(start)
 {
     start
@@ -27,10 +27,10 @@ boolean<OutputIterator, Delimiter>::boolean() :
 }
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
-number<OutputIterator, Delimiter>::number() :
+number<Iterator, Delimiter>::number() :
     number::base_type(start)
 {
     using karma::int_;
@@ -41,10 +41,10 @@ number<OutputIterator, Delimiter>::number() :
 }
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
-character<OutputIterator, Delimiter>::character() :
+character<Iterator, Delimiter>::character() :
     character::base_type(start)
 {
     using karma::char_;
@@ -67,10 +67,10 @@ character<OutputIterator, Delimiter>::character() :
 }
 
 template<
-    typename OutputIterator,
+    typename Iterator,
     typename Delimiter
 >
-string<OutputIterator, Delimiter>::string() :
+string<Iterator, Delimiter>::string() :
     string::base_type(start)
 {
     using ascii::space;
