@@ -14,6 +14,7 @@ template<
 expression<Iterator, Delimiter>::expression() :
     expression::base_type(start)
 {
+    using karma::int_;
     using karma::lit;
     using karma::string;
 
@@ -22,7 +23,10 @@ expression<Iterator, Delimiter>::expression() :
         ;
 
     expression_
-        =   datum
+        =   boolean
+        |   int_
+        |   character
+        |   string
         |   variable
         |   quotation
         |   lambda_expression

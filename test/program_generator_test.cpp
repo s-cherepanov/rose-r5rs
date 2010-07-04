@@ -93,6 +93,10 @@ BOOST_AUTO_TEST_CASE(conditional_test) {
     BOOST_CHECK_EQUAL(
             generate(parse("(if x 1)")),
             "( if x 1 ) ");
+
+    BOOST_CHECK_EQUAL(
+            generate(parse("(if #t 1)")),
+            "( if #t 1 ) ");
 }
 
 BOOST_AUTO_TEST_CASE(assignment_test) {

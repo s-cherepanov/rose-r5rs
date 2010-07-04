@@ -19,7 +19,8 @@ template<
 >
 expression<Iterator, Skipper>::expression() :
     expression::base_type(start),
-    lambda_expression(this)
+    lambda_expression(this),
+    procedure_call(this)
 {
     using qi::char_;
     using qi::no_case;
@@ -30,6 +31,10 @@ expression<Iterator, Skipper>::expression() :
     using phoenix::push_back;
 
     start
+        =   expression_.alias()
+        ;
+
+    expression_
        %=   token.boolean
         |   token.number
         |   token.character
@@ -42,10 +47,6 @@ expression<Iterator, Skipper>::expression() :
         |   assignment
         ;
 
-    expression_
-        =   start.alias()
-        ;
-
     quotation
         =   token.single_quote
             >> datum                        [_val = _1]
@@ -53,18 +54,6 @@ expression<Iterator, Skipper>::expression() :
             >> no_case["quote"]
             >> datum                        [_val = _1]
             >> token.rparen
-        ;
-
-    procedure_call
-        =   token.lparen
-            >> operator_                    [at_c<0>(_val) = _1]
-            >> *operand                     [push_back(at_c<1>(_val), _1)]
-            >> token.rparen
-        ;
-
-    operator_
-        =   operand
-        =   expression_.alias()
         ;
 
     conditional

@@ -90,7 +90,6 @@ struct not_is_variant<rose::ast_vector> : mpl::false_ {};
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast_list,
     (rose::ast_list::container_type, proper)
-    (boost::optional<rose::ast_datum>, improper)
-)
+    (boost::optional<rose::ast_datum>, improper))
 
 #endif  //  __ROSE_AST_DATUM_HPP__

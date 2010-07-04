@@ -64,7 +64,6 @@ datum<Iterator, Skipper>::datum() :
             >> token.dot
             >> datum_                       [at_c<1>(_val) = _1]
             >> token.rparen
-        |   abbreviation
         ;
 
     abbreviation
@@ -84,16 +83,6 @@ datum<Iterator, Skipper>::datum() :
             >> *datum_                      [push_back(_val, _1)]
             >> token.rparen
         ;
-
-    abbreviation  .name("abbreviation");
-    compound_datum.name("compound_datum");
-    datum_        .name("datum");
-    simple_datum  .name("simple_datum");
-    start         .name("start");
-    list          .name("list");
-    symbol        .name("symbol");
-    vector        .name("vector");
-    abbrev_prefix .name("list");
 }
 
 }   //  namespace parser
