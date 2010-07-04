@@ -226,44 +226,37 @@ typedef
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast_quotation,
-    (rose::ast_datum, quoted)
-)
+    (rose::ast_datum, quoted))
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast_procedure_call,
     (rose::ast_expression, procedure)
-    (std::vector<rose::ast_expression>, arguments)
-)
+    (std::vector<rose::ast_expression>, arguments))
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast_conditional,
     (rose::ast_expression, test)
     (rose::ast_expression, consequent)
-    (boost::optional<rose::ast_expression>, alternate)
-)
+    (boost::optional<rose::ast_expression>, alternate))
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast_assignment,
     (rose::ast_variable, variable)
-    (rose::ast_expression, expression)
-)
+    (rose::ast_expression, expression))
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast_definition,
     (rose::ast_variable, variable)
-    (rose::ast_expression, expression)
-)
+    (rose::ast_expression, expression))
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast_body,
     (std::vector<rose::ast_definition>, definitions)
-    (rose::ast_sequence, sequence)
-)
+    (rose::ast_sequence, sequence))
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast_lambda_expression,
     (rose::ast_formals, formals)
-    (rose::ast_body, body)
-)
+    (rose::ast_body, body))
 
 #endif  //  __ROSE_AST_EXPRESSION_HPP__

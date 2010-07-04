@@ -29,7 +29,10 @@ struct expression :
     rule<Iterator, ast_definition(), Delimiter> definition;
 
 private:
-    rose::generator::datum<Iterator, Delimiter> datum;
+    rose::generator::datum<Iterator, Delimiter>     datum;
+    rose::generator::boolean<Iterator, Delimiter>   boolean;
+    rose::generator::character<Iterator, Delimiter> character;
+    rose::generator::string<Iterator, Delimiter>    string;
 
     rule<Iterator, ast_assignment(),        Delimiter> assignment;
     rule<Iterator, ast_body(),              Delimiter> body;

@@ -62,3 +62,5 @@ lambda_expression<Iterator, Skipper>::
 }   //  namespace rose
 
 #endif  //  __ROSE_PARSER_IMPL_LAMBDA_EXPRESSION_IPP__
+
+// vim:ft=cpp et
