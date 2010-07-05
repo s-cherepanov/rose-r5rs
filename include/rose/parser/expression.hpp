@@ -2,6 +2,7 @@
 #define __ROSE_EXPRESSION_HPP__
 
 #include "rose/ast/program.hpp"
+#include "rose/parser/conditional.hpp"
 #include "rose/parser/datum.hpp"
 #include "rose/parser/definition.hpp"
 #include "rose/parser/lambda_expression.hpp"
@@ -30,6 +31,7 @@ struct expression :
     expression();
 
 private:
+	rose::parser::conditional<Iterator, Skipper>       conditional;
     rose::parser::datum<Iterator, Skipper>             datum;
 	rose::parser::lambda_expression<Iterator, Skipper> lambda_expression;
 	rose::parser::procedure_call<Iterator, Skipper>    procedure_call;
@@ -37,12 +39,8 @@ private:
 
     rule<Iterator, ast_expression(),     Skipper> start;
     rule<Iterator, ast_expression(),     Skipper> expression_;
-    rule<Iterator, ast_conditional(),    Skipper> conditional;
     rule<Iterator, ast_assignment(),     Skipper> assignment;
     rule<Iterator, ast_quotation(),      Skipper> quotation;
-    rule<Iterator, ast_expression(),     Skipper> test;
-    rule<Iterator, ast_expression(),     Skipper> consequent;
-    rule<Iterator, ast_expression(),     Skipper> alternate;
 
 };  //  struct expression
 

@@ -30,3 +30,5 @@ boolean<Iterator>::boolean() :
 }   //  namespace rose
 
 #endif  //  __ROSE_PARSER_IMPL_BOOLEAN_IPP__
+
+// vim:ft=cpp et

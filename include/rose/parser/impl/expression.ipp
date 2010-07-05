@@ -19,16 +19,16 @@ template<
 >
 expression<Iterator, Skipper>::expression() :
     expression::base_type(start),
+    conditional(this),
     lambda_expression(this),
     procedure_call(this)
 {
-    using qi::char_;
-    using qi::no_case;
-
     using namespace qi::labels;
 
     using phoenix::at_c;
     using phoenix::push_back;
+    using qi::char_;
+    using qi::no_case;
 
     start
         =   expression_.alias()
@@ -54,21 +54,6 @@ expression<Iterator, Skipper>::expression() :
             >> no_case["quote"]
             >> datum                        [_val = _1]
             >> token.rparen
-        ;
-
-    conditional
-        =   token.lparen
-            >> no_case["if"]
-            >> test                         [at_c<0>(_val) = _1]
-            >> consequent                   [at_c<1>(_val) = _1]
-            >> -alternate                   [at_c<2>(_val) = _1]
-            >> token.rparen
-        ;
-
-    test
-        =   consequent
-        =   alternate
-        =   expression_.alias()
         ;
 
     assignment
