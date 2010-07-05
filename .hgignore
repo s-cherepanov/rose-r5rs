@@ -1,0 +1,13 @@
+syntax: glob
+
+bin
+dist
+tags
+*.swp
+*~
+doc/draft
+core.*
+build/Debug/*
+*.ncb
+*.suo
+*.vcproj.*.user
