@@ -4,8 +4,14 @@
 #include "rose/generator/attributes.hpp"
 #include "rose/generator/datum.hpp"
 
+#include <boost/spirit/include/phoenix_fusion.hpp>
+#include <boost/spirit/include/phoenix_operator.hpp>
+#include <boost/spirit/include/phoenix_stl.hpp>
+
 namespace rose {
 namespace generator {
+
+namespace phoenix = boost::phoenix;
 
 template<
     typename Iterator,
@@ -14,8 +20,12 @@ template<
 datum<Iterator, Delimiter>::datum() :
     datum::base_type(start)
 {
+    using namespace karma::labels;
     using karma::int_;
     using karma::lit;
+    using karma::repeat;
+    using phoenix::at_c;
+    using phoenix::size;
 
     start
         =   datum_.alias()
@@ -36,9 +46,9 @@ datum<Iterator, Delimiter>::datum() :
         ;
 
     list
-        =   lit('(')
-            << *datum_
-            << -('.' << datum_)
+        =   '('
+            << (*datum_)                    [_1 = at_c<0>(_val)]
+            << -('.' << datum_              [_1 = at_c<1>(_val)])
             << ')'
         ;
 

@@ -7,7 +7,9 @@
 #include <boost/optional.hpp>
 #include <boost/variant.hpp>
 
+#include <algorithm>
 #include <iostream>
+#include <iterator>
 #include <list>
 #include <string>
 #include <vector>
@@ -53,7 +55,27 @@ struct ast_list {
 
 };  //  struct ast_list
 
+inline std::ostream& operator<<(std::ostream& out, ast_list const& list) {
+    out << '(';
+    std::copy(list.proper.begin(),
+              list.proper.end(),
+              std::ostream_iterator<ast_datum>(out, " "));
+
+    if (list.improper) {
+        out << ". " << *(list.improper);
+    }
+
+    return out << ')';
+}
+
 struct ast_vector : std::vector<ast_datum> {};
+
+inline std::ostream& operator<<(std::ostream& out, ast_vector const& vec) {
+    out << "#(";
+    std::copy(vec.begin(), vec.end(),
+              std::ostream_iterator<ast_datum>(out, " "));
+    return out << ')';
+}
 
 }   //  namespace rose
 
