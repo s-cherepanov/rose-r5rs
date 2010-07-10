@@ -4,7 +4,6 @@
 #include "rose/parser/datum.hpp"
 
 #include <boost/spirit/include/phoenix_fusion.hpp>
-#include <boost/spirit/include/phoenix_object.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/phoenix_stl.hpp>
 
@@ -34,35 +33,24 @@ datum<Iterator, Skipper>::datum() :
         ;
 
     datum_
-        =   simple_datum
-        |   compound_datum
-        ;
-
-    simple_datum
        %=   token.boolean
         |   token.number
         |   token.character
         |   token.string
         |   symbol
+        |   list
+        |   vector
         ;
 
     symbol
         =   token.identifier.alias()
         ;
 
-    compound_datum
-       %=   list
-        |   vector
-        ;
-
     list
-        =   token.lparen
-            >> *datum_                      [push_back(at_c<0>(_val), _1)]
-            >> token.rparen
+        =   token.lparen >> token.rparen
         |   token.lparen
             >> +datum_                      [push_back(at_c<0>(_val), _1)]
-            >> token.dot
-            >> datum_                       [at_c<1>(_val) = _1]
+            >> -(token.dot >> (datum_       [at_c<1>(_val) = _1]))
             >> token.rparen
         ;
 
@@ -80,7 +68,9 @@ datum<Iterator, Skipper>::datum() :
 
     vector
         =   token.sharp_lparen
-            >> *datum_                      [push_back(_val, _1)]
+            >> token.rparen
+        |   token.sharp_lparen
+            >> +datum_                      [push_back(_val, _1)]
             >> token.rparen
         ;
 }

@@ -23,6 +23,7 @@ project
 
             <include>include
             <define>BOOST_SPIRIT_DONT_USE_MPL_ASSERT_MSG=0
+            <variant>debug:<define>BOOST_SPIRIT_DEBUG
 
             <link>static
             <threading>multi

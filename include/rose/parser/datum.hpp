@@ -21,12 +21,11 @@ struct datum :
 {
     datum();
 
+private:
 	rose::parser::token<Iterator, Skipper> token;
 
     qi::rule<Iterator, ast_datum(),  Skipper> abbreviation;
-    qi::rule<Iterator, ast_datum(),  Skipper> compound_datum;
     qi::rule<Iterator, ast_datum(),  Skipper> datum_;
-    qi::rule<Iterator, ast_datum(),  Skipper> simple_datum;
     qi::rule<Iterator, ast_datum(),  Skipper> start;
     qi::rule<Iterator, ast_list(),   Skipper> list;
     qi::rule<Iterator, ast_symbol(), Skipper> symbol;

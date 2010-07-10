@@ -11,6 +11,7 @@ namespace spirit {
 namespace traits {
 
 using rose::ast_identifier;
+namespace karma = boost::spirit::karma;
 
 template<>
 struct transform_attribute<ast_identifier const, std::string> {

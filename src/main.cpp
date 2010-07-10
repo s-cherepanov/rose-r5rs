@@ -16,9 +16,9 @@ namespace ascii = boost::spirit::ascii;
 namespace karma = boost::spirit::karma;
 namespace qi = boost::spirit::qi;
 
-const std::string default_prompt("rose> ");
+const std::string cli_prompt("rose> ");
 
-std::string generate_program(ast_program const& program) {
+boost::optional<std::string> generate_program(ast_program const& program) {
     using ascii::space;
     using ascii::space_type;
     using karma::generate_delimited;
@@ -27,12 +27,16 @@ std::string generate_program(ast_program const& program) {
         std::back_insert_iterator<std::string>
         iterator_type;
 
+    boost::optional<std::string> result;
+
     std::string output;
     iterator_type sink(output);
     generator::program<iterator_type, space_type> grammar;
-    generate_delimited(sink, grammar, space, program);
+    if (generate_delimited(sink, grammar, space, program)) {
+        result.reset(output);
+    }
 
-    return output;
+    return result;
 }
 
 void repl() {
@@ -44,12 +48,9 @@ void repl() {
         rose::parser::intertoken_space<iterator_type>
         skipper_type;
 
-    std::string prompt = default_prompt;
-    std::string line;
     std::string source;
 
-    while (std::cout << prompt, std::getline(std::cin, line)) {
-        source.append(line);
+    while (std::cout << cli_prompt, std::getline(std::cin, source)) {
         iterator_type first = source.begin();
         iterator_type last = source.end();
 
@@ -65,13 +66,18 @@ void repl() {
                 first, last, grammar, skipper, program);
         bool full_match = match && first == last;
 
-        source.clear();
-
         if (!full_match) {
             std::cerr << "error" << std::endl;
         }
         else {
-            std::cout << generate_program(program) << std::endl;
+            std::cout << "ok" << std::endl;
+            boost::optional<std::string> output = generate_program(program);
+            if (output) {
+                std::cout << *output << std::endl;
+            }
+            else {
+                std::cout << "failed to generate code" << std::endl;
+            }
         }
     }
 }
