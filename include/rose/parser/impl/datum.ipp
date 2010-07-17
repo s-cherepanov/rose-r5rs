@@ -12,7 +12,6 @@ namespace parser {
 
 namespace phoenix = boost::phoenix;
 namespace qi = boost::spirit::qi;
-namespace spirit = boost::spirit;
 
 template<
     typename Iterator,
@@ -21,12 +20,10 @@ template<
 datum<Iterator, Skipper>::datum() :
     datum::base_type(start)
 {
-    using qi::char_;
-    using qi::lexeme;
-    using namespace qi::labels;
-
     using phoenix::at_c;
     using phoenix::push_back;
+    using qi::_1;
+    using qi::_val;
 
     start
         =   datum_.alias()

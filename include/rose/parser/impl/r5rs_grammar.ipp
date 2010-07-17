@@ -8,9 +8,6 @@
 namespace rose {
 namespace parser {
 
-namespace qi = boost::spirit::qi;
-namespace spirit = boost::spirit;
-
 template<
     typename Iterator,
     typename Skipper
@@ -19,10 +16,6 @@ r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
     r5rs_grammar::base_type(start),
     definition(&expression)
 {
-    using spirit::lexeme;
-    using spirit::raw;
-    using qi::char_;
-
     start
         =   +(command | definition)
         ;

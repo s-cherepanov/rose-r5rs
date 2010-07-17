@@ -9,6 +9,9 @@
 namespace rose {
 namespace parser {
 
+namespace phoenix = boost::phoenix;
+namespace qi = boost::spirit::qi;
+
 template<
     typename Iterator,
     typename Skipper
@@ -19,10 +22,10 @@ procedure_call<Iterator, Skipper>::
     procedure_call::base_type(start),
     expression_ptr(e)
 {
-    using namespace qi::labels;
-
     using phoenix::at_c;
     using phoenix::push_back;
+    using qi::_1;
+    using qi::_val;
 
     start
         =   procedure_call_.alias()
