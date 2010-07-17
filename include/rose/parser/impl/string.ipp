@@ -38,3 +38,5 @@ string<Iterator>::string() :
 }   //  namespace rose
 
 #endif  //  __ROSE_PARSER_IMPL_STRING_IPP__
+
+// vim:ft=cpp et

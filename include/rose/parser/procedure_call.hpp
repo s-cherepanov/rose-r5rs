@@ -12,7 +12,6 @@ namespace parser {
 
 namespace qi = boost::spirit::qi;
 
-using namespace rose;
 using qi::grammar;
 using qi::rule;
 

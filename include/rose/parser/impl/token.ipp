@@ -15,9 +15,7 @@ template<typename Iterator, typename Skipper>
 token<Iterator, Skipper>::token() :
     token::base_type(start)
 {
-    using ascii::graph;
     using ascii::space;
-    using qi::attr;
     using qi::char_;
     using qi::eoi;
     using qi::lexeme;

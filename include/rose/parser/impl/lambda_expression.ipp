@@ -11,8 +11,8 @@
 namespace rose {
 namespace parser {
 
-namespace qi = boost::spirit::qi;
 namespace phoenix = boost::phoenix;
+namespace qi = boost::spirit::qi;
 
 template<
     typename Iterator,
@@ -25,9 +25,10 @@ lambda_expression<Iterator, Skipper>::
     expression_ptr(e),
     definition(e)
 {
-    using namespace qi::labels;
     using phoenix::at_c;
     using phoenix::push_back;
+    using qi::_1;
+    using qi::_val;
     using qi::no_case;
 
     start

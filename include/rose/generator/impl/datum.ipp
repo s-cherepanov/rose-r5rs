@@ -20,12 +20,13 @@ template<
 datum<Iterator, Delimiter>::datum() :
     datum::base_type(start)
 {
-    using namespace karma::labels;
+    using karma::_1;
+    using karma::_val;
+    using karma::buffer;
     using karma::int_;
     using karma::lit;
-    using karma::repeat;
+    using karma::string;
     using phoenix::at_c;
-    using phoenix::size;
 
     start
         =   datum_.alias()
@@ -42,13 +43,13 @@ datum<Iterator, Delimiter>::datum() :
         ;
 
     symbol
-        =   karma::attr_cast(karma::string)
+        =   karma::attr_cast(string)
         ;
 
     list
         =   '('
             << (*datum_)                    [_1 = at_c<0>(_val)]
-            << -('.' << datum_              [_1 = at_c<1>(_val)])
+            << (-('.' << datum_))           [_1 = at_c<1>(_val)]
             << ')'
         ;
 

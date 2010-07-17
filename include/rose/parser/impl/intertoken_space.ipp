@@ -8,15 +8,14 @@
 namespace rose {
 namespace parser {
 
-namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
+namespace qi = boost::spirit::qi;
 
 template<typename Iterator>
 intertoken_space<Iterator>::intertoken_space() :
     intertoken_space::base_type(start)
 {
     using ascii::char_;
-    using ascii::alpha;
     using qi::eol;
 
     start

@@ -5,13 +5,12 @@
 
 #include <boost/spirit/include/phoenix_fusion.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
-#include <boost/spirit/include/phoenix_stl.hpp>
 
 namespace rose {
 namespace parser {
 
-namespace qi = boost::spirit::qi;
 namespace phoenix = boost::phoenix;
+namespace qi = boost::spirit::qi;
 
 template<
     typename Iterator,
@@ -23,8 +22,9 @@ conditional<Iterator, Skipper>::
     conditional::base_type(start),
     expression_ptr(e)
 {
-    using namespace qi::labels;
     using phoenix::at_c;
+    using qi::_1;
+    using qi::_val;
     using qi::no_case;
 
     start

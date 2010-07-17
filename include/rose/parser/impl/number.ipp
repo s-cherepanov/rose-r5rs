@@ -8,8 +8,8 @@
 namespace rose {
 namespace parser {
 
-namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
+namespace qi = boost::spirit::qi;
 
 template<typename Iterator>
 number<Iterator>::number() :

@@ -25,8 +25,9 @@ definition<Iterator, Skipper>::
     definition::base_type(start),
     expression_ptr(e)
 {
-    using namespace qi::labels;
     using phoenix::at_c;
+    using qi::_1;
+    using qi::_val;
     using qi::no_case;
 
     start
