@@ -32,6 +32,9 @@ string<Iterator>::string() :
         |   lit("\\n")  >> attr('\n')
         |   lit("\\t")  >> attr('\t')
         ;
+
+    BOOST_SPIRIT_DEBUG_NODE(start);
+    BOOST_SPIRIT_DEBUG_NODE(string_element);
 }
 
 }   //  namespace parser
