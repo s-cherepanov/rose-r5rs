@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
-	Name="librose-generator"
-	ProjectGUID="{3CEA7A46-F1AE-4971-9D41-370689EFD843}"
-	RootNamespace="librosegenerator"
+	Version="8.00"
+	Name="repl"
+	ProjectGUID="{CE2595D9-BD06-4107-B331-415C79400101}"
+	RootNamespace="repl"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -20,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			CharacterSet="1"
 			BuildLogFile="$(IntDir)\$(ProjectName)-BuildLog.htm"
 			>
@@ -64,10 +63,19 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				AdditionalDependencies="librose-parser.lib librose-generator.lib"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="$(OutDir)"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -77,6 +85,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -130,8 +144,6 @@
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -153,6 +165,9 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -166,15 +181,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\generator\datum.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\generator\program.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\generator\token.cpp"
+				RelativePath="..\..\src\main.cpp"
 				>
 			</File>
 		</Filter>
@@ -183,58 +190,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<Filter
-				Name="generator"
-				>
-				<File
-					RelativePath="..\..\include\rose\generator\attributes.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\rose\generator\datum.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\rose\generator\program.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\rose\generator\token.hpp"
-					>
-				</File>
-				<Filter
-					Name="impl"
-					>
-					<File
-						RelativePath="..\..\include\rose\generator\impl\datum.ipp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\include\rose\generator\impl\program.ipp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\include\rose\generator\impl\token.ipp"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="ast"
-				>
-				<File
-					RelativePath="..\..\include\rose\ast\datum.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\rose\ast\program.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\rose\ast\tagged_string.hpp"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

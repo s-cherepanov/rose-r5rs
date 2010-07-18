@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C++ Express 2008
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "librose-generator", "librose-generator.vcproj", "{3CEA7A46-F1AE-4971-9D41-370689EFD843}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A4580632-DB42-4CE9-829C-706C1C668099} = {A4580632-DB42-4CE9-829C-706C1C668099}
