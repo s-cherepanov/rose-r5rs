@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="8.00"
 	Name="librose-parser"
-	ProjectGUID="{E5BB0A2F-1BE8-45EE-8F42-B0C223B25CE5}"
-	RootNamespace="build"
+	ProjectGUID="{A4580632-DB42-4CE9-829C-706C1C668099}"
+	RootNamespace="roser5rs"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
 		<Platform
@@ -22,7 +21,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
-			BuildLogFile="&quot;$(IntDir)\$(ProjectName)-BuildLog.htm&quot;"
+			BuildLogFile="$(IntDir)\$(ProjectName)-BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -42,16 +41,17 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(SolutionDir)..\include\"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="$(SolutionDir)..\..\include\"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;BOOST_SPIRIT_DONT_USE_MPL_ASSERT_MSG=0"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(IntDir)\$(ProjectName)_vc90.pdb"
+				ProgramDataBaseFileName="$(IntDir)\$(ProjectName)-vc80.pdb"
 				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
-				DisableSpecificWarnings="4819;4996;4345"
+				DisableSpecificWarnings="4996;4819;"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -106,13 +106,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -152,6 +150,9 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -164,38 +165,34 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<Filter
-				Name="parser"
+			<File
+				RelativePath="..\..\src\parser\datum.cpp"
 				>
-				<File
-					RelativePath="..\src\parser\datum.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\parser\expression.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\parser\identifier.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\parser\intertoken_space.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\parser\number.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\parser\r5rs_grammar.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\parser\token.cpp"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath="..\..\src\parser\expression.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\parser\identifier.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\parser\intertoken_space.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\parser\number.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\parser\r5rs_grammar.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\parser\token.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -203,125 +200,137 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<Filter
-				Name="rose"
+				Name="ast"
 				>
+				<File
+					RelativePath="..\..\include\rose\ast\datum.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\ast\program.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\ast\tagged_string.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="parser"
+				>
+				<File
+					RelativePath="..\..\include\rose\parser\boolean.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\character.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\conditional.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\datum.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\definition.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\expression.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\identifier.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\intertoken_space.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\lambda_expression.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\number.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\procedure_call.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\r5rs_grammar.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\string.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\token.hpp"
+					>
+				</File>
 				<Filter
-					Name="parser"
+					Name="detail"
 					>
 					<File
-						RelativePath="..\include\rose\parser\boolean.hpp"
+						RelativePath="..\..\include\rose\parser\impl\boolean.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\parser\character.hpp"
+						RelativePath="..\..\include\rose\parser\impl\character.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\parser\datum.hpp"
+						RelativePath="..\..\include\rose\parser\impl\conditional.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\parser\definition.hpp"
+						RelativePath="..\..\include\rose\parser\impl\datum.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\parser\expression.hpp"
+						RelativePath="..\..\include\rose\parser\impl\definition.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\parser\identifier.hpp"
+						RelativePath="..\..\include\rose\parser\impl\expression.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\parser\intertoken_space.hpp"
+						RelativePath="..\..\include\rose\parser\impl\identifier.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\parser\lambda_expression.hpp"
+						RelativePath="..\..\include\rose\parser\impl\intertoken_space.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\parser\number.hpp"
+						RelativePath="..\..\include\rose\parser\impl\lambda_expression.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\parser\r5rs_grammar.hpp"
+						RelativePath="..\..\include\rose\parser\impl\number.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\parser\string.hpp"
+						RelativePath="..\..\include\rose\parser\impl\procedure_call.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\parser\token.hpp"
-						>
-					</File>
-					<Filter
-						Name="impl"
-						>
-						<File
-							RelativePath="..\include\rose\parser\impl\boolean.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\parser\impl\character.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\parser\impl\datum.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\parser\impl\definition.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\parser\impl\expression.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\parser\impl\identifier.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\parser\impl\intertoken_space.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\parser\impl\lambda_expression.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\parser\impl\number.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\parser\impl\r5rs_grammar.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\parser\impl\string.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\parser\impl\token.ipp"
-							>
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
-					Name="ast"
-					>
-					<File
-						RelativePath="..\include\rose\ast\datum.hpp"
+						RelativePath="..\..\include\rose\parser\impl\r5rs_grammar.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\ast\program.hpp"
+						RelativePath="..\..\include\rose\parser\impl\string.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\ast\tagged_string.hpp"
+						RelativePath="..\..\include\rose\parser\impl\token.ipp"
 						>
 					</File>
 				</Filter>
