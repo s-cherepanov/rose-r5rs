@@ -7,7 +7,7 @@ tags
 *~
 doc/draft
 core.*
-build/msvc-9.0/Debug/*
+build/*/Debug/*
 *.ncb
 *.suo
 *.vcproj.*.user

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
-	Name="librose-generator"
-	ProjectGUID="{3CEA7A46-F1AE-4971-9D41-370689EFD843}"
-	RootNamespace="librosegenerator"
+	Version="8.00"
+	Name="librose-parser"
+	ProjectGUID="{A4580632-DB42-4CE9-829C-706C1C668099}"
+	RootNamespace="roser5rs"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -130,8 +129,6 @@
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -153,6 +150,9 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -166,15 +166,31 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\generator\datum.cpp"
+				RelativePath="..\..\src\parser\datum.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\generator\program.cpp"
+				RelativePath="..\..\src\parser\expression.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\generator\token.cpp"
+				RelativePath="..\..\src\parser\identifier.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\parser\intertoken_space.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\parser\number.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\parser\r5rs_grammar.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\parser\token.cpp"
 				>
 			</File>
 		</Filter>
@@ -183,42 +199,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<Filter
-				Name="generator"
-				>
-				<File
-					RelativePath="..\..\include\rose\generator\attributes.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\rose\generator\datum.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\rose\generator\program.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\rose\generator\token.hpp"
-					>
-				</File>
-				<Filter
-					Name="impl"
-					>
-					<File
-						RelativePath="..\..\include\rose\generator\impl\datum.ipp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\include\rose\generator\impl\program.ipp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\include\rose\generator\impl\token.ipp"
-						>
-					</File>
-				</Filter>
-			</Filter>
 			<Filter
 				Name="ast"
 				>
@@ -234,6 +214,126 @@
 					RelativePath="..\..\include\rose\ast\tagged_string.hpp"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="parser"
+				>
+				<File
+					RelativePath="..\..\include\rose\parser\boolean.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\character.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\conditional.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\datum.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\definition.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\expression.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\identifier.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\intertoken_space.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\lambda_expression.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\number.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\procedure_call.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\r5rs_grammar.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\string.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\parser\token.hpp"
+					>
+				</File>
+				<Filter
+					Name="detail"
+					>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\boolean.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\character.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\conditional.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\datum.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\definition.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\expression.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\identifier.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\intertoken_space.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\lambda_expression.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\number.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\procedure_call.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\r5rs_grammar.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\string.ipp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\rose\parser\impl\token.ipp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
