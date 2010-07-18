@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "librose-generator", "librose-generator.vcproj", "{3CEA7A46-F1AE-4971-9D41-370689EFD843}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A4580632-DB42-4CE9-829C-706C1C668099} = {A4580632-DB42-4CE9-829C-706C1C668099}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "librose-parser", "librose-parser.vcproj", "{A4580632-DB42-4CE9-829C-706C1C668099}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test.vcproj", "{CDCE8EB8-EF6A-41CB-AD83-B251D3ABF114}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3CEA7A46-F1AE-4971-9D41-370689EFD843} = {3CEA7A46-F1AE-4971-9D41-370689EFD843}
+		{A4580632-DB42-4CE9-829C-706C1C668099} = {A4580632-DB42-4CE9-829C-706C1C668099}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "repl", "repl.vcproj", "{CE2595D9-BD06-4107-B331-415C79400101}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3CEA7A46-F1AE-4971-9D41-370689EFD843} = {3CEA7A46-F1AE-4971-9D41-370689EFD843}
+		{A4580632-DB42-4CE9-829C-706C1C668099} = {A4580632-DB42-4CE9-829C-706C1C668099}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3CEA7A46-F1AE-4971-9D41-370689EFD843}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3CEA7A46-F1AE-4971-9D41-370689EFD843}.Debug|Win32.Build.0 = Debug|Win32
+		{3CEA7A46-F1AE-4971-9D41-370689EFD843}.Release|Win32.ActiveCfg = Release|Win32
+		{3CEA7A46-F1AE-4971-9D41-370689EFD843}.Release|Win32.Build.0 = Release|Win32
+		{A4580632-DB42-4CE9-829C-706C1C668099}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A4580632-DB42-4CE9-829C-706C1C668099}.Debug|Win32.Build.0 = Debug|Win32
+		{A4580632-DB42-4CE9-829C-706C1C668099}.Release|Win32.ActiveCfg = Release|Win32
+		{A4580632-DB42-4CE9-829C-706C1C668099}.Release|Win32.Build.0 = Release|Win32
+		{CDCE8EB8-EF6A-41CB-AD83-B251D3ABF114}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CDCE8EB8-EF6A-41CB-AD83-B251D3ABF114}.Debug|Win32.Build.0 = Debug|Win32
+		{CDCE8EB8-EF6A-41CB-AD83-B251D3ABF114}.Release|Win32.ActiveCfg = Release|Win32
+		{CDCE8EB8-EF6A-41CB-AD83-B251D3ABF114}.Release|Win32.Build.0 = Release|Win32
+		{CE2595D9-BD06-4107-B331-415C79400101}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CE2595D9-BD06-4107-B331-415C79400101}.Debug|Win32.Build.0 = Debug|Win32
+		{CE2595D9-BD06-4107-B331-415C79400101}.Release|Win32.ActiveCfg = Release|Win32
+		{CE2595D9-BD06-4107-B331-415C79400101}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

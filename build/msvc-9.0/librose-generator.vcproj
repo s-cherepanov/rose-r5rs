@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="8.00"
 	Name="librose-generator"
-	ProjectGUID="{B07F4AC3-212B-47E4-B669-E8209DBE6F95}"
+	ProjectGUID="{3CEA7A46-F1AE-4971-9D41-370689EFD843}"
 	RootNamespace="librosegenerator"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
 		<Platform
@@ -22,7 +21,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
-			BuildLogFile="&quot;$(IntDir)\$(ProjectName)-BuildLog.htm&quot;"
+			BuildLogFile="$(IntDir)\$(ProjectName)-BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -42,16 +41,17 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(SolutionDir)..\include\"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="$(SolutionDir)..\..\include\"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;BOOST_SPIRIT_DONT_USE_MPL_ASSERT_MSG=0"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(IntDir)\$(ProjectName)_vc90.pdb"
+				ProgramDataBaseFileName="$(IntDir)\$(ProjectName)-vc80.pdb"
 				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
-				DisableSpecificWarnings="4819;4996;4345"
+				DisableSpecificWarnings="4996;4819;"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -106,13 +106,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -152,6 +150,9 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -164,22 +165,18 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<Filter
-				Name="generator"
+			<File
+				RelativePath="..\..\src\generator\datum.cpp"
 				>
-				<File
-					RelativePath="..\src\generator\datum.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\generator\program.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\generator\token.cpp"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath="..\..\src\generator\program.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\generator\token.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -187,62 +184,54 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<Filter
-				Name="rose"
+				Name="generator"
 				>
+				<File
+					RelativePath="..\..\include\rose\generator\attributes.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\generator\datum.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\generator\program.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\rose\generator\token.hpp"
+					>
+				</File>
 				<Filter
-					Name="generator"
+					Name="impl"
 					>
 					<File
-						RelativePath="..\include\rose\generator\attributes.hpp"
+						RelativePath="..\..\include\rose\generator\impl\datum.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\generator\datum.hpp"
+						RelativePath="..\..\include\rose\generator\impl\program.ipp"
 						>
 					</File>
 					<File
-						RelativePath="..\include\rose\generator\program.hpp"
+						RelativePath="..\..\include\rose\generator\impl\token.ipp"
 						>
 					</File>
-					<File
-						RelativePath="..\include\rose\generator\token.hpp"
-						>
-					</File>
-					<Filter
-						Name="impl"
-						>
-						<File
-							RelativePath="..\include\rose\generator\impl\datum.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\generator\impl\program.ipp"
-							>
-						</File>
-						<File
-							RelativePath="..\include\rose\generator\impl\token.ipp"
-							>
-						</File>
-					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
 				Name="ast"
 				>
 				<File
-					RelativePath="..\include\rose\ast\datum.hpp"
+					RelativePath="..\..\include\rose\ast\datum.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\include\rose\ast\pair.hpp"
+					RelativePath="..\..\include\rose\ast\program.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\include\rose\ast\program.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\include\rose\ast\tagged_string.hpp"
+					RelativePath="..\..\include\rose\ast\tagged_string.hpp"
 					>
 				</File>
 			</Filter>
