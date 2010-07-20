@@ -13,7 +13,6 @@ namespace generator {
 
 namespace karma = boost::spirit::karma;
 
-using namespace rose;
 using karma::grammar;
 using karma::rule;
 
