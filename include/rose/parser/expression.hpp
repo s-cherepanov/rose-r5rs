@@ -17,7 +17,6 @@ namespace parser {
 
 namespace qi = boost::spirit::qi;
 
-using namespace rose;
 using qi::grammar;
 using qi::rule;
 
@@ -37,10 +36,10 @@ private:
 	rose::parser::procedure_call<Iterator, Skipper>    procedure_call;
 	rose::parser::token<Iterator, Skipper>             token;
 
-    rule<Iterator, ast_expression(),     Skipper> start;
-    rule<Iterator, ast_expression(),     Skipper> expression_;
-    rule<Iterator, ast_assignment(),     Skipper> assignment;
-    rule<Iterator, ast_quotation(),      Skipper> quotation;
+    rule<Iterator, ast_expression(), Skipper> start;
+    rule<Iterator, ast_expression(), Skipper> expression_;
+    rule<Iterator, ast_assignment(), Skipper> assignment;
+    rule<Iterator, ast_quotation(),  Skipper> quotation;
 
 };  //  struct expression
 

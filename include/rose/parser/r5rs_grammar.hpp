@@ -13,7 +13,6 @@ namespace parser {
 
 namespace qi = boost::spirit::qi;
 
-using namespace rose;
 using qi::grammar;
 using qi::rule;
 
@@ -32,6 +31,7 @@ private:
 
     rule<Iterator, ast_program(),    Skipper> start;
     rule<Iterator, ast_expression(), Skipper> command;
+    rule<Iterator,                   Skipper> shebang;
 
 };  //  struct r5rs_grammar
 
