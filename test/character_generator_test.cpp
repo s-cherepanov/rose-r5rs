@@ -3,12 +3,11 @@
 
 #include <boost/test/unit_test.hpp>
 
+BOOST_AUTO_TEST_SUITE(character_generator_suite)
+
 namespace ascii = boost::spirit::ascii;
 namespace karma = boost::spirit::karma;
-
 namespace generator = rose::generator;
-
-BOOST_AUTO_TEST_SUITE(character_generator_suite)
 
 using ascii::space;
 
