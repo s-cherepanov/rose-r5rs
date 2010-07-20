@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(boolean_generator_suite)
 using ascii::space;
 
 typedef
-    generator::character<
+    generator::boolean<
         std::back_insert_iterator<std::string>,
         ascii::space_type
     >

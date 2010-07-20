@@ -25,7 +25,6 @@ datum<Iterator, Delimiter>::datum() :
     using karma::buffer;
     using karma::int_;
     using karma::lit;
-    using karma::string;
     using phoenix::at_c;
 
     start
@@ -43,7 +42,7 @@ datum<Iterator, Delimiter>::datum() :
         ;
 
     symbol
-        =   karma::attr_cast(string)
+        =   karma::attr_cast(karma::string)
         ;
 
     list

@@ -23,7 +23,7 @@ static generator_type g;
 BOOST_AUTO_TEST_CASE(escaping_test) {
     rose::ast_string attr("hello\nworld");
     std::string actual = test_generator_attr_delim(g, space, attr);
-    std::string expected("\"hello\nworld\"");
+    std::string expected("\"hello\nworld\" ");
     BOOST_CHECK_EQUAL(actual, expected);
 }
 

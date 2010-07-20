@@ -17,7 +17,6 @@ expression<Iterator, Delimiter>::expression() :
 {
     using karma::int_;
     using karma::lit;
-    using karma::string;
 
     start
         =   expression_.alias()
@@ -37,7 +36,7 @@ expression<Iterator, Delimiter>::expression() :
         ;
 
     variable
-        =   karma::attr_cast(string)
+        =   karma::attr_cast(karma::string)
         ;
 
     quotation
