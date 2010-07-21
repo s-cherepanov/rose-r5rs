@@ -1,30 +1,22 @@
-#include "rose/generator/token.hpp"
+#include "generators.hpp"
 #include "utilities.hpp"
 
 #include <boost/test/unit_test.hpp>
 
-namespace ascii = boost::spirit::ascii;
-namespace karma = boost::spirit::karma;
-namespace generator = rose::generator;
-
-using ascii::space;
-
 BOOST_AUTO_TEST_SUITE(string_generator_suite)
 
-typedef
-    rose::generator::string<
-        std::back_insert_iterator<std::string>,
-        ascii::space_type
-    >
-    generator_type;
+namespace ascii = boost::spirit::ascii;
 
-static generator_type g;
+void check(rose::ast_string const& attr, std::string const& expected) {
+    BOOST_CHECK_EQUAL(
+            test_generator_attr_delim(string_g, delimiter_g, attr),
+            expected);
+}
 
 BOOST_AUTO_TEST_CASE(escaping_test) {
-    rose::ast_string attr("hello\nworld");
-    std::string actual = test_generator_attr_delim(g, space, attr);
-    std::string expected("\"hello\nworld\" ");
-    BOOST_CHECK_EQUAL(actual, expected);
+    check(rose::ast_string("a\nb"), "\"a\nb\" ");
+    check(rose::ast_string("a\tb"), "\"a\tb\" ");
+    check(rose::ast_string("a\"b"), "\"a\"b\" ");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

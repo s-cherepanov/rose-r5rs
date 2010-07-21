@@ -7,91 +7,98 @@
 
 BOOST_AUTO_TEST_SUITE(program_generator_suite)
 
-void check_program(std::string const& input, std::string const& expected) {
-    using namespace rose;
+using boost::spirit::ascii::space;
+using boost::spirit::ascii::space_type;
 
-    namespace ascii = boost::spirit::ascii;
-    namespace karma = boost::spirit::karma;
-    namespace qi = boost::spirit::qi;
-
-    using ascii::space;
-
+struct fixture {
     typedef
-        parser::intertoken_space<std::string::const_iterator>
+        rose::parser::intertoken_space<std::string::const_iterator>
         skipper_type;
 
     typedef
-        parser::r5rs_grammar<
+        rose::parser::r5rs_grammar<
             std::string::const_iterator,
             skipper_type
         >
         parser_type;
 
     typedef
-        generator::program<
+        rose::generator::program<
             std::back_insert_iterator<std::string>,
-            ascii::space_type
+            space_type
         >
         generator_type;
 
-    parser_type p;
-    generator_type g;
+    parser_type parser;
+    generator_type generator;
     skipper_type skipper;
 
-    ast_program attr;
-    test_phrase_parser_attr(p, input, skipper, attr);
-    std::string actual = test_generator_attr_delim(g, space, attr);
-    BOOST_CHECK_EQUAL(actual, expected);
+    void check(std::string const& input, std::string const& expected) {
+        rose::ast_program attr;
+        test_phrase_parser_attr(parser, input, skipper, attr);
+
+        BOOST_CHECK_EQUAL(
+                test_generator_attr_delim(generator, space, attr),
+                expected);
+    }
+
+};  //  struct fixture
+
+BOOST_FIXTURE_TEST_CASE(variable_test, fixture) {
+    check("x", "x ");
 }
 
-#define CHECK(source, expected) check_program(source, expected)
-
-BOOST_AUTO_TEST_CASE(variable_test) {
-    CHECK("x", "x ");
+BOOST_FIXTURE_TEST_CASE(definition_test, fixture) {
+    check("(define x 1)", "( define x 1 ) ");
 }
 
-BOOST_AUTO_TEST_CASE(definition_test) {
-    CHECK("(define x 1)", "( define x 1 ) ");
+BOOST_FIXTURE_TEST_CASE(lambda_expression_test, fixture) {
+    check(
+            "(lambda (x) (* x 2))",
+            "( lambda ( x ) ( * x 2 ) ) "
+    );
+
+    check(
+            "(lambda (x)\n"
+            "  (define y 2)\n"
+            "  (* x y))",
+
+            "( lambda ( x ) ( define y 2 ) ( * x y ) ) "
+    );
 }
 
-BOOST_AUTO_TEST_CASE(lambda_expression_test) {
-    CHECK("(lambda (x) (* x 2))", "( lambda ( x ) ( * x 2 ) ) ");
-    CHECK("(lambda (x)\n"
-          "  (define y 2)\n"
-          "  (* x y))",
-          "( lambda ( x ) ( define y 2 ) ( * x y ) ) ");
+BOOST_FIXTURE_TEST_CASE(definition_lambda_test, fixture) {
+    check(
+            "(define y (lambda (x) (* x 2)))",
+            "( define y ( lambda ( x ) ( * x 2 ) ) ) "
+    );
 }
 
-BOOST_AUTO_TEST_CASE(definition_lambda_test) {
-    CHECK("(define y (lambda (x) (* x 2)))",
-          "( define y ( lambda ( x ) ( * x 2 ) ) ) ");
+BOOST_FIXTURE_TEST_CASE(conditional_test, fixture) {
+    check("(if x 1 2)", "( if x 1 2 ) ");
+    check("(if x 1)",   "( if x 1 ) ");
+    check("(if #t 1)",  "( if #t 1 ) ");
 }
 
-BOOST_AUTO_TEST_CASE(conditional_test) {
-    CHECK("(if x 1 2)", "( if x 1 2 ) ");
-    CHECK("(if x 1)", "( if x 1 ) ");
-    CHECK("(if #t 1)", "( if #t 1 ) ");
+BOOST_FIXTURE_TEST_CASE(assignment_test, fixture) {
+    check("(set! x 1)", "( set! x 1 ) ");
 }
 
-BOOST_AUTO_TEST_CASE(assignment_test) {
-    CHECK("(set! x 1)", "( set! x 1 ) ");
+BOOST_FIXTURE_TEST_CASE(quotation_number_test, fixture) {
+    check("(quote 1)", "( quote 1 ) ");
 }
 
-BOOST_AUTO_TEST_CASE(quotation_number_test) {
-    CHECK("(quote 1)", "( quote 1 ) ");
+BOOST_FIXTURE_TEST_CASE(quotation_boolean_test, fixture) {
+    check("(quote #t)", "( quote #t ) ");
+    check("(quote #f)", "( quote #f ) ");
 }
 
-BOOST_AUTO_TEST_CASE(quotation_boolean_test) {
-    CHECK("(quote #t)", "( quote #t ) ");
-    CHECK("(quote #f)", "( quote #f ) ");
+BOOST_FIXTURE_TEST_CASE(quotation_symbol_test, fixture) {
+    check("(quote x)", "( quote x ) ");
 }
 
-BOOST_AUTO_TEST_CASE(quotation_symbol_test) {
-    CHECK("(quote x)", "( quote x ) ");
-}
-
-BOOST_AUTO_TEST_CASE(quotation_abbrev_number_test) {
-    CHECK("'1", "( quote 1 ) ");
+BOOST_FIXTURE_TEST_CASE(quotation_abbrev_number_test, fixture) {
+    check("'1", "( quote 1 ) ");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -4,11 +4,13 @@
 #include "rose/parser/r5rs_grammar.hpp"
 
 #include <boost/spirit/include/phoenix_operator.hpp>
+#include <boost/spirit/repository/include/qi_confix.hpp>
 
 namespace rose {
 namespace parser {
 
 namespace qi = boost::spirit::qi;
+namespace repository = boost::spirit::repository;
 
 template<
     typename Iterator,
@@ -22,6 +24,7 @@ r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
     using qi::eol;
     using qi::lexeme;
     using qi::omit;
+    using repository::qi::confix;
 
     start
         =   -omit[shebang]
@@ -29,11 +32,7 @@ r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
         ;
 
     shebang
-        =   lexeme[
-                "#!"
-                >> *(char_ - eol)
-                >> eol
-            ]
+        =   lexeme[confix("#!", eol)[char_]]
         ;
 
     command
