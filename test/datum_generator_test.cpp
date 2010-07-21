@@ -1,59 +1,57 @@
-#include "rose/generator/datum.hpp"
+#include "generators.hpp"
 #include "utilities.hpp"
 
 #include <boost/test/unit_test.hpp>
 
-namespace ascii = boost::spirit::ascii;
-namespace karma = boost::spirit::karma;
-namespace generator = rose::generator;
-
-using ascii::space;
-
-typedef
-    generator::datum<
-        std::back_insert_iterator<std::string>,
-        ascii::space_type
-    >
-    generator_type;
-
-static generator_type g;
-
 BOOST_AUTO_TEST_SUITE(datum_generator_suite)
 
+void check(rose::ast_datum const& datum, std::string const& expected) {
+    BOOST_CHECK_EQUAL(
+            test_generator_attr_delim(datum_g, delimiter_g, datum),
+            expected);
+}
+
 BOOST_AUTO_TEST_CASE(boolean_test) {
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, true), "#t ");
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, false), "#f ");
+    check(true, "#t ");
+    check(false, "#f ");
 }
 
 BOOST_AUTO_TEST_CASE(number_test) {
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, 0), "0 ");
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, 1), "1 ");
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, -1), "-1 ");
+    check(0, "0 ");
+    check(1, "1 ");
+    check(-1, "-1 ");
 }
 
 BOOST_AUTO_TEST_CASE(character_test) {
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, ' '), "#\\space ");
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, '\n'), "#\\newline ");
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, '\t'), "#\\tab ");
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, 'a'), "#\\a ");
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, '\''), "#\\' ");
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, '"'), "#\\\" ");
-    BOOST_CHECK_EQUAL(test_generator_attr_delim(g, space, '.'), "#\\. ");
+    check(' ', "#\\space ");
+    check('\n', "#\\newline ");
+    check('\t', "#\\tab ");
+    check('a', "#\\a ");
+    check('\'', "#\\' ");
+    check('"', "#\\\" ");
+    check('.', "#\\. ");
 }
 
-BOOST_AUTO_TEST_CASE(list_test) {
-    {
-        ast_list list;
+BOOST_AUTO_TEST_CASE(empty_list_test) {
+    rose::ast_list list;
+    check(rose::ast_datum(list), "( ) ");
+}
 
-        list.proper.push_back(1);
-        list.proper.push_back(ast_symbol('x'));
-        list.proper.push_back(ast_string("hello"));
-        list.improper.reset(true);
+BOOST_AUTO_TEST_CASE(flat_list_test) {
+    rose::ast_list list;
+    list.proper.push_back(1);
+    list.proper.push_back(2);
+    list.proper.push_back(3);
+    check(rose::ast_datum(list), "( 1 2 3 ) ");
+}
 
-        BOOST_CHECK_EQUAL(
-                test_generator_attr_delim(g, space, ' '),
-                "( 1 x \"hello\" . #t ) ");
-    }
+BOOST_AUTO_TEST_CASE(mixed_list_test) {
+    rose::ast_list list;
+    list.proper.push_back(1);
+    list.proper.push_back(rose::ast_symbol("x"));
+    list.proper.push_back(rose::ast_string("hello"));
+    list.improper.reset(true);
+    check(rose::ast_datum(list), "( 1 x \"hello\" . #t ) ");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
