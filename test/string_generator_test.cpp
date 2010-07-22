@@ -16,7 +16,8 @@ void check(rose::ast_string const& attr, std::string const& expected) {
 BOOST_AUTO_TEST_CASE(escaping_test) {
     check(rose::ast_string("a\nb"), "\"a\nb\" ");
     check(rose::ast_string("a\tb"), "\"a\tb\" ");
-    check(rose::ast_string("a\"b"), "\"a\"b\" ");
+    check(rose::ast_string("a\"b"), "\"a\\\"b\" ");
+    check(rose::ast_string("a\\b"), "\"a\\\\b\" ");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

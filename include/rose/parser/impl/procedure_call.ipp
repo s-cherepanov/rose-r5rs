@@ -3,6 +3,7 @@
 
 #include "rose/parser/procedure_call.hpp"
 
+#include <boost/spirit/include/phoenix_fusion.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/phoenix_stl.hpp>
 

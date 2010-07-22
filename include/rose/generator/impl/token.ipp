@@ -87,12 +87,10 @@ string<Iterator, Delimiter>::string() :
         ;
 
     string_element
-        =   graph
-        |   space
-        |   &char_('"')  << "\\\""
+        =   &char_('"')  << "\\\""
         |   &char_('\\') << "\\\\"
-        |   &char_('\n') << "\\n"
-        |   &char_('\t') << "\\t"
+        |   graph
+        |   space
         ;
 }
 
