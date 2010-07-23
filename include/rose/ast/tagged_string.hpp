@@ -9,8 +9,6 @@ template<typename Tag>
 struct tagged_string : public std::string {
     typedef Tag tag;
 
-    typedef tagged_string<tag> this_type;
-
     tagged_string() :
         std::string()
     {}

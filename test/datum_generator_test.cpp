@@ -39,18 +39,18 @@ BOOST_AUTO_TEST_CASE(empty_list_test) {
 
 BOOST_AUTO_TEST_CASE(flat_list_test) {
     rose::ast_list list;
-    list.proper.push_back(1);
-    list.proper.push_back(2);
-    list.proper.push_back(3);
+    list.elements.push_back(1);
+    list.elements.push_back(2);
+    list.elements.push_back(3);
     check(rose::ast_datum(list), "( 1 2 3 ) ");
 }
 
 BOOST_AUTO_TEST_CASE(mixed_list_test) {
     rose::ast_list list;
-    list.proper.push_back(1);
-    list.proper.push_back(rose::ast_symbol("x"));
-    list.proper.push_back(rose::ast_string("hello"));
-    list.improper.reset(true);
+    list.elements.push_back(1);
+    list.elements.push_back(rose::ast_symbol("x"));
+    list.elements.push_back(rose::ast_string("hello"));
+    list.dotted_element.reset(true);
     check(rose::ast_datum(list), "( 1 x \"hello\" . #t ) ");
 }
 

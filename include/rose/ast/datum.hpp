@@ -46,23 +46,24 @@ struct ast_list {
     typedef container_type::iterator iterator;
     typedef container_type::const_iterator const_iterator;
 
-    container_type proper;
-    boost::optional<ast_datum> improper;
+    container_type elements;
+    boost::optional<ast_datum> dotted_element;
 
     bool operator==(ast_list const& rhs) const {
-        return proper == rhs.proper && improper == rhs.improper;
+        return elements == rhs.elements &&
+            dotted_element == rhs.dotted_element;
     }
 
 };  //  struct ast_list
 
 inline std::ostream& operator<<(std::ostream& out, ast_list const& list) {
     out << '(';
-    std::copy(list.proper.begin(),
-              list.proper.end(),
+    std::copy(list.elements.begin(),
+              list.elements.end(),
               std::ostream_iterator<ast_datum>(out, " "));
 
-    if (list.improper) {
-        out << ". " << *(list.improper);
+    if (list.dotted_element) {
+        out << ". " << *(list.dotted_element);
     }
 
     return out << ')';
@@ -111,7 +112,7 @@ struct not_is_variant<rose::ast_vector> : mpl::false_ {};
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast_list,
-    (rose::ast_list::container_type, proper)
-    (boost::optional<rose::ast_datum>, improper))
+    (rose::ast_list::container_type, elements)
+    (boost::optional<rose::ast_datum>, dotted_element))
 
 #endif  //  __ROSE_AST_DATUM_HPP__

@@ -74,7 +74,7 @@ bool test_parser_attr(
     iterator_type last = input.end();
 
     bool match = qi::parse(first, last, parser, attribute);
-    bool full_match = (first == last);
+    bool full_match = (match && first == last);
 
     return full_match;
 }
@@ -114,7 +114,7 @@ bool test_phrase_parser_attr(
     iterator_type last = input.end();
 
     bool match = qi::phrase_parse(first, last, parser, skipper, attribute);
-    bool full_match = (first == last);
+    bool full_match = (match && first == last);
 
     return full_match;
 }
