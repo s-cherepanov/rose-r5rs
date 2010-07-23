@@ -45,23 +45,36 @@ BOOST_AUTO_TEST_CASE(literal_self_evaluating_number_test) {
     check("0", 0);
 }
 
-// BOOST_AUTO_TEST_CASE(literal_self_evaluating_character_test) {
-//     BOOST_CHECK(is_expression("#\\a"));
-//     BOOST_CHECK(is_expression("#\\newline"));
-//     BOOST_CHECK(is_expression("#\\space"));
-// }
-// 
-// BOOST_AUTO_TEST_CASE(literal_self_evaluating_string_test) {
-//     BOOST_CHECK(is_expression("\"\""));
-//     BOOST_CHECK(is_expression("\"\\n\""));
-//     BOOST_CHECK(is_expression("\"abc\""));
-// }
-// 
-// BOOST_AUTO_TEST_CASE(procedure_call_test) {
-//     BOOST_CHECK(is_expression("(+ a b)"));
-//     BOOST_CHECK(is_expression("(symbol? 'a)"));
-// }
-// 
+BOOST_AUTO_TEST_CASE(literal_self_evaluating_character_test) {
+    check("#\\a", 'a');
+    check("#\\newline", '\n');
+    check("#\\space", ' ');
+}
+
+BOOST_AUTO_TEST_CASE(literal_self_evaluating_string_test) {
+    check("\"\"", ast_string(""));
+    check("\"\n\t\\\"\"", ast_string("\n\t\""));
+    check("\"abc\"", ast_string("abc"));
+}
+
+BOOST_AUTO_TEST_CASE(procedure_call_test) {
+    {
+        std::vector<ast_expression> args;
+        args +=
+            ast_expression(ast_variable("a")),
+            ast_expression(ast_variable("b"));
+        ast_procedure_call p(ast_expression(ast_variable("+")), args);
+        check("(+ a b)", p);
+    }
+
+    {
+        std::vector<ast_expression> args;
+        args += ast_expression(ast_quotation(ast_datum(ast_symbol("a"))));
+        ast_procedure_call p(ast_expression(ast_variable("symbol?")), args);
+        check("(symbol? 'a)", p);
+    }
+}
+
 // BOOST_AUTO_TEST_CASE(procedure_call_ast_test) {
 //     ast_expression op(ast_variable("+"));
 //     std::vector<ast_expression> args;
