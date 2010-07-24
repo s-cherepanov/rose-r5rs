@@ -75,26 +75,113 @@ BOOST_AUTO_TEST_CASE(procedure_call_test) {
     }
 }
 
-// BOOST_AUTO_TEST_CASE(procedure_call_ast_test) {
-//     ast_expression op(ast_variable("+"));
-//     std::vector<ast_expression> args;
-// 
-//     args.push_back(ast_expression(1));
-//     args.push_back(ast_expression(2));
-// 
-//     ast_expression e(ast_procedure_call(op, args));
-//     BOOST_CHECK(test_expression_ast("(+ 1 2)", e));
-// }
-// 
-// BOOST_AUTO_TEST_CASE(conditional_test) {
-//     BOOST_CHECK(is_expression("(if #t 1)"));
-//     BOOST_CHECK(is_expression("(if #t 1 2)"));
-// }
-// 
-// BOOST_AUTO_TEST_CASE(lambda_expression_test) {
-//     BOOST_CHECK(is_expression("(lambda (x) (+ x 1))"));
-//     BOOST_CHECK(is_expression("(lambda () 1)"));
-//     BOOST_CHECK(is_expression("(lambda (x y) (+ x 1))"));
-// }
+BOOST_AUTO_TEST_CASE(conditional_test) {
+    {
+        ast_conditional c(true, 1);
+        check("(if #t 1)", c);
+    }
+
+    {
+        ast_conditional c(true, 1, 2);
+        check("(if #t 1 2)", c);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(lambda_expression_test) {
+    {
+        ast_sequence sequence;
+        sequence += 1;
+
+        check("(lambda () 1)",
+                ast_lambda_expression(
+                    ast_formals(),
+                    ast_body(ast_definitions(), sequence)));
+    }
+
+    {
+        ast_formals formals;
+        ast_sequence sequence;
+
+        formals += ast_variable("x");
+        sequence += ast_variable("x");
+
+        check("(lambda (x) x)",
+                ast_lambda_expression(formals, ast_body(sequence)));
+    }
+
+}
+
+BOOST_AUTO_TEST_CASE(factorial_lambda_test) {
+    ast_formals inner_formals;
+    inner_formals += ast_variable("m");
+
+    ast_arguments lte_args;
+    lte_args += ast_variable("m"), 0;
+
+    ast_arguments minus_args;
+    minus_args += ast_variable("m"), 1;
+
+    ast_arguments inner_factorial_args;
+    inner_factorial_args +=
+        ast_procedure_call(
+                ast_variable("-"),
+                minus_args);
+
+    ast_procedure_call inner_factorial_call(
+            ast_variable("factorial"),
+            inner_factorial_args);
+
+    ast_arguments mult_args;
+    mult_args += ast_variable("m"), inner_factorial_call;
+
+    ast_sequence inner_sequence;
+    inner_sequence +=
+        ast_conditional(
+                ast_procedure_call(
+                    ast_variable("<="),
+                    lte_args),
+                1,
+                ast_procedure_call(
+                    ast_variable("*"),
+                    mult_args));
+
+    ast_lambda_expression inner_lambda(
+            inner_formals, ast_body(inner_sequence));
+
+    ast_formals outer_formals;
+    outer_formals += ast_variable("n");
+
+    ast_definitions outer_definitions;
+    outer_definitions +=
+        ast_definition(
+            ast_variable("factorial"),
+            inner_lambda);
+
+    ast_arguments outer_factorial_args;
+    outer_factorial_args += ast_variable("n");
+
+    ast_sequence outer_sequence;
+    outer_sequence +=
+        ast_procedure_call(
+            ast_variable("factorial"),
+            outer_factorial_args);
+
+    ast_lambda_expression outer_lambda(
+            outer_formals,
+            ast_body(
+                outer_definitions,
+                outer_sequence));
+
+    check(
+            "(lambda (n)\n"
+            "  (define factorial\n"
+            "    (lambda (m)\n"
+            "      (if (<= m 0)\n"
+            "        1\n"
+            "        (* m (factorial (- m 1))))))\n"
+            "  (factorial n))",
+            outer_lambda
+    );
+}
 
 BOOST_AUTO_TEST_SUITE_END()
