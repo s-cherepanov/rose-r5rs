@@ -59,6 +59,10 @@ typedef
     >
     ast_expression;
 
+typedef
+    std::vector<ast_expression>
+    ast_arguments;
+
 struct ast_procedure_call {
     ast_procedure_call() :
         procedure(),
@@ -67,7 +71,7 @@ struct ast_procedure_call {
 
     ast_procedure_call(
             ast_expression const& procedure,
-            std::vector<ast_expression> const& arguments)
+            ast_arguments const& arguments)
     :
         procedure(procedure),
         arguments(arguments)
@@ -82,7 +86,7 @@ struct ast_procedure_call {
     }
 
     ast_expression procedure;
-    std::vector<ast_expression> arguments;
+    ast_arguments arguments;
 
 };  //  struct ast_procedure_call
 
@@ -170,22 +174,43 @@ struct ast_definition {
     ast_variable variable;
     ast_expression expression;
 
-};  //  struct definition
+};  //  struct ast_definition
+
+typedef
+    std::vector<ast_definition>
+    ast_definitions;
 
 typedef
     std::vector<ast_expression>
     ast_sequence;
 
 struct ast_body {
+    ast_body() :
+        definitions(),
+        sequence()
+    {}
+
+    ast_body(ast_definitions const& definitions,
+             ast_sequence const& sequence)
+    :
+        definitions(definitions),
+        sequence(sequence)
+    {}
+
+    ast_body(ast_sequence const& sequence) :
+        definitions(),
+        sequence(sequence)
+    {}
+
     bool operator==(ast_body const& rhs) const {
         return definitions == rhs.definitions &&
                sequence== rhs.sequence;
     }
 
-    std::vector<ast_definition> definitions;
+    ast_definitions definitions;
     ast_sequence sequence;
 
-};  //  struct body
+};  //  struct ast_body
 
 typedef
     std::vector<ast_variable>
@@ -212,7 +237,7 @@ struct ast_lambda_expression {
     ast_formals formals;
     ast_body body;
 
-};  //  struct lambda_expression
+};  //  struct ast_lambda_expression
 
 typedef
     boost::variant<ast_definition, ast_expression>
@@ -231,7 +256,7 @@ BOOST_FUSION_ADAPT_STRUCT(
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast_procedure_call,
     (rose::ast_expression, procedure)
-    (std::vector<rose::ast_expression>, arguments))
+    (rose::ast_arguments, arguments))
 
 BOOST_FUSION_ADAPT_STRUCT(
     rose::ast_conditional,
