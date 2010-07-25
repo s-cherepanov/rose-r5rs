@@ -119,4 +119,194 @@ bool test_phrase_parser_attr(
     return full_match;
 }
 
+template<typename T1>
+rose::ast_arguments make_arguments(T1 t1) {
+    rose::ast_arguments args;
+    args.push_back(t1);
+    return args;
+}
+
+template<typename T1, typename T2>
+rose::ast_arguments make_arguments(T1 const& t1, T2 const& t2) {
+    rose::ast_arguments args;
+    args.push_back(t1);
+    args.push_back(t2);
+    return args;
+}
+
+template<typename T1, typename T2, typename T3>
+rose::ast_arguments make_arguments(
+        T1 const& t1, T2 const& t2, T3 const& t3)
+{
+    rose::ast_arguments args;
+    args.push_back(t1);
+    args.push_back(t2);
+    args.push_back(t3);
+    return args;
+}
+
+template<typename T1, typename T2, typename T3, typename T4>
+rose::ast_arguments make_arguments(
+        T1 const& t1, T2 const& t2, T3 const& t3, T4 const& t4)
+{
+    rose::ast_arguments args;
+    args.push_back(t1);
+    args.push_back(t2);
+    args.push_back(t3);
+    args.push_back(t4);
+    return args;
+}
+
+template<typename T1>
+rose::ast_definitions make_definitions(T1 t1) {
+    rose::ast_definitions defs;
+    defs.push_back(t1);
+    return defs;
+}
+
+template<typename T1, typename T2>
+rose::ast_definitions make_definitions(T1 const& t1, T2 const& t2) {
+    rose::ast_definitions defs;
+    defs.push_back(t1);
+    defs.push_back(t2);
+    return defs;
+}
+
+template<typename T1, typename T2, typename T3>
+rose::ast_definitions make_definitions(
+        T1 const& t1, T2 const& t2, T3 const& t3)
+{
+    rose::ast_definitions defs;
+    defs.push_back(t1);
+    defs.push_back(t2);
+    defs.push_back(t3);
+    return defs;
+}
+
+template<typename T1, typename T2, typename T3, typename T4>
+rose::ast_definitions make_definitions(
+        T1 const& t1, T2 const& t2, T3 const& t3, T4 const& t4)
+{
+    rose::ast_definitions defs;
+    defs.push_back(t1);
+    defs.push_back(t2);
+    defs.push_back(t3);
+    defs.push_back(t4);
+    return defs;
+}
+
+template<typename T1>
+rose::ast_sequence make_sequence(T1 t1) {
+    rose::ast_sequence seq;
+    seq.push_back(t1);
+    return seq;
+}
+
+template<typename T1, typename T2>
+rose::ast_sequence make_sequence(T1 const& t1, T2 const& t2) {
+    rose::ast_sequence seq;
+    seq.push_back(t1);
+    seq.push_back(t2);
+    return seq;
+}
+
+template<typename T1, typename T2, typename T3>
+rose::ast_sequence make_sequence(
+        T1 const& t1, T2 const& t2, T3 const& t3)
+{
+    rose::ast_sequence seq;
+    seq.push_back(t1);
+    seq.push_back(t2);
+    seq.push_back(t3);
+    return seq;
+}
+
+template<typename T1, typename T2, typename T3, typename T4>
+rose::ast_sequence make_sequence(
+        T1 const& t1, T2 const& t2, T3 const& t3, T4 const& t4)
+{
+    rose::ast_sequence seq;
+    seq.push_back(t1);
+    seq.push_back(t2);
+    seq.push_back(t3);
+    seq.push_back(t4);
+    return seq;
+}
+
+template<typename T1>
+rose::ast_formals make_formals(T1 t1) {
+    rose::ast_formals formals;
+    formals.push_back(t1);
+    return formals;
+}
+
+template<typename T1, typename T2>
+rose::ast_formals make_formals(T1 const& t1, T2 const& t2) {
+    rose::ast_formals formals;
+    formals.push_back(t1);
+    formals.push_back(t2);
+    return formals;
+}
+
+template<typename T1, typename T2, typename T3>
+rose::ast_formals make_formals(
+        T1 const& t1, T2 const& t2, T3 const& t3)
+{
+    rose::ast_formals formals;
+    formals.push_back(t1);
+    formals.push_back(t2);
+    formals.push_back(t3);
+    return formals;
+}
+
+template<typename T1, typename T2, typename T3, typename T4>
+rose::ast_formals make_formals(
+        T1 const& t1, T2 const& t2, T3 const& t3, T4 const& t4)
+{
+    rose::ast_formals formals;
+    formals.push_back(t1);
+    formals.push_back(t2);
+    formals.push_back(t3);
+    formals.push_back(t4);
+    return formals;
+}
+
+template<typename T1>
+rose::ast_program make_program(T1 t1) {
+    rose::ast_program program;
+    program.push_back(t1);
+    return program;
+}
+
+template<typename T1, typename T2>
+rose::ast_program make_program(T1 const& t1, T2 const& t2) {
+    rose::ast_program program;
+    program.push_back(t1);
+    program.push_back(t2);
+    return program;
+}
+
+template<typename T1, typename T2, typename T3>
+rose::ast_program make_program(
+        T1 const& t1, T2 const& t2, T3 const& t3)
+{
+    rose::ast_program program;
+    program.push_back(t1);
+    program.push_back(t2);
+    program.push_back(t3);
+    return program;
+}
+
+template<typename T1, typename T2, typename T3, typename T4>
+rose::ast_program make_program(
+        T1 const& t1, T2 const& t2, T3 const& t3, T4 const& t4)
+{
+    rose::ast_program program;
+    program.push_back(t1);
+    program.push_back(t2);
+    program.push_back(t3);
+    program.push_back(t4);
+    return program;
+}
+
 #endif  //  __UTILITIES_HPP__
