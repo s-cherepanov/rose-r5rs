@@ -22,9 +22,8 @@ void instantiate_conditional() {
         conditional<iterator_type, skipper_type>
         conditional_parser;
 
-    expression_parser const* instantiate_expression();
-
-    conditional_parser d(instantiate_expression());
+    expression_parser e;
+    conditional_parser d(&e);
 }
 
 }   //  namespace parser

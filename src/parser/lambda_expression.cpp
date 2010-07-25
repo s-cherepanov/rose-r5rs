@@ -1,11 +1,11 @@
-#include "rose/parser/expression.hpp"
-#include "rose/parser/impl/definition.ipp"
+#include "rose/parser/impl/expression.ipp"
+#include "rose/parser/impl/lambda_expression.ipp"
 #include "rose/parser/intertoken_space.hpp"
 
 namespace rose {
 namespace parser {
 
-void instantiate_definition() {
+void instantiate_lambda_expression() {
     typedef
         std::string::const_iterator
         iterator_type;
@@ -19,12 +19,11 @@ void instantiate_definition() {
         expression_parser;
 
     typedef
-        definition<iterator_type, skipper_type>
-        definition_parser;
+        lambda_expression<iterator_type, skipper_type>
+        lambda_expression_parser;
 
-    expression_parser const* instantiate_expression();
-
-    definition_parser d(instantiate_expression());
+    expression_parser e;
+    lambda_expression_parser l(&e);
 }
 
 }   //  namespace parser

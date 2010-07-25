@@ -58,57 +58,37 @@ BOOST_AUTO_TEST_CASE(literal_self_evaluating_string_test) {
 }
 
 BOOST_AUTO_TEST_CASE(procedure_call_test) {
-    {
-        std::vector<ast_expression> args;
-        args +=
-            ast_expression(ast_variable("a")),
-            ast_expression(ast_variable("b"));
-        ast_procedure_call p(ast_expression(ast_variable("+")), args);
-        check("(+ a b)", p);
-    }
+    check("(+ a b)",
+            ast_procedure_call(
+                ast_variable("+"),
+                make_arguments(
+                    ast_variable("a"),
+                    ast_variable("b"))));
 
-    {
-        std::vector<ast_expression> args;
-        args += ast_expression(ast_quotation(ast_datum(ast_symbol("a"))));
-        ast_procedure_call p(ast_expression(ast_variable("symbol?")), args);
-        check("(symbol? 'a)", p);
-    }
+    check("(symbol? 'a)",
+            ast_procedure_call(
+                ast_variable("symbol?"),
+                make_arguments(
+                    ast_quotation(ast_symbol("a")))));
 }
 
 BOOST_AUTO_TEST_CASE(conditional_test) {
-    {
-        ast_conditional c(true, 1);
-        check("(if #t 1)", c);
-    }
-
-    {
-        ast_conditional c(true, 1, 2);
-        check("(if #t 1 2)", c);
-    }
+    check("(if #t 1)", ast_conditional(true, 1));
+    check("(if #t 1 2)", ast_conditional(true, 1, 2));
 }
 
 BOOST_AUTO_TEST_CASE(lambda_expression_test) {
-    {
-        ast_sequence sequence;
-        sequence += 1;
+    check("(lambda () 1)",
+            ast_lambda_expression(
+                ast_formals(),
+                ast_body(ast_definitions(), make_sequence(1))));
 
-        check("(lambda () 1)",
-                ast_lambda_expression(
-                    ast_formals(),
-                    ast_body(ast_definitions(), sequence)));
-    }
-
-    {
-        ast_formals formals;
-        ast_sequence sequence;
-
-        formals += ast_variable("x");
-        sequence += ast_variable("x");
-
-        check("(lambda (x) x)",
-                ast_lambda_expression(formals, ast_body(sequence)));
-    }
-
+    check("(lambda (x) x)",
+            ast_lambda_expression(
+                make_formals(
+                    ast_variable("x")),
+                ast_body(
+                    make_sequence(ast_variable("x")))));
 }
 
 BOOST_AUTO_TEST_CASE(factorial_lambda_test) {
