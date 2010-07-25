@@ -1,58 +1,80 @@
-#include "rose/parser/intertoken_space.hpp"
-#include "rose/parser/r5rs_grammar.hpp"
+#include "parsers.hpp"
+#include "utilities.hpp"
 
+#include <boost/assign.hpp>
 #include <boost/test/unit_test.hpp>
-
-namespace ascii = boost::spirit::ascii;
-namespace qi = boost::spirit::qi;
-
-using namespace rose;
 
 BOOST_AUTO_TEST_SUITE(program_parser_suite)
 
-ast_program parse_program(std::string const& input) {
-    typedef
-        std::string::const_iterator
-        iterator_type;
+using namespace boost::assign;
+using namespace rose;
 
-    typedef
-        parser::intertoken_space<iterator_type>
-        skipper_type;
-
-    typedef
-        parser::r5rs_grammar<iterator_type, skipper_type>
-        r5rs_grammar;
-
-    r5rs_grammar grammar;
-    skipper_type skipper;
-    ast_program program;
-
-    iterator_type first = input.begin();
-    iterator_type last  = input.end();
-
-    bool match = qi::phrase_parse(
-            first, last, grammar, skipper, program);
-
-    BOOST_CHECK(match && first == last);
-
-    return program;
+void check(std::string const& input, ast_program const& expected) {
+    ast_program actual;
+    BOOST_CHECK(test_phrase_parser_attr(program_p, input, skipper_p, actual));
+    BOOST_CHECK(actual == expected);
 }
 
 BOOST_AUTO_TEST_CASE(varaible_test) {
     ast_program expected;
-
-    expected.push_back(ast_expression(ast_variable("x")));
-    BOOST_CHECK(parse_program("x") == expected);
+    expected += ast_expression(ast_variable("x"));
+    check("x", expected);
 }
 
 BOOST_AUTO_TEST_CASE(definition_test) {
-    ast_expression e(static_cast<int>(1));
-    ast_variable v("x");
-    ast_definition d(v, e);
-    ast_program expected;
+    ast_program expected = list_of
+        (ast_definition(ast_variable("x"), 1))
+        (ast_definition(ast_variable("y"), 2));
 
-    expected.push_back(d);
-    BOOST_CHECK(parse_program("(define x 1)") == expected);
+    check(
+            "(define x 1)\n"
+            "(define y 2)\n",
+            expected
+    );
+}
+
+BOOST_AUTO_TEST_CASE(call_factorial_test) {
+    ast_program expected =
+        make_program(
+                ast_definition(
+                    ast_variable("factorial"),
+                    ast_lambda_expression(
+                        make_formals(ast_variable("n")),
+                        ast_body(
+                            make_sequence(
+                                ast_conditional(
+                                    ast_procedure_call(
+                                        ast_variable("<="),
+                                        make_arguments(
+                                            ast_variable("n"),
+                                            0)),
+                                    1,
+                                    ast_procedure_call(
+                                        ast_variable("*"),
+                                        make_arguments(
+                                            ast_variable("n"),
+                                            ast_procedure_call(
+                                                ast_variable("factorial"),
+                                                make_arguments(
+                                                    ast_procedure_call(
+                                                        ast_variable("-"),
+                                                        make_arguments(
+                                                            ast_variable("n"),
+                                                            1))))))))))),
+                ast_procedure_call(
+                        ast_variable("factorial"),
+                        make_arguments(5)));
+
+    check(
+            "(define factorial\n"
+            "  (lambda (n)\n"
+            "    (if (<= n 0)\n"
+            "      1\n"
+            "      (* n (factorial (- n 1))))))\n"
+            "\n"
+            "(factorial 5)\n",
+            expected
+    );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
