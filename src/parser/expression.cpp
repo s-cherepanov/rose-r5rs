@@ -4,21 +4,20 @@
 namespace rose {
 namespace parser {
 
-typedef
-    std::string::const_iterator
-    iterator_type;
+void instantiate_expression() {
+    typedef
+        std::string::const_iterator
+        iterator_type;
 
-typedef
-    intertoken_space<iterator_type>
-    skipper_type;
+    typedef
+        intertoken_space<iterator_type>
+        skipper_type;
 
-typedef
-    expression<iterator_type, skipper_type>
-    expression_parser;
+    typedef
+        expression<iterator_type, skipper_type>
+        expression_parser;
 
-expression_parser const* instantiate_expression() {
-    static expression<iterator_type, skipper_type> e;
-    return &e;
+    expression_parser e;
 }
 
 }   //  namespace parser

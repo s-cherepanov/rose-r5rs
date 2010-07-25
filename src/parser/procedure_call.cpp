@@ -1,4 +1,4 @@
-#include "rose/parser/expression.hpp"
+#include "rose/parser/impl/expression.ipp"
 #include "rose/parser/impl/procedure_call.ipp"
 #include "rose/parser/intertoken_space.hpp"
 
@@ -22,9 +22,8 @@ void instantiate_procedure_call() {
         procedure_call<iterator_type, skipper_type>
         procedure_call_parser;
 
-    expression_parser const* instantiate_expression();
-
-    procedure_call_parser p(instantiate_expression());
+    expression_parser e;
+    procedure_call_parser p(&e);
 }
 
 }   //  namespace parser
