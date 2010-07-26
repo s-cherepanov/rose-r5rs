@@ -9,7 +9,7 @@ run
         /boost//unit_test_framework
         /rose/parser//rose-parser
         /rose/generator//rose-generator
-    :   --working-dir=\"$(PROJECT_ROOT)/test/test_files\"
+    :   --working-dir=\"$(PROJECT_ROOT)\"
     :
     :
     :   test
