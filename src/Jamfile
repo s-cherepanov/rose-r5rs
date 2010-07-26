@@ -8,6 +8,7 @@ exe rose
     :   [ glob *.cpp ]
         /rose/parser//rose-parser
         /rose/generator//rose-generator
+        /boost//program_options
     ;
 
 install install-rose
