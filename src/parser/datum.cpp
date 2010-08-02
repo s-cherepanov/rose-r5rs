@@ -13,7 +13,7 @@ void instantiate_datum() {
         intertoken_space<iterator_type>
         skipper_type;
 
-    datum<iterator_type, skipper_type>();
+    datum<iterator_type, skipper_type> d;
 }
 
 }   //  namespace parser

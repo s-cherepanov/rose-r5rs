@@ -19,7 +19,7 @@ void instantiate_token() {
     rose::parser::boolean<iterator_type>();
     rose::parser::character<iterator_type>();
     rose::parser::string<iterator_type>();
-    rose::parser::token<iterator_type, skipper_type>();
+    rose::parser::token<iterator_type, skipper_type> t;
 }
 
 }   //  namespace parser

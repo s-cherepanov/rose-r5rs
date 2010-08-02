@@ -14,7 +14,7 @@ void instantiate_expression() {
         std::back_insert_iterator<std::string>
         iterator_type;
 
-    expression<iterator_type, space_type>();
+    expression<iterator_type, space_type> e;
 }
 
 }   //  namespace generator

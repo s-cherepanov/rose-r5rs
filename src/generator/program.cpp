@@ -14,7 +14,7 @@ void instantiate_program() {
         std::back_insert_iterator<std::string>
         iterator_type;
 
-    program<iterator_type, space_type>();
+    program<iterator_type, space_type> p;
 }
 
 }   //  namespace generator
