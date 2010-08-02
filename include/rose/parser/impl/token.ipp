@@ -43,8 +43,8 @@ token<Iterator, Skipper>::token() :
         ;
 
     expression_keyword
-        =   no_case[
-                lit("if")   |   "lambda"    |   "quote"
+        =   no_case
+            [   lit("if")   |   "lambda"    |   "quote"
             |   "set!"      |   "begin"     |   "cond"
             |   "and"       |   "or"        |   "case"
             |   "let"       |   "let*"      |   "letrec"
