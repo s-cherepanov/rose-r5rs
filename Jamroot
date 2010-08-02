@@ -15,15 +15,16 @@ project
             <toolset>gcc:<cxxflags>-Wformat
             <toolset>gcc:<cxxflags>-Wall
             <toolset>gcc:<c++-template-depth>300
+            <toolset>gcc:<define>BOOST_SPIRIT_DONT_USE_MPL_ASSERT_MSG=0
 
             <toolset>msvc:<cxxflags>/wd4345
             <toolset>msvc:<cxxflags>/wd4355
             <toolset>msvc:<cxxflags>/wd4800
             <toolset>msvc:<cxxflags>/wd4819
             <toolset>msvc:<cxxflags>/wd4996
+            <toolset>msvc:<define>BOOST_SPIRIT_DONT_USE_MPL_ASSERT_MSG=1
 
             <include>include
-            <define>BOOST_SPIRIT_DONT_USE_MPL_ASSERT_MSG=1
             <variant>debug:<define>BOOST_SPIRIT_DEBUG
 
             <link>static
