@@ -18,8 +18,6 @@ namespace ascii = boost::spirit::ascii;
 namespace karma = boost::spirit::karma;
 namespace qi = boost::spirit::qi;
 
-const std::string cli_prompt("rose> ");
-
 bool parse(std::string const& source, ast_program& program) {
     typedef
         std::string::const_iterator
@@ -60,20 +58,20 @@ bool generate_program(ast_program const& program, std::string& output) {
     return generate_delimited(sink, grammar, space, program);
 }
 
-void do_repl() {
-    for (std::string source;
-            (std::cout << cli_prompt),
-            std::getline(std::cin, source);)
-    {
-        ast_program program;
-        std::string output;
+void parse_and_generate(std::string const& input) {
+    ast_program program;
+    std::string output;
 
-        if (parse(source, program) && generate_program(program, output)) {
-            std::cout << output << std::endl;
-        }
-        else {
-            std::cerr << "error" << std::endl;
-        }
+    parse(input, program) && generate_program(program, output) ?
+        std::cout << output << std::endl
+      : std::cerr << "error" << std::endl;
+}
+
+void do_repl(std::string const& prompt) {
+    for (std::string input;
+            (std::cout << prompt), std::getline(std::cin, input);)
+    {
+        parse_and_generate(input);
     }
 }
 
@@ -93,22 +91,13 @@ std::string load_file(std::string const& filename) {
 }
 
 void do_batch(std::string const& input_file) {
-    ast_program program;
-    if (!parse(load_file(input_file), program)) {
-        std::cerr << "error" << std::endl;
-        return;
-    }
-
-    std::string output;
-    if (generate_program(program, output)) {
-        std::cout << output << std::endl;
-    }
-    else {
-        std::cerr << "error" << std::endl;
-    }
+    parse_and_generate(load_file(input_file));
 }
 
 }   //  namespace rose
+
+/// Default REPL prompt.
+static const std::string DEFAULT_REPL_PROMPT("rose> ");
 
 int main(int argc, char* argv[]) try {
     using boost::program_options::command_line_parser;
@@ -119,12 +108,17 @@ int main(int argc, char* argv[]) try {
     using boost::program_options::value;
     using boost::program_options::variables_map;
 
+    std::string repl_prompt;
     std::vector<std::string> input_files;
 
     options_description generic_options("Generic command line options");
     generic_options.add_options()
         ("help,h",
          "Show this help message.")
+
+        ("prompt,p",
+         value(&repl_prompt)->default_value(DEFAULT_REPL_PROMPT),
+         "Set the prompt string of the REPL environment.")
         ;
 
     options_description hidden_options;
@@ -160,7 +154,7 @@ int main(int argc, char* argv[]) try {
 
     cmdline_vm.count("input-file") ?
         rose::do_batch(input_files[0])
-      : rose::do_repl();
+      : rose::do_repl(repl_prompt);
 
     return 0;
 }
