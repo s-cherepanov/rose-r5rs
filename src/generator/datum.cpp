@@ -14,7 +14,7 @@ void instantiate_datum() {
         std::back_insert_iterator<std::string>
         iterator_type;
 
-    datum<iterator_type, space_type>();
+    datum<iterator_type, space_type> d;
 }
 
 }   //  namespace generator

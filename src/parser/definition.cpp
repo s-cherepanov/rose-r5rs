@@ -5,6 +5,8 @@
 namespace rose {
 namespace parser {
 
+extern void instantiate_definition();
+
 void instantiate_definition() {
     typedef
         std::string::const_iterator
