@@ -61,21 +61,14 @@ bool generate_program(ast_program const& program, std::string& output) {
 }
 
 void do_repl() {
-    while (true) {
-        std::string source;
-        std::cout << cli_prompt;
-        if (!std::getline(std::cin, source)) {
-            break;
-        }
-
+    for (std::string source;
+            (std::cout << cli_prompt),
+            std::getline(std::cin, source);)
+    {
         ast_program program;
-        if (!parse(source, program)) {
-            std::cerr << "error" << std::endl;
-            continue;
-        }
-
         std::string output;
-        if (generate_program(program, output)) {
+
+        if (parse(source, program) && generate_program(program, output)) {
             std::cout << output << std::endl;
         }
         else {
@@ -160,6 +153,7 @@ int main(int argc, char* argv[]) try {
     notify(cmdline_vm);
 
     if (cmdline_vm.count("help")) {
+        std::cout << "Usage: rose <script-file> | [options]\n" << std::endl;
         std::cout << generic_options << std::endl;
         return 0;
     }
