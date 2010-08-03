@@ -42,7 +42,7 @@ bool parse(std::string const& source, ast_program& program) {
     return match && first == last;
 }
 
-bool generate_program(ast_program const& program, std::string& output) {
+bool generate(ast_program const& program, std::string& output) {
     using ascii::space;
     using ascii::space_type;
     using karma::generate_delimited;
@@ -62,14 +62,28 @@ void parse_and_generate(std::string const& input) {
     ast_program program;
     std::string output;
 
-    parse(input, program) && generate_program(program, output) ?
+    parse(input, program) && generate(program, output) ?
         std::cout << output << std::endl
       : std::cerr << "error" << std::endl;
 }
 
+boost::format format_prompt(std::string const& prompt) {
+    boost::format formatter(prompt);
+
+    formatter.exceptions(
+            boost::io::all_error_bits ^
+            (boost::io::too_many_args_bit |
+             boost::io::too_few_args_bit));
+
+    return formatter;
+}
+
 void do_repl(std::string const& prompt) {
-    for (std::string input;
-            (std::cout << prompt), std::getline(std::cin, input);)
+    std::string input;
+    int line_no = 0;
+
+    while (std::cout << format_prompt(prompt) % line_no++,
+            std::getline(std::cin, input))
     {
         parse_and_generate(input);
     }
@@ -96,8 +110,7 @@ void do_batch(std::string const& input_file) {
 
 }   //  namespace rose
 
-/// Default REPL prompt.
-static const std::string DEFAULT_REPL_PROMPT("rose> ");
+static const std::string DEFAULT_REPL_PROMPT("rose[%1%]> ");
 
 int main(int argc, char* argv[]) try {
     using boost::program_options::command_line_parser;
