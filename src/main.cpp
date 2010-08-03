@@ -1,6 +1,6 @@
 #include "rose/generator/program.hpp"
 #include "rose/parser/intertoken_space.hpp"
-#include "rose/parser/r5rs_grammar.hpp"
+#include "rose/parser/program.hpp"
 
 #include <boost/format.hpp>
 #include <boost/program_options.hpp>
@@ -31,13 +31,13 @@ bool parse(std::string const& source, ast_program& program) {
     iterator_type last = source.end();
 
     typedef
-        rose::parser::r5rs_grammar<iterator_type, skipper_type>
-        r5rs_grammar;
+        rose::parser::program<iterator_type, skipper_type>
+        program_parser;
 
-    r5rs_grammar grammar;
+    program_parser parser;
     skipper_type skipper;
 
-    bool match = qi::phrase_parse(first, last, grammar, skipper, program);
+    bool match = qi::phrase_parse(first, last, parser, skipper, program);
 
     return match && first == last;
 }

@@ -8,7 +8,7 @@ void instantiate_identifier() {
         std::string::const_iterator
         iterator_type;
 
-    identifier<iterator_type>();
+    identifier<iterator_type> i;
 }
 
 }   //  namespace parser

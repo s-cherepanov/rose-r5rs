@@ -4,7 +4,7 @@
 #include "rose/parser/datum.hpp"
 #include "rose/parser/expression.hpp"
 #include "rose/parser/intertoken_space.hpp"
-#include "rose/parser/r5rs_grammar.hpp"
+#include "rose/parser/program.hpp"
 #include "rose/parser/token.hpp"
 
 typedef
@@ -24,7 +24,7 @@ typedef
     expression_parser;
 
 typedef
-    rose::parser::r5rs_grammar<input_iterator, skipper_type>
+    rose::parser::program<input_iterator, skipper_type>
     program_parser;
 
 typedef

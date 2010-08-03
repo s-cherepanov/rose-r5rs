@@ -16,9 +16,9 @@ void instantiate_token() {
         rose::parser::intertoken_space<iterator_type>
         skipper_type;
 
-    rose::parser::boolean<iterator_type>();
-    rose::parser::character<iterator_type>();
-    rose::parser::string<iterator_type>();
+    rose::parser::boolean<iterator_type> b;
+    rose::parser::character<iterator_type> c;
+    rose::parser::string<iterator_type> s;
     rose::parser::token<iterator_type, skipper_type> t;
 }
 

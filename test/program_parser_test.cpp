@@ -22,14 +22,21 @@ BOOST_AUTO_TEST_CASE(varaible_test) {
 }
 
 BOOST_AUTO_TEST_CASE(definition_test) {
-    ast_program expected = list_of
-        (ast_definition(ast_variable("x"), 1))
-        (ast_definition(ast_variable("y"), 2));
-
     check(
             "(define x 1)\n"
             "(define y 2)\n",
-            expected
+            make_program(
+                ast_definition(ast_variable("x"), 1),
+                ast_definition(ast_variable("y"), 2))
+    );
+}
+
+BOOST_AUTO_TEST_CASE(shebang_test) {
+    check(
+            "#!/usr/local/bin/rose\n"
+            "\n"
+            "1\n",
+            make_program(ast_expression(1))
     );
 }
 

@@ -1,5 +1,5 @@
-#ifndef __ROSE_R5RS_GRAMMAR_HPP__
-#define __ROSE_R5RS_GRAMMAR_HPP__
+#ifndef __ROSE_PARSER_PROGRAM_HPP__
+#define __ROSE_PARSER_PROGRAM_HPP__
 
 #include "rose/ast/program.hpp"
 #include "rose/parser/definition.hpp"
@@ -20,10 +20,10 @@ template<
     typename Iterator,
     typename Skipper
 >
-struct r5rs_grammar :
+struct program :
     grammar<Iterator, ast_program(), Skipper>
 {
-    r5rs_grammar();
+    program();
 
 private:
     rose::parser::expression<Iterator, Skipper> expression;
@@ -33,9 +33,9 @@ private:
     rule<Iterator, ast_expression(), Skipper> command;
     rule<Iterator,                   Skipper> shebang;
 
-};  //  struct r5rs_grammar
+};  //  struct program
 
 }   //  namespace parser
 }   //  namespace rose
 
-#endif  //  __ROSE_R5RS_GRAMMAR_HPP__
+#endif  //  __ROSE_PARSER_PROGRAM_HPP__
