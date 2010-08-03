@@ -1,4 +1,4 @@
-#include "rose/parser/impl/r5rs_grammar.ipp"
+#include "rose/parser/impl/program.ipp"
 #include "rose/parser/intertoken_space.hpp"
 
 namespace rose {
@@ -13,7 +13,7 @@ void instantiate_r5rs_grammar() {
         intertoken_space<iterator_type>
         skipper_type;
 
-    r5rs_grammar<iterator_type, skipper_type>();
+    program<iterator_type, skipper_type> p;
 }
 
 }   //  namespace parser

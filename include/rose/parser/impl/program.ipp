@@ -1,7 +1,7 @@
-#ifndef __ROSE_IMPL_R5RS_GRAMMAR_HPP__
-#define __ROSE_IMPL_R5RS_GRAMMAR_HPP__
+#ifndef __ROSE_PARSER_IMPL_PROGRAM_HPP__
+#define __ROSE_PARSER_IMPL_PROGRAM_HPP__
 
-#include "rose/parser/r5rs_grammar.hpp"
+#include "rose/parser/program.hpp"
 
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/repository/include/qi_confix.hpp>
@@ -16,8 +16,8 @@ template<
     typename Iterator,
     typename Skipper
 >
-r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
-    r5rs_grammar::base_type(start),
+program<Iterator, Skipper>::program() :
+    program::base_type(start),
     definition(&expression)
 {
     using qi::char_;
@@ -32,7 +32,7 @@ r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
         ;
 
     shebang
-        =   lexeme[confix("#!", eol)[char_]]
+        =   lexeme["#!" >> +(char_ - eol) >> eol]
         ;
 
     command
@@ -44,6 +44,6 @@ r5rs_grammar<Iterator, Skipper>::r5rs_grammar() :
 
 }   //  namespace parser
 
-#endif  //  __ROSE_IMPL_R5RS_GRAMMAR_HPP__
+#endif  //  __ROSE_PARSER_IMPL_PROGRAM_HPP__
 
 // vim:ft=cpp et
