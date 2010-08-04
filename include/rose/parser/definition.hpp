@@ -37,7 +37,7 @@ struct definition :
 
 private:
     expression_type const* expression_ptr;
-	rose::parser::token<Iterator, Skipper> token;
+    rose::parser::token<Iterator, Skipper> token;
 
     rule<Iterator, ast_definition(), Skipper> start;
 
