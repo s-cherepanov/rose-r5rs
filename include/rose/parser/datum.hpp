@@ -22,7 +22,7 @@ struct datum :
     datum();
 
 private:
-	rose::parser::token<Iterator, Skipper> token;
+    rose::parser::token<Iterator, Skipper> token;
 
     qi::rule<Iterator, ast_datum(),  Skipper> abbreviation;
     qi::rule<Iterator, ast_datum(),  Skipper> datum_;

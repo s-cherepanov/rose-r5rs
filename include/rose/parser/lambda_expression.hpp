@@ -37,8 +37,8 @@ struct lambda_expression :
 
 private:
     expression_type const*                      expression_ptr;
-	rose::parser::definition<Iterator, Skipper> definition;
-	rose::parser::token<Iterator, Skipper>      token;
+    rose::parser::definition<Iterator, Skipper> definition;
+    rose::parser::token<Iterator, Skipper>      token;
 
     rule<Iterator, ast_body(),              Skipper> body;
     rule<Iterator, ast_expression(),        Skipper> command;

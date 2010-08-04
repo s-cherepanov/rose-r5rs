@@ -30,11 +30,11 @@ struct expression :
     expression();
 
 private:
-	rose::parser::conditional<Iterator, Skipper>       conditional;
+    rose::parser::conditional<Iterator, Skipper>       conditional;
     rose::parser::datum<Iterator, Skipper>             datum;
-	rose::parser::lambda_expression<Iterator, Skipper> lambda_expression;
-	rose::parser::procedure_call<Iterator, Skipper>    procedure_call;
-	rose::parser::token<Iterator, Skipper>             token;
+    rose::parser::lambda_expression<Iterator, Skipper> lambda_expression;
+    rose::parser::procedure_call<Iterator, Skipper>    procedure_call;
+    rose::parser::token<Iterator, Skipper>             token;
 
     rule<Iterator, ast_expression(), Skipper> start;
     rule<Iterator, ast_expression(), Skipper> expression_;
