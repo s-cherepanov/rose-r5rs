@@ -5,6 +5,7 @@
 #include "rose/parser/expression.hpp"
 
 #include <boost/spirit/include/phoenix_fusion.hpp>
+#include <boost/spirit/include/phoenix_object.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/phoenix_stl.hpp>
 
@@ -26,16 +27,54 @@ definition<Iterator, Skipper>::
     expression_ptr(e)
 {
     using phoenix::at_c;
+    using phoenix::construct;
+    using phoenix::push_back;
     using qi::_1;
+    using qi::_a;
+    using qi::_b;
     using qi::_val;
     using qi::no_case;
 
     start
+        =   plain_definition
+        |   procedure_definition
+        ;
+
+    plain_definition
         =   token.lparen
             >> no_case["define"]
             >> token.variable               [at_c<0>(_val) = _1]
             >> (*expression_ptr)            [at_c<1>(_val) = _1]
             >> token.rparen
+        ;
+
+    typedef
+        ast_lambda_expression
+        lambda_type;
+
+    procedure_definition
+        =   (token.lparen
+            >> no_case["define"]
+            >> token.lparen
+            >> token.variable               [at_c<0>(_val) = _1]
+            >> formals                      [_a = _1]
+            >> token.rparen
+            >> body                         [_b = _1]
+            >> token.rparen)                [at_c<1>(_val) =
+                                             construct<lambda_type>(_a, _b)]
+        ;
+
+    formals
+        =   *token.variable
+        ;
+
+    body
+        =   *start                          [push_back(at_c<0>(_val), _1)]
+            >> sequence                     [at_c<1>(_val) = _1]
+        ;
+
+    sequence
+        =   +(*expression_ptr)              [push_back(_val, _1)]
         ;
 }
 

@@ -73,11 +73,10 @@ BOOST_AUTO_TEST_CASE(call_factorial_test) {
                         make_arguments(5)));
 
     check(
-            "(define factorial\n"
-            "  (lambda (n)\n"
-            "    (if (<= n 0)\n"
-            "      1\n"
-            "      (* n (factorial (- n 1))))))\n"
+            "(define (factorial n)\n"
+            "  (if (<= n 0)\n"
+            "    1\n"
+            "    (* n (factorial (- n 1)))))\n"
             "\n"
             "(factorial 5)\n",
             expected
