@@ -13,7 +13,7 @@ void check(std::string const& input, ast_datum const& expected) {
     ast_datum actual;
     BOOST_CHECK(test_phrase_parser_attr(
                 datum_p, input, skipper_p, actual));
-    BOOST_CHECK_EQUAL(actual, expected);
+    BOOST_CHECK(actual == expected);
 }
 
 BOOST_AUTO_TEST_CASE(simple_datum_test) {
