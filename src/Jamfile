@@ -6,8 +6,9 @@ project
 
 exe rose
     :   [ glob *.cpp ]
-        /rose/parser//rose-parser
+        # /rose/gc//rose-gc
         /rose/generator//rose-generator
+        /rose/parser//rose-parser
         /boost//program_options
     ;
 

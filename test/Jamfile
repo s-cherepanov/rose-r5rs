@@ -7,8 +7,9 @@ run
         [ glob-tree *.cpp ]
         /boost//prg_exec_monitor
         /boost//unit_test_framework
-        /rose/parser//rose-parser
+        /rose/gc//rose-gc
         /rose/generator//rose-generator
+        /rose/parser//rose-parser
     :   --working-dir=\"$(PROJECT_ROOT)\"
     :
     :
