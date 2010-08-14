@@ -12,6 +12,10 @@ inline void force_gc() {
     registry::instance().reset();
 }
 
+inline void init() {
+    static int setup_atexit = std::atexit(force_gc);
+}
+
 }   //  namespace gc
 }   //  namespace rose
 

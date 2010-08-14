@@ -3,8 +3,8 @@
 #include "rose/gc/object.hpp"
 
 #include <algorithm>
-#include <deque>
 #include <iterator>
+#include <vector>
 
 namespace rose {
 namespace gc {
@@ -24,20 +24,31 @@ bool registry::is_root_handle(handle_base const* handle) const {
 
 void registry::mark() {
     typedef
-        std::deque<address_type>
+        std::vector<address_type>
         address_stack;
+
+    // Finds out all the root handles.  Global, static and stack allocated
+    // handles are called root handles.  Objects referred by a root handle must
+    // be alive (reachable).
 
     address_stack stack;
 
     std::remove_copy_if(
             registry::instance().handle_registry_.begin(),
             registry::instance().handle_registry_.end(),
-            std::front_inserter(stack),
+            std::back_inserter(stack),
             is_not_root);
 
+    // Traverses all the handles that are referring to an alive (reachable)
+    // object in a depth-frist way, starting from the root handle set.
+
     while (!stack.empty()) {
-        address_type address = stack.front();
-        stack.pop_front();
+        address_type address = stack.back();
+        stack.pop_back();
+
+        // Mark an object as alive, and find out all the handles that are its
+        // member variable.  All the objects referred by these handles are also
+        // alive.  So push these handles onto the stack for further processing.
 
         a2h(address)->alive(true);
         address_set member_handles = find_member_handles(a2h(address));
@@ -45,7 +56,7 @@ void registry::mark() {
         std::remove_copy_if(
                 member_handles.begin(),
                 member_handles.end(),
-                front_inserter(stack),
+                back_inserter(stack),
                 is_dead_handle);
     }
 }
@@ -100,7 +111,9 @@ bool registry::is_alive_object(address_type address) {
 }
 
 void registry::delete_dead_object(address_type address) {
-    delete a2o(address);
+    if (!is_alive_object(address)) {
+        delete a2o(address);
+    }
 }
 
 void registry::reset_to_death(address_type address) {
