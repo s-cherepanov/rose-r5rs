@@ -5,6 +5,7 @@ project
 
 run
         [ glob-tree *.cpp ]
+        /boost//date_time
         /boost//prg_exec_monitor
         /boost//thread
         /boost//unit_test_framework
