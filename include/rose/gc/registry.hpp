@@ -1,6 +1,8 @@
 #ifndef __ROSE_GC_REGISTRY_HPP__
 #define __ROSE_GC_REGISTRY_HPP__
 
+#include <boost/integer.hpp>
+
 #include <set>
 
 namespace rose {
@@ -11,7 +13,9 @@ class object_base;
 
 class registry {
 public:
-    typedef unsigned int address_type;
+    typedef
+        boost::uint_t<sizeof(void*) * 8>::exact
+        address_type;
 
     typedef
         std::set<address_type>
