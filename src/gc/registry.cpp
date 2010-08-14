@@ -22,6 +22,12 @@ bool registry::is_root_handle(handle_base const* handle) const {
     return h2a(handle) > obj_end;
 }
 
+void registry::gc() {
+    mark();
+    sweep();
+    reset();
+}
+
 void registry::mark() {
     typedef
         std::vector<address_type>
