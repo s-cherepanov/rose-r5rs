@@ -3,6 +3,7 @@
 
 #include <boost/integer.hpp>
 
+#include <climits>
 #include <set>
 
 namespace rose {
@@ -14,7 +15,7 @@ class object_base;
 class registry {
 public:
     typedef
-        boost::uint_t<sizeof(void*) * 8>::exact
+        boost::uint_t<sizeof(void*) * CHAR_BIT>::exact
         address_type;
 
     typedef
