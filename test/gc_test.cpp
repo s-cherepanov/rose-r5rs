@@ -24,8 +24,10 @@ struct garbage {
 bool garbage::existing = true;
 
 BOOST_AUTO_TEST_CASE(simple_gc_test) {
-    handle<garbage> h(new object<garbage>);
-    BOOST_CHECK(garbage::existing);
+    {
+        handle<garbage> h(new object<garbage>);
+        BOOST_CHECK(garbage::existing);
+    }
 
     force_gc();
     BOOST_CHECK(!garbage::existing);

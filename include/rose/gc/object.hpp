@@ -1,6 +1,8 @@
 #ifndef __ROSE_GC_OBJECT_HPP__
 #define __ROSE_GC_OBJECT_HPP__
 
+#include "rose/gc/registry.hpp"
+
 #include <cstddef>
 
 namespace rose {
@@ -10,7 +12,11 @@ class object_base {
     friend class registry;
 
 public:
-    object_base();
+    object_base() :
+        alive_(false)
+    {
+        registry::instance().register_object(this);
+    }
 
     bool alive() const {
         return alive_;
@@ -23,7 +29,9 @@ public:
     virtual std::size_t size() const = 0;
 
 protected:
-    virtual ~object_base();
+    virtual ~object_base() {
+        registry::instance().erase_object(this);
+    }
 
 private:
     bool alive_;
