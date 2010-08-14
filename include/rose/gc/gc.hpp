@@ -7,13 +7,7 @@ namespace rose {
 namespace gc {
 
 inline void force_gc() {
-    registry::instance().mark();
-    registry::instance().sweep();
-    registry::instance().reset();
-}
-
-inline void init() {
-    static int setup_atexit = std::atexit(force_gc);
+    registry::instance().gc();
 }
 
 }   //  namespace gc

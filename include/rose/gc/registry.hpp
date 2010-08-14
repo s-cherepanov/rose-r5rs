@@ -5,6 +5,7 @@
 #include <boost/noncopyable.hpp>
 
 #include <climits>
+#include <iostream>
 #include <set>
 
 namespace rose {
@@ -36,6 +37,10 @@ public:
         return one;
     }
 
+    ~registry() {
+        gc();
+    }
+
     void register_handle(handle_base const* handle) {
         handle_registry_.insert(h2a(handle));
     }
@@ -55,14 +60,7 @@ public:
     /// Whether a handle is a root handle.
     bool is_root_handle(handle_base const* handle) const;
 
-    /// Marks all alive (reachable) objects.
-    void mark();
-
-    /// Sweeps out all dead (unreachable) objects.
-    void sweep();
-
-    /// Marks all objects as dead (unreachable).
-    void reset();
+    void gc();
 
 private:
     handle_registry handle_registry_;
@@ -73,6 +71,15 @@ private:
     static address_type h2a(handle_base const* handle) {
         return reinterpret_cast<address_type>(handle);
     }
+
+    /// Marks all alive (reachable) objects.
+    void mark();
+
+    /// Sweeps out all dead (unreachable) objects.
+    void sweep();
+
+    /// Marks all objects as dead (unreachable).
+    void reset();
 
     static handle_base* a2h(address_type address) {
         return reinterpret_cast<handle_base*>(address);
