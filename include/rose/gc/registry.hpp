@@ -63,21 +63,7 @@ private:
     handle_registry handle_registry_;
     object_registry object_registry_;
 
-    object_registry::iterator objects_begin() {
-        return object_registry_.begin();
-    }
-
-    object_registry::const_iterator objects_begin() const {
-        return object_registry_.begin();
-    }
-
-    handle_registry::iterator handles_begin() {
-        return handle_registry_.begin();
-    }
-
-    handle_registry::const_iterator handles_begin() const {
-        return handle_registry_.begin();
-    }
+    address_set find_member_handles(handle_base const* handle) const;
 
     static address_type h2a(handle_base const* handle) {
         return reinterpret_cast<address_type>(handle);
@@ -97,8 +83,6 @@ private:
 
     static bool is_not_root(registry::address_type address);
 
-    static bool is_dead_object(address_type address);
-
     static bool is_dead_handle(address_type address);
 
     static bool is_alive_object(address_type address);
@@ -106,10 +90,6 @@ private:
     static void delete_dead_object(address_type address);
 
     static void reset_to_death(address_type address);
-
-    address_set find_root_set() const;
-
-    address_set find_member_handles(handle_base const* handle) const;
 
 };  //  class registry
 

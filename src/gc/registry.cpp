@@ -22,21 +22,6 @@ bool registry::is_root_handle(handle_base const* handle) const {
     return h2a(handle) > obj_end;
 }
 
-registry::address_set
-    registry::find_member_handles(handle_base const* handle) const
-{
-    address_set result;
-    address_type obj_begin = o2a(handle->get());
-    address_type obj_end = obj_begin + handle->size();
-
-    std::copy(
-            handle_registry_.lower_bound(obj_begin),
-            handle_registry_.upper_bound(obj_end),
-            std::inserter(result, result.begin()));
-
-    return result;
-}
-
 void registry::mark() {
     typedef
         std::deque<address_type>
@@ -44,11 +29,11 @@ void registry::mark() {
 
     address_stack stack;
 
-    address_set root_set = find_root_set();
-    std::copy(
-            root_set.begin(),
-            root_set.end(),
-            std::front_inserter(stack));
+    std::remove_copy_if(
+            registry::instance().handle_registry_.begin(),
+            registry::instance().handle_registry_.end(),
+            std::front_inserter(stack),
+            is_not_root);
 
     while (!stack.empty()) {
         address_type address = stack.front();
@@ -65,10 +50,6 @@ void registry::mark() {
     }
 }
 
-bool registry::is_dead_handle(address_type address) {
-    return !a2h(address)->alive();
-}
-
 void registry::sweep() {
     address_set dead_objects;
 
@@ -76,20 +57,12 @@ void registry::sweep() {
             instance().object_registry_.begin(),
             instance().object_registry_.end(),
             std::inserter(dead_objects, dead_objects.begin()),
-            is_dead_object);
+            is_alive_object);
 
     std::for_each(
             dead_objects.begin(),
             dead_objects.end(),
             delete_dead_object);
-}
-
-bool registry::is_dead_object(address_type address) {
-    return !(a2o(address)->alive());
-}
-
-void registry::delete_dead_object(address_type address) {
-    delete a2o(address);
 }
 
 void registry::reset() {
@@ -99,24 +72,39 @@ void registry::reset() {
             reset_to_death);
 }
 
-void registry::reset_to_death(address_type address) {
-    a2o(address)->alive(false);
-}
-
-registry::address_set registry::find_root_set() const {
+registry::address_set
+    registry::find_member_handles(handle_base const* handle) const
+{
     address_set result;
+    address_type obj_begin = o2a(handle->get());
+    address_type obj_end = obj_begin + handle->size();
 
-    std::remove_copy_if(
-            registry::instance().handle_registry_.begin(),
-            registry::instance().handle_registry_.end(),
-            std::inserter(result, result.begin()),
-            is_not_root);
+    std::copy(
+            handle_registry_.lower_bound(obj_begin),
+            handle_registry_.upper_bound(obj_end),
+            std::inserter(result, result.begin()));
 
     return result;
 }
 
 bool registry::is_not_root(address_type address) {
     return !(a2h(address)->is_root());
+}
+
+bool registry::is_dead_handle(address_type address) {
+    return !a2h(address)->alive();
+}
+
+bool registry::is_alive_object(address_type address) {
+    return a2o(address)->alive();
+}
+
+void registry::delete_dead_object(address_type address) {
+    delete a2o(address);
+}
+
+void registry::reset_to_death(address_type address) {
+    a2o(address)->alive(false);
 }
 
 }   //  namespace gc
