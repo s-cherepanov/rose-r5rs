@@ -23,6 +23,9 @@ bool registry::is_root_handle(handle_base const* handle) const {
 }
 
 void registry::gc() {
+    boost::recursive_mutex::scoped_lock obj_lock(object_registry_mutex_);
+    boost::recursive_mutex::scoped_lock handle_lock(handle_registry_mutex_);
+
     mark();
     sweep();
     reset();

@@ -3,6 +3,7 @@
 
 #include <boost/integer.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/thread/recursive_mutex.hpp>
 
 #include <climits>
 #include <iostream>
@@ -42,18 +43,22 @@ public:
     }
 
     void register_handle(handle_base const* handle) {
+        boost::recursive_mutex::scoped_lock lock(handle_registry_mutex_);
         handle_registry_.insert(h2a(handle));
     }
 
     void erase_handle(handle_base const* handle) {
+        boost::recursive_mutex::scoped_lock lock(handle_registry_mutex_);
         handle_registry_.erase(h2a(handle));
     }
 
     void register_object(object_base const* obj) {
+        boost::recursive_mutex::scoped_lock lock(object_registry_mutex_);
         object_registry_.insert(o2a(obj));
     }
 
     void erase_object(object_base const* obj) {
+        boost::recursive_mutex::scoped_lock lock(object_registry_mutex_);
         object_registry_.erase(o2a(obj));
     }
 
@@ -63,7 +68,10 @@ public:
     void gc();
 
 private:
+    boost::recursive_mutex handle_registry_mutex_;
     handle_registry handle_registry_;
+
+    boost::recursive_mutex object_registry_mutex_;
     object_registry object_registry_;
 
     address_set find_member_handles(handle_base const* handle) const;

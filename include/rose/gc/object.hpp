@@ -3,6 +3,8 @@
 
 #include "rose/gc/registry.hpp"
 
+#include <boost/thread/recursive_mutex.hpp>
+
 #include <cstddef>
 
 namespace rose {
@@ -23,6 +25,7 @@ public:
     }
 
     void alive(bool value) {
+        boost::recursive_mutex::scoped_lock lock(alive_mutex_);
         alive_ = value;
     }
 
@@ -34,6 +37,7 @@ protected:
     }
 
 private:
+    mutable boost::recursive_mutex alive_mutex_;
     bool alive_;
 
 };  //  class object_base

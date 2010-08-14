@@ -7,6 +7,7 @@
 
 #include <boost/logic/tribool.hpp>
 #include <boost/static_assert.hpp>
+#include <boost/thread/recursive_mutex.hpp>
 #include <boost/type_traits/is_convertible.hpp>
 
 namespace rose {
@@ -50,6 +51,8 @@ protected:
     }
 
     bool is_root() const {
+        boost::recursive_mutex::scoped_lock lock(is_root_mutex_);
+
         if (boost::indeterminate(is_root_)) {
             is_root_ = registry::instance().is_root_handle(this);
         }
@@ -73,6 +76,8 @@ protected:
 
 private:
     object_base* object_;
+
+    mutable boost::recursive_mutex is_root_mutex_;
     mutable boost::tribool is_root_;
 
     void* operator new(std::size_t);
