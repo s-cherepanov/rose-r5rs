@@ -2,6 +2,7 @@
 #define __ROSE_GC_REGISTRY_HPP__
 
 #include <boost/integer.hpp>
+#include <boost/noncopyable.hpp>
 
 #include <climits>
 #include <set>
@@ -12,7 +13,7 @@ namespace gc {
 class handle_base;
 class object_base;
 
-class registry {
+class registry : private boost::noncopyable {
 public:
     typedef
         boost::uint_t<sizeof(void*) * CHAR_BIT>::exact
@@ -51,12 +52,16 @@ public:
         object_registry_.erase(o2a(obj));
     }
 
+    /// Whether a handle is a root handle.
     bool is_root_handle(handle_base const* handle) const;
 
+    /// Marks all alive (reachable) objects.
     void mark();
 
+    /// Sweeps out all dead (unreachable) objects.
     void sweep();
 
+    /// Marks all objects as dead (unreachable).
     void reset();
 
 private:

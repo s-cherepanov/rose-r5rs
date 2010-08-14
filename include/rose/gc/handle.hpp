@@ -13,12 +13,13 @@ namespace rose {
 namespace gc {
 
 class handle_base {
+    friend class registry;
+
 public:
     handle_base(object_base* obj) :
         object_(obj),
         is_root_(boost::indeterminate)
     {
-        static int setup_atexit(std::atexit(force_gc));
         registry::instance().register_handle(this);
     }
 
@@ -35,6 +36,19 @@ public:
         return object_ == rhs.object_;
     }
 
+protected:
+    void copy(handle_base const& rhs) {
+        object_ = rhs.object_;
+    }
+
+    object_base* get() {
+        return object_;
+    }
+
+    object_base const* get() const {
+        return object_;
+    }
+
     bool is_root() const {
         if (boost::indeterminate(is_root_)) {
             is_root_ = registry::instance().is_root_handle(this);
@@ -48,30 +62,21 @@ public:
     }
 
     void alive(bool value) {
-        if (object_)
+        if (object_) {
             object_->alive(value);
+        }
     }
 
     std::size_t size() const {
         return !!object_ ? object_->size() : 0u;
     }
 
-    object_base* get() {
-        return object_;
-    }
-
-    object_base const* get() const {
-        return object_;
-    }
-
-protected:
-    void copy(handle_base const& rhs) {
-        object_ = rhs.object_;
-    }
-
 private:
     object_base* object_;
     mutable boost::tribool is_root_;
+
+    void* operator new(std::size_t);
+    void operator delete(void*);
 
 };  //  class handle_base
 
