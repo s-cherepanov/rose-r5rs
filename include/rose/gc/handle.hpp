@@ -80,8 +80,12 @@ private:
     mutable boost::recursive_mutex is_root_mutex_;
     mutable boost::tribool is_root_;
 
-    void* operator new(std::size_t);
-    void operator delete(void*);
+    void* operator new(std::size_t) throw() {
+        return 0;
+    }
+
+    void operator delete(void*) {
+    }
 
 };  //  class handle_base
 
@@ -138,7 +142,7 @@ public:
     }
 
     bool operator!() const {
-        return !!get();
+        return !get();
     }
 
     operator safe_bool() const {
