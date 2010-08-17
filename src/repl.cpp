@@ -1,3 +1,4 @@
+#include "rose/environment.hpp"
 #include "rose/gc/handle.hpp"
 #include "rose/generator/program.hpp"
 #include "rose/parser/intertoken_space.hpp"
@@ -56,9 +57,14 @@ bool generate(ast_program const& program, std::string& output) {
     return generate_delimited(sink, grammar, space, program);
 }
 
-gc::handle<value> evaluate_program(ast_program const& program);
+environment_ptr build_initial_env() {
+    return environment_ptr(new environment);
+}
 
-void parse_and_generate(std::string const& input) {
+gc::handle<value> evaluate_program(
+        ast_program const& program, environment_ptr env);
+
+void parse_and_generate(std::string const& input, environment_ptr env) {
     ast_program program;
     std::string output;
 
@@ -66,7 +72,7 @@ void parse_and_generate(std::string const& input) {
         std::cout << output << std::endl
       : std::cerr << "error" << std::endl;
 
-    evaluate_program(program);
+    evaluate_program(program, env);
 }
 
 boost::format format_prompt(std::string const& prompt) {
@@ -83,11 +89,12 @@ boost::format format_prompt(std::string const& prompt) {
 void do_repl(std::string const& prompt) {
     std::string input;
     int line_no = 0;
+    environment_ptr env = build_initial_env();
 
     while (std::cout << format_prompt(prompt) % line_no++,
             std::getline(std::cin, input))
     {
-        parse_and_generate(input);
+        parse_and_generate(input, env);
     }
 }
 
@@ -107,7 +114,7 @@ std::string load_file(std::string const& filename) {
 }
 
 void do_batch(std::string const& input_file) {
-    parse_and_generate(load_file(input_file));
+    parse_and_generate(load_file(input_file), build_initial_env());
 }
 
 }   //  namespace rose
