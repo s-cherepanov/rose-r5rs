@@ -91,10 +91,13 @@ void do_repl(std::string const& prompt) {
     int line_no = 0;
     environment_ptr env = build_initial_env();
 
-    while (std::cout << format_prompt(prompt) % line_no++,
-            std::getline(std::cin, input))
-    {
-        parse_and_generate(input, env);
+    while (true) {
+        std::cout << format_prompt(prompt) % line_no++;
+
+        if (std::getline(std::cin, input))
+            parse_and_generate(input, env);
+        else
+            break;
     }
 }
 
