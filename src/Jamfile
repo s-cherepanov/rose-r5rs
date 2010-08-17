@@ -1,15 +1,16 @@
 project
     :   requirements
+            <library>/boost//date_time
             <library>/boost//filesystem
             <library>/boost//program_options
+            <library>/boost//thread
     ;
 
 exe rose
     :   [ glob *.cpp ]
-        # /rose/gc//rose-gc
+        /rose/gc//rose-gc
         /rose/generator//rose-generator
         /rose/parser//rose-parser
-        /boost//program_options
     ;
 
 install install-rose

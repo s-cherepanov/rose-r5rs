@@ -1,6 +1,8 @@
+#include "rose/gc/handle.hpp"
 #include "rose/generator/program.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/program.hpp"
+#include "rose/value.hpp"
 
 #include <boost/format.hpp>
 #include <boost/spirit/include/qi.hpp>
@@ -54,6 +56,8 @@ bool generate(ast_program const& program, std::string& output) {
     return generate_delimited(sink, grammar, space, program);
 }
 
+gc::handle<value> evaluate_program(ast_program const& program);
+
 void parse_and_generate(std::string const& input) {
     ast_program program;
     std::string output;
@@ -61,6 +65,8 @@ void parse_and_generate(std::string const& input) {
     parse(input, program) && generate(program, output) ?
         std::cout << output << std::endl
       : std::cerr << "error" << std::endl;
+
+    evaluate_program(program);
 }
 
 boost::format format_prompt(std::string const& prompt) {
