@@ -129,7 +129,7 @@ public:
     }
 
     Target const& operator*() const {
-        typedef object<Target>* object_ptr;
+        typedef object<Target> const* object_ptr;
         return static_cast<object_ptr>(get())->target();
     }
 

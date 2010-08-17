@@ -2,21 +2,17 @@
 
 namespace rose {
 
-environment_ptr build_initial_env() {
-    return environment_ptr(new environment);
-}
-
-gc::handle<value> evaluate_program(ast_program const& program) {
-    typedef
-        command_or_definition_evaluator
-        evaluator_type;
-
+gc::handle<value> evaluate_program(
+        ast_program const& program,
+        environment_ptr env)
+{
     gc::handle<value> return_value;
 
     try {
-        ast_program::const_iterator next = program.begin();
+        ast_program::const_iterator next;
+
         for (next = program.begin(); next != program.end(); ++next) {
-            return_value = eval(*next, build_initial_env());
+            return_value = eval(*next, env);
         }
     }
     catch(std::exception& e) {
