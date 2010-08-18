@@ -6,6 +6,7 @@
 #include "rose/gc/handle.hpp"
 #include "rose/value.hpp"
 
+#include <boost/bind.hpp>
 #include <boost/variant.hpp>
 
 namespace rose {
@@ -20,17 +21,21 @@ gc::handle<value> eval(Ast const& ast, environment_ptr env);
 
 template<>
 gc::handle<value> eval<ast_expression>(
-        ast_expression const& ast,
-        environment_ptr env);
+        ast_expression const& ast, environment_ptr env);
 
 template<>
 gc::handle<value> eval<ast_command_or_definition>(
-        ast_command_or_definition const& ast,
-        environment_ptr env);
+        ast_command_or_definition const& ast, environment_ptr env);
+
+template<>
+gc::handle<value> eval<ast_datum>(
+        ast_datum const& ast, environment_ptr env);
 
 struct evaluator_base :
     boost::static_visitor<gc::handle<value> >
 {
+    typedef gc::handle<value> result_type;
+
     environment_ptr env;
 
     evaluator_base(environment_ptr env) :
@@ -39,29 +44,54 @@ struct evaluator_base :
 
 };  //  struct evaluator_base
 
+struct datum_evaluator : evaluator_base {
+    datum_evaluator(environment_ptr env) :
+        evaluator_base(env)
+    {}
+
+    result_type operator()(ast_list const& ast) const {
+        return nil();
+    }
+
+    result_type operator()(ast_vector const& ast) const {
+        using namespace boost;
+
+        vector result;
+        std::transform(
+                ast.begin(),
+                ast.end(),
+                std::back_inserter(result),
+                bind(&eval<ast_datum>, _1, env));
+
+        return result_type(new gc::object<value>(vector(result)));
+    }
+
+    template<typename Ast>
+    result_type operator()(Ast const& ast) const {
+        return result_type(new gc::object<value>(value(ast)));
+    }
+
+};  //  struct datum_evaluator
+
+template<>
+gc::handle<value> eval<ast_datum>(
+        ast_datum const& ast, environment_ptr env)
+{
+    return boost::apply_visitor(datum_evaluator(env), ast);
+}
+
 struct expression_evaluator : evaluator_base {
     expression_evaluator(environment_ptr env) :
         evaluator_base(env)
     {}
 
-    gc::handle<value> operator()(int ast) const {
-        return gc::handle<value>(new gc::object<value>(value(ast)));
+    template<typename Ast>
+    result_type operator()(Ast const& ast) const {
+        return result_type(new gc::object<value>(value(ast)));
     }
 
-    gc::handle<value> operator()(bool ast) const {
-        return gc::handle<value>(new gc::object<value>(value(ast)));
-    }
-
-    gc::handle<value> operator()(char ast) const {
-        return gc::handle<value>(new gc::object<value>(value(ast)));
-    }
-
-    gc::handle<value> operator()(ast_string const& ast) const {
-        return gc::handle<value>(new gc::object<value>(value(ast)));
-    }
-
-    gc::handle<value> operator()(ast_variable const& ast) const {
-        gc::handle<value> val = env->lookup(ast);
+    result_type operator()(ast_variable const& ast) const {
+        result_type val = env->lookup(ast);
         if (!val) {
             throw std::runtime_error("undefined variable");
         }
@@ -69,8 +99,20 @@ struct expression_evaluator : evaluator_base {
         return val;
     }
 
-    gc::handle<value> operator()(ast_conditional const& ast) const {
-        gc::handle<value> test = eval(ast.test, env);
+    result_type operator()(ast_quotation const& ast) const {
+        return eval(ast.quoted, env);
+    }
+
+    result_type operator()(ast_lambda_expression const& ast) const {
+        return nil();
+    }
+
+    result_type operator()(ast_procedure_call const& ast) const {
+        return nil();
+    }
+
+    result_type operator()(ast_conditional const& ast) const {
+        result_type test = eval(ast.test, env);
 
         if (is_true(*test)) {
             return eval(ast.consequent, env);
@@ -83,7 +125,7 @@ struct expression_evaluator : evaluator_base {
         return nil();
     }
 
-    gc::handle<value> operator()(ast_assignment const& ast) const {
+    result_type operator()(ast_assignment const& ast) const {
         env->assign(ast.variable, eval(ast.expression, env));
         return nil();
     }
@@ -93,17 +135,11 @@ struct expression_evaluator : evaluator_base {
         return !ptr || (*ptr == true);
     }
 
-    template<typename Expression>
-    gc::handle<value> operator()(Expression ast) const {
-        return nil();
-    }
-
 };  //  struct expression_evaluator
 
 template<>
 gc::handle<value> eval<ast_expression>(
-        ast_expression const& ast,
-        environment_ptr env)
+        ast_expression const& ast, environment_ptr env)
 {
     return boost::apply_visitor(expression_evaluator(env), ast);
 }
@@ -113,12 +149,12 @@ struct command_or_definition_evaluator : evaluator_base {
         evaluator_base(env)
     {}
 
-    gc::handle<value> operator()(ast_definition const& ast) const {
+    result_type operator()(ast_definition const& ast) const {
         env->define(ast.variable, eval(ast.expression, env));
         return nil();
     }
 
-    gc::handle<value> operator()(ast_expression const& ast) const {
+    result_type operator()(ast_expression const& ast) const {
         return eval(ast, env);
     }
 
@@ -126,8 +162,7 @@ struct command_or_definition_evaluator : evaluator_base {
 
 template<>
 gc::handle<value> eval<ast_command_or_definition>(
-        ast_command_or_definition const& ast,
-        environment_ptr env)
+        ast_command_or_definition const& ast, environment_ptr env)
 {
     return boost::apply_visitor(command_or_definition_evaluator(env), ast);
 }

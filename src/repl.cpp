@@ -17,6 +17,9 @@ namespace ascii = boost::spirit::ascii;
 namespace karma = boost::spirit::karma;
 namespace qi = boost::spirit::qi;
 
+gc::handle<value> evaluate_program(
+        ast_program const& program, environment_ptr env);
+
 bool parse(std::string const& source, ast_program& program) {
     typedef
         std::string::const_iterator
@@ -61,18 +64,15 @@ environment_ptr build_initial_env() {
     return environment_ptr(new environment);
 }
 
-gc::handle<value> evaluate_program(
-        ast_program const& program, environment_ptr env);
-
 void parse_and_generate(std::string const& input, environment_ptr env) {
     ast_program program;
     std::string output;
 
     parse(input, program) && generate(program, output) ?
-        std::cout << output << std::endl
-      : std::cerr << "error" << std::endl;
+        std::cout << "parsed: " << output << std::endl
+      : std::cerr << "parsing error" << std::endl;
 
-    evaluate_program(program, env);
+    std::cout << evaluate_program(program, env) << std::endl;
 }
 
 boost::format format_prompt(std::string const& prompt) {
@@ -94,10 +94,11 @@ void do_repl(std::string const& prompt) {
     while (true) {
         std::cout << format_prompt(prompt) % line_no++;
 
-        if (std::getline(std::cin, input))
-            parse_and_generate(input, env);
-        else
+        if (!std::getline(std::cin, input)) {
             break;
+        }
+
+        parse_and_generate(input, env);
     }
 }
 

@@ -16,16 +16,6 @@ struct ast_assignment;
 struct ast_conditional;
 struct ast_procedure_call;
 
-struct nil {};
-
-inline bool operator==(nil const&, nil const&) {
-    return true;
-}
-
-inline bool operator<(nil const&, nil const&) {
-    return false;
-}
-
 struct ast_quotation {
     ast_quotation() :
         quoted()
@@ -45,7 +35,6 @@ struct ast_quotation {
 
 typedef
     boost::variant<
-        nil,
         bool,
         int,
         char,
