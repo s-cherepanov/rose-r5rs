@@ -48,10 +48,10 @@ inline std::ostream& operator<<(
     }
 
     vector::const_iterator it = v.begin();
-    out << "#(" << *it++;
+    out << "#(" << *(*it++);
 
     for (; it != v.end(); ++it) {
-        out << ' ' << *it;
+        out << ' ' << **it;
     }
 
     return out << ')';

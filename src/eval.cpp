@@ -21,9 +21,6 @@ gc::handle<value> evaluate_program(
 
     gc::handle<value> result;
 
-    result = new gc::object<value>(value(3));
-    std::cout << "test: " << result << std::endl;
-
     try {
         std::for_each(program.begin(), program.end(),
                 bind(&evaluate_one, _1, env, ref(result)));
