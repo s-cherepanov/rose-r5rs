@@ -57,13 +57,11 @@ struct datum_evaluator : evaluator_base {
         using namespace boost;
 
         vector result;
-        std::transform(
-                ast.begin(),
-                ast.end(),
+        std::transform(ast.begin(), ast.end(),
                 std::back_inserter(result),
                 bind(&eval<ast_datum>, _1, env));
 
-        return result_type(new gc::object<value>(vector(result)));
+        return result_type(new gc::object<value>(value(result)));
     }
 
     template<typename Ast>
@@ -131,6 +129,7 @@ struct expression_evaluator : evaluator_base {
     }
 
     bool is_true(value const& val) const {
+        // Any Scheme value other than #f can be implicitly converted to #t.
         bool const* ptr = boost::get<bool>(&val);
         return !ptr || (*ptr == true);
     }
