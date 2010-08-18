@@ -30,9 +30,44 @@ struct pair :
     std::pair<gc::handle<value>, gc::handle<value> >
 {};
 
+inline std::ostream& operator<<(
+        std::ostream& out, pair const& p)
+{
+    return out << "(a-list)";
+}
+
 struct vector :
     std::vector<gc::handle<value> >
 {};
+
+inline std::ostream& operator<<(
+        std::ostream& out, vector const& v)
+{
+    if (v.empty()) {
+        return out << "#()";
+    }
+
+    vector::const_iterator it = v.begin();
+    out << "#(" << *it++;
+
+    for (; it != v.end(); ++it) {
+        out << ' ' << *it;
+    }
+
+    return out << ')';
+}
+
+inline std::ostream& operator<<(
+        std::ostream& out,
+        gc::handle<value> const& handle)
+{
+    if (!!handle) {
+        return out << (*handle);
+    }
+    else {
+        return out;
+    }
+}
 
 }   //  namespace rose
 

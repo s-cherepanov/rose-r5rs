@@ -1,46 +1,38 @@
 #include "rose/eval/evaluator.hpp"
 
+#include <boost/bind.hpp>
+
 #include <algorithm>
-#include <functional>
 
 namespace rose {
 
-struct evaluate_one :
-    std::binary_function<
-        ast_command_or_definition,
-        environment_ptr,
-        void
-    >
+void evaluate_one(
+        ast_command_or_definition const& ast,
+        environment_ptr env,
+        gc::handle<value>& result)
 {
-    mutable gc::handle<value> result;
-
-    void operator()(
-            ast_command_or_definition const& ast,
-            environment_ptr env) const
-    {
-        result = eval(ast, env);
-    }
-
-};  //  struct evaluate_one
+    result = eval(ast, env);
+}
 
 gc::handle<value> evaluate_program(
-        ast_program const& program,
-        environment_ptr env)
+        ast_program const& program, environment_ptr env)
 {
-    gc::handle<value> return_value;
-    evaluate_one eval;
+    using namespace boost;
+
+    gc::handle<value> result;
+
+    result = new gc::object<value>(value(3));
+    std::cout << "test: " << result << std::endl;
 
     try {
-        std::for_each(
-                program.begin(),
-                program.end(),
-                std::bind2nd(eval, env));
+        std::for_each(program.begin(), program.end(),
+                bind(&evaluate_one, _1, env, ref(result)));
     }
     catch(std::exception& e) {
-        std::cout << "repl exception: " << e.what() << std::endl;
+        std::cout << "repl-exception: " << e.what() << std::endl;
     }
 
-    return eval.result;
+    return result;
 }
 
 }   //  namespace rose
