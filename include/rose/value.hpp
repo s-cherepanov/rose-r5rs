@@ -28,46 +28,64 @@ typedef
 
 struct pair :
     std::pair<gc::handle<value>, gc::handle<value> >
-{};
-
-inline std::ostream& operator<<(
-        std::ostream& out, pair const& p)
 {
-    return out << "(a-list)";
+    typedef gc::handle<value> value_type;
+    typedef std::pair<value_type, value_type> base_type;
+
+    pair() {}
+
+    pair(value_type const& first, value_type const& second) :
+        base_type(first, second)
+    {}
+
+};  //  struct pair
+
+gc::handle<value> nil();
+
+gc::handle<value> car(gc::handle<value> p);
+
+gc::handle<value> cdr(gc::handle<value> p);
+
+void set_car(gc::handle<value> p, gc::handle<value> val);
+
+void set_cdr(gc::handle<value> p, gc::handle<value> val);
+
+template<typename ValueType>
+gc::handle<value> make_value(ValueType const& val) {
+    return gc::handle<value>(new gc::object<value>(value(val)));
 }
+
+bool is_pair(gc::handle<value> val);
+
+template<typename ValueType>
+ValueType& handle_cast(gc::handle<value>& val) {
+    return boost::get<ValueType>(*val);
+}
+
+template<typename ValueType>
+ValueType const& handle_cast(gc::handle<value> const& val) {
+    return boost::get<ValueType>(*val);
+}
+
+template<typename ValueType>
+ValueType* handle_cast(gc::handle<value>* val) {
+    return boost::get<ValueType>(&(*val));
+}
+
+template<typename ValueType>
+ValueType const* handle_cast(gc::handle<value> const* val) {
+    return boost::get<ValueType>(&(*val));
+}
+
+std::ostream& operator<<(std::ostream& out, pair const& p);
 
 struct vector :
     std::vector<gc::handle<value> >
 {};
 
-inline std::ostream& operator<<(
-        std::ostream& out, vector const& v)
-{
-    if (v.empty()) {
-        return out << "#()";
-    }
+std::ostream& operator<<(std::ostream& out, vector const& v);
 
-    vector::const_iterator it = v.begin();
-    out << "#(" << *(*it++);
-
-    for (; it != v.end(); ++it) {
-        out << ' ' << **it;
-    }
-
-    return out << ')';
-}
-
-inline std::ostream& operator<<(
-        std::ostream& out,
-        gc::handle<value> const& handle)
-{
-    if (!!handle) {
-        return out << (*handle);
-    }
-    else {
-        return out;
-    }
-}
+std::ostream& operator<<(std::ostream& out, gc::handle<value> const& handle);
 
 }   //  namespace rose
 

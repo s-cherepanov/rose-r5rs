@@ -8,6 +8,7 @@ project
 
 exe rose
     :   [ glob *.cpp ]
+        [ glob eval/*.cpp ]
         /rose/gc//rose-gc
         /rose/generator//rose-generator
         /rose/parser//rose-parser
