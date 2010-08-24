@@ -24,7 +24,7 @@ expression<Iterator, Delimiter>::expression() :
 
     expression_
         =   boolean
-        |   int_
+        |   number
         |   character
         |   string
         |   variable
