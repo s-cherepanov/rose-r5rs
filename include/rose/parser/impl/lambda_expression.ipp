@@ -14,10 +14,7 @@ namespace parser {
 namespace phoenix = boost::phoenix;
 namespace qi = boost::spirit::qi;
 
-template<
-    typename Iterator,
-    typename Skipper
->
+template<typename Iterator, typename Skipper>
 lambda_expression<Iterator, Skipper>::
     lambda_expression(expression_type const* e)
 :

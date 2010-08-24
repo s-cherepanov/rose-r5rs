@@ -6,7 +6,7 @@
 namespace rose {
 
 template<typename Tag>
-struct tagged_string : public std::string {
+struct tagged_string : std::string {
     typedef Tag tag;
 
     tagged_string() :

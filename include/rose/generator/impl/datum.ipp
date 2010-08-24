@@ -13,10 +13,7 @@ namespace generator {
 
 namespace phoenix = boost::phoenix;
 
-template<
-    typename Iterator,
-    typename Delimiter
->
+template<typename Iterator, typename Delimiter>
 datum<Iterator, Delimiter>::datum() :
     datum::base_type(start)
 {

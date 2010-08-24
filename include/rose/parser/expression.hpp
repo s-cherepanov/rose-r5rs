@@ -20,13 +20,8 @@ namespace qi = boost::spirit::qi;
 using qi::grammar;
 using qi::rule;
 
-template<
-    typename Iterator,
-    typename Skipper
->
-struct expression :
-    grammar<Iterator, ast_expression(), Skipper>
-{
+template<typename Iterator, typename Skipper>
+struct expression : grammar<Iterator, ast_expression(), Skipper> {
     expression();
 
 private:

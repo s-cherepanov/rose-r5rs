@@ -15,19 +15,11 @@ namespace qi = boost::spirit::qi;
 using qi::grammar;
 using qi::rule;
 
-template<
-    typename Iterator,
-    typename Skipper
->
+template<typename Iterator, typename Skipper>
 struct expression;
 
-template<
-    typename Iterator,
-    typename Skipper
->
-struct procedure_call :
-    grammar<Iterator, ast_procedure_call(), Skipper>
-{
+template<typename Iterator, typename Skipper>
+struct procedure_call : grammar<Iterator, ast_procedure_call(), Skipper> {
     typedef
         rose::parser::expression<Iterator, Skipper>
         expression_type;

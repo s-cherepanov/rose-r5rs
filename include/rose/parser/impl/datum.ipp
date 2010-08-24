@@ -13,10 +13,7 @@ namespace parser {
 namespace phoenix = boost::phoenix;
 namespace qi = boost::spirit::qi;
 
-template<
-    typename Iterator,
-    typename Skipper
->
+template<typename Iterator, typename Skipper>
 datum<Iterator, Skipper>::datum() :
     datum::base_type(start)
 {

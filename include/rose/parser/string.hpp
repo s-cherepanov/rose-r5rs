@@ -15,9 +15,7 @@ using qi::grammar;
 using qi::rule;
 
 template<typename Iterator>
-struct string :
-    grammar<Iterator, ast_string()>
-{
+struct string : grammar<Iterator, ast_string()> {
     string();
 
     rule<Iterator, ast_string()> start;

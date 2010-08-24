@@ -12,13 +12,8 @@ namespace parser {
 
 namespace qi = boost::spirit::qi;
 
-template<
-    typename Iterator,
-    typename Skipper
->
-struct datum :
-    qi::grammar<Iterator, ast_datum(), Skipper>
-{
+template<typename Iterator, typename Skipper>
+struct datum : qi::grammar<Iterator, ast_datum(), Skipper> {
     datum();
 
 private:

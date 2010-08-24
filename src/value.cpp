@@ -20,15 +20,11 @@ gc::handle<value> cdr(gc::handle<value> p) {
     return (boost::get<pair>(*p)).second;
 }
 
-void set_car(
-        gc::handle<value> p, gc::handle<value> val)
-{
+void set_car(gc::handle<value> p, gc::handle<value> val) {
     (boost::get<pair>(*p)).first = val;
 }
 
-void set_cdr(
-        gc::handle<value> p, gc::handle<value> val)
-{
+void set_cdr(gc::handle<value> p, gc::handle<value> val) {
     (boost::get<pair>(*p)).second = val;
 }
 
@@ -51,9 +47,7 @@ void print_cdr(std::ostream& out, gc::handle<value> p) {
     }
 }
 
-std::ostream& operator<<(
-        std::ostream& out, pair const& p)
-{
+std::ostream& operator<<(std::ostream& out, pair const& p) {
     if (p.first == nil() && p.second == nil()) {
         return out << "()";
     }

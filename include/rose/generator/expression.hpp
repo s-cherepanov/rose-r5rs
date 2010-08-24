@@ -16,13 +16,8 @@ namespace karma = boost::spirit::karma;
 using karma::grammar;
 using karma::rule;
 
-template<
-    typename Iterator,
-    typename Delimiter
->
-struct expression :
-    grammar<Iterator, ast_expression(), Delimiter>
-{
+template<typename Iterator, typename Delimiter>
+struct expression : grammar<Iterator, ast_expression(), Delimiter> {
     expression();
 
     rule<Iterator, ast_definition(), Delimiter> definition;
