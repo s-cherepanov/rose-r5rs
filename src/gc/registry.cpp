@@ -43,8 +43,8 @@ void registry::mark() {
     address_stack stack;
 
     std::remove_copy_if(
-            registry::instance().handle_registry_.begin(),
-            registry::instance().handle_registry_.end(),
+            handle_registry_.begin(),
+            handle_registry_.end(),
             std::back_inserter(stack),
             is_not_root);
 
@@ -74,8 +74,8 @@ void registry::sweep() {
     address_set dead_objects;
 
     std::remove_copy_if(
-            instance().object_registry_.begin(),
-            instance().object_registry_.end(),
+            object_registry_.begin(),
+            object_registry_.end(),
             std::inserter(dead_objects, dead_objects.begin()),
             is_alive_object);
 
@@ -87,11 +87,34 @@ void registry::sweep() {
 
 void registry::reset() {
     std::for_each(
-            instance().object_registry_.begin(),
-            instance().object_registry_.end(),
+            object_registry_.begin(),
+            object_registry_.end(),
             reset_to_death);
 }
 
+/**
+ * Find out all the handles resides in an object.
+ *
+ *            Linear address
+ *                  |
+ *  obj_begin ---->     +-------------------+       +---------------+
+ *                  |   | Object A          |   +-->| Object B      |
+ *                      |                   |   |   |               |   
+ *                  |   | +---------------+ |   |   +---------------+
+ *                      | | Handle<T>     +-----+
+ *                  |   | +---------------+ |       +---------------+
+ *                      |                   |   +-->| Object C      |
+ *                  |   | +---------------+ |   |   |               |
+ *                      | | Handle<U>     +-----+   +---------------+
+ *                  |   | +---------------+ |       
+ *                      |                   |       
+ *                  |   | +---------------+ |
+ *                      | | Other         | |
+ *                  |   | +---------------+ |
+ *                      +-------------------+
+ *  obj_end   ----> |
+ *                  V
+ */
 registry::address_set
     registry::find_member_handles(handle_base const* handle) const
 {
