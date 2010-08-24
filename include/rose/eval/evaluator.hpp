@@ -29,8 +29,6 @@ gc::handle<value> eval<ast_datum>(
 struct evaluator_base :
     boost::static_visitor<gc::handle<value> >
 {
-    typedef gc::handle<value> result_type;
-
     environment_ptr env;
 
     evaluator_base(environment_ptr env);

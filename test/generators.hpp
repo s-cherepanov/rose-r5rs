@@ -27,19 +27,19 @@ typedef
     program_generator;
 
 typedef
-    rose::generator::boolean<output_iterator, delimiter_type>
+    rose::generator::boolean<output_iterator>
     boolean_generator;
 
 typedef
-    rose::generator::number<output_iterator, delimiter_type>
+    rose::generator::number<output_iterator>
     number_generator;
 
 typedef
-    rose::generator::character<output_iterator, delimiter_type>
+    rose::generator::character<output_iterator>
     character_generator;
 
 typedef
-    rose::generator::string<output_iterator, delimiter_type>
+    rose::generator::string<output_iterator>
     string_generator;
 
 extern delimiter_type       delimiter_g;

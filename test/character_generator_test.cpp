@@ -6,6 +6,9 @@
 BOOST_AUTO_TEST_SUITE(character_generator_suite)
 
 void check(char ch, std::string const& expected) {
+    using boost::spirit::karma::delimit;
+    using boost::spirit::karma::no_delimit;
+
     BOOST_CHECK_EQUAL(
             test_generator_attr_delim(character_g, delimiter_g, ch),
             expected);

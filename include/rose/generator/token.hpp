@@ -15,58 +15,36 @@ using karma::grammar;
 using karma::rule;
 using karma::symbols;
 
-template<
-    typename Iterator,
-    typename Delimiter
->
-struct boolean :
-    grammar<Iterator, bool(), Delimiter>
-{
+template<typename Iterator>
+struct boolean : grammar<Iterator, bool()> {
     boolean();
 
-    rule<Iterator, bool(), Delimiter> start;
+    rule<Iterator, bool()> start;
     symbols<bool, char const*> boolean_sym;
 
 };  //  struct boolean
 
-template<
-    typename Iterator,
-    typename Delimiter
->
-struct number :
-    grammar<Iterator, int(), Delimiter>
-{
+template<typename Iterator>
+struct number : grammar<Iterator, int()> {
     number();
 
-    rule<Iterator, int(), Delimiter> start;
+    rule<Iterator, int()> start;
 
 };  //  struct boolean
 
-template<
-    typename Iterator,
-    typename Delimiter
->
-struct character :
-    grammar<Iterator, char(), Delimiter>
-{
+template<typename Iterator>
+struct character : grammar<Iterator, char()> {
     character();
 
-    rule<Iterator, char(), Delimiter> start;
     rule<Iterator, char()> character_;
     rule<Iterator, char()> character_name;
 
 };  //  struct character
 
-template<
-    typename Iterator,
-    typename Delimiter
->
-struct string :
-    grammar<Iterator, ast_string(), Delimiter>
-{
+template<typename Iterator>
+struct string : grammar<Iterator, ast_string()> {
     string();
 
-    rule<Iterator, ast_string(), Delimiter> start;
     rule<Iterator, ast_string()> string_;
     rule<Iterator, char()>       string_element;
 
