@@ -1,7 +1,13 @@
+#include "rose/generator/token.hpp"
 #include "rose/value.hpp"
 
-namespace rose {
+#include <boost/spirit/include/karma.hpp>
+#include <boost/spirit/include/qi.hpp>
 
+#include <iterator>
+#include <string>
+
+namespace rose {
 
 gc::handle<value> nil() {
     static gc::handle<value> n;
@@ -39,7 +45,7 @@ void print_cdr(std::ostream& out, gc::handle<value> p) {
 
     if (is_pair(p)) {
         pair const& cdr(handle_cast<pair>(p));
-        out << " " << *(cdr.first);
+        out << " " << cdr.first;
         print_cdr(out, cdr.second);
     }
     else {
@@ -54,7 +60,7 @@ std::ostream& operator<<(
         return out << "()";
     }
 
-    out << '(' << *(p.first);
+    out << '(' << p.first;
     print_cdr(out, p.second);
     return out << ')';
 }
@@ -65,22 +71,79 @@ std::ostream& operator<<(std::ostream& out, vector const& v) {
     }
 
     vector::const_iterator it = v.begin();
-    out << "#(" << *(*it++);
+    out << "#(" << *it++;
 
     for (; it != v.end(); ++it) {
-        out << ' ' << **it;
+        out << ' ' << *it;
     }
 
     return out << ')';
 }
 
+namespace karma = boost::spirit::karma;
+
+struct value_printer : boost::static_visitor<> {
+    typedef
+        std::back_insert_iterator<std::string>
+        output_iterator;
+
+    typedef
+        boost::spirit::ascii::space_type
+        delimiter_type;
+
+    std::ostream& out;
+
+    value_printer(std::ostream& out) :
+        out(out)
+    {}
+
+    void operator()(bool val) const {
+        out << (val ? "#t" : "#f");
+    }
+
+    void operator()(char val) const {
+        typedef
+            generator::character<output_iterator, delimiter_type>
+            character_generator;
+
+        std::string output;
+        std::back_insert_iterator<std::string> sink(output);
+        character_generator generator;
+
+        karma::generate_delimited(
+                sink, generator, delimiter_type(), val);
+
+        out << output;
+    }
+
+    void operator()(ast_string const& val) const {
+        typedef
+            generator::string<output_iterator, delimiter_type>
+            string_generator;
+
+        std::string output;
+        std::back_insert_iterator<std::string> sink(output);
+        string_generator generator;
+
+        karma::generate_delimited(
+                sink, generator, delimiter_type(), val);
+
+        out << output;
+    }
+
+    template<typename ValueType>
+    void operator()(ValueType const& val) const {
+        out << val;
+    }
+
+};  //  struct value_printer
+
 std::ostream& operator<<(std::ostream& out, gc::handle<value> const& handle) {
     if (!!handle) {
-        return out << (*handle);
+        boost::apply_visitor(value_printer(out), *handle);
     }
-    else {
-        return out;
-    }
+
+    return out;
 }
 
 }   //  namespace rose
