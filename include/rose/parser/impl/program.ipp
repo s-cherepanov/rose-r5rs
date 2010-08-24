@@ -12,10 +12,7 @@ namespace parser {
 namespace qi = boost::spirit::qi;
 namespace repository = boost::spirit::repository;
 
-template<
-    typename Iterator,
-    typename Skipper
->
+template<typename Iterator, typename Skipper>
 program<Iterator, Skipper>::program() :
     program::base_type(start),
     definition(&expression)

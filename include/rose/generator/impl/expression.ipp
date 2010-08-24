@@ -8,10 +8,7 @@ namespace generator {
 
 namespace karma = boost::spirit::karma;
 
-template<
-    typename Iterator,
-    typename Delimiter
->
+template<typename Iterator, typename Delimiter>
 expression<Iterator, Delimiter>::expression() :
     expression::base_type(start)
 {

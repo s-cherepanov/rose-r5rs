@@ -12,13 +12,8 @@ namespace parser {
 namespace phoenix = boost::phoenix;
 namespace qi = boost::spirit::qi;
 
-template<
-    typename Iterator,
-    typename Skipper
->
-conditional<Iterator, Skipper>::
-    conditional(expression_type const* e)
-:
+template<typename Iterator, typename Skipper>
+conditional<Iterator, Skipper>::conditional(expression_type const* e) :
     conditional::base_type(start),
     expression_ptr(e)
 {

@@ -13,13 +13,8 @@ namespace parser {
 namespace phoenix = boost::phoenix;
 namespace qi = boost::spirit::qi;
 
-template<
-    typename Iterator,
-    typename Skipper
->
-procedure_call<Iterator, Skipper>::
-    procedure_call(expression_type const* e)
-:
+template<typename Iterator, typename Skipper>
+procedure_call<Iterator, Skipper>::procedure_call(expression_type const* e) :
     procedure_call::base_type(start),
     expression_ptr(e)
 {

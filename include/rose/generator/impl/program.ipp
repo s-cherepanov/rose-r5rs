@@ -6,10 +6,7 @@
 namespace rose {
 namespace generator {
 
-template<
-    typename Iterator,
-    typename Delimiter
->
+template<typename Iterator, typename Delimiter>
 program<Iterator, Delimiter>::program() :
     program::base_type(start)
 {

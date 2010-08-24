@@ -21,9 +21,7 @@ using qi::grammar;
 using qi::rule;
 
 template<typename Iterator, typename Skipper>
-struct token :
-    grammar<Iterator, Skipper>
-{
+struct token : grammar<Iterator, Skipper> {
     token();
 
     rule<Iterator, Skipper> start;

@@ -16,13 +16,8 @@ namespace qi = boost::spirit::qi;
 namespace spirit = boost::spirit;
 namespace phoenix = boost::phoenix;
 
-template<
-    typename Iterator,
-    typename Skipper
->
-definition<Iterator, Skipper>::
-    definition(expression_type const* e)
-:
+template<typename Iterator, typename Skipper>
+definition<Iterator, Skipper>::definition(expression_type const* e) :
     definition::base_type(start),
     expression_ptr(e)
 {

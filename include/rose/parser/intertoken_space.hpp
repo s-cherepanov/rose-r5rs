@@ -13,9 +13,7 @@ using qi::grammar;
 using qi::rule;
 
 template<typename Iterator>
-struct intertoken_space :
-    qi::grammar<Iterator>
-{
+struct intertoken_space : qi::grammar<Iterator> {
     intertoken_space();
 
     qi::rule<Iterator> start;

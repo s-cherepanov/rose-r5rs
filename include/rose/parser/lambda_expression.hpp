@@ -16,16 +16,10 @@ namespace qi = boost::spirit::qi;
 using qi::grammar;
 using qi::rule;
 
-template<
-    typename Iterator,
-    typename Skipper
->
+template<typename Iterator, typename Skipper>
 struct expression;
 
-template<
-    typename Iterator,
-    typename Skipper
->
+template<typename Iterator, typename Skipper>
 struct lambda_expression :
     grammar<Iterator, ast_lambda_expression(), Skipper>
 {

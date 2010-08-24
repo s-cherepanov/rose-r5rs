@@ -14,9 +14,7 @@ using qi::grammar;
 using qi::rule;
 
 template<typename Iterator>
-struct identifier :
-    qi::grammar<Iterator, std::string()>
-{
+struct identifier : qi::grammar<Iterator, std::string()> {
     identifier();
 
     rule<Iterator, std::string()> start;
