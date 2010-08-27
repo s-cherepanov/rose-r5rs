@@ -2,6 +2,7 @@
 #define __PARSERS_HPP__
 
 #include "rose/parser/datum.hpp"
+#include "rose/parser/definition.hpp"
 #include "rose/parser/expression.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/program.hpp"

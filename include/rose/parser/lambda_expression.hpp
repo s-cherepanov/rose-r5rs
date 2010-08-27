@@ -29,10 +29,11 @@ struct lambda_expression :
 
     lambda_expression(expression_type const*);
 
-private:
-    expression_type const*                      expression_ptr;
     rose::parser::definition<Iterator, Skipper> definition;
-    rose::parser::token<Iterator, Skipper>      token;
+
+private:
+    expression_type const*                 expression_ptr;
+    rose::parser::token<Iterator, Skipper> token;
 
     rule<Iterator, ast_body(),              Skipper> body;
     rule<Iterator, ast_expression(),        Skipper> command;

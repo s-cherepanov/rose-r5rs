@@ -13,6 +13,7 @@ namespace rose {
 
 struct pair;
 struct vector;
+struct procedure;
 
 typedef
     boost::variant<
@@ -22,14 +23,14 @@ typedef
         ast_string,
         ast_symbol,
         boost::recursive_wrapper<pair>,
-        boost::recursive_wrapper<vector>
+        boost::recursive_wrapper<vector>,
+        boost::recursive_wrapper<procedure>
     >
     value;
 
-struct pair :
-    std::pair<gc::handle<value>, gc::handle<value> >
-{
+struct pair : std::pair<gc::handle<value>, gc::handle<value> > {
     typedef gc::handle<value> value_type;
+
     typedef std::pair<value_type, value_type> base_type;
 
     pair() {}
@@ -39,6 +40,26 @@ struct pair :
     {}
 
 };  //  struct pair
+
+struct environment;
+
+typedef boost::shared_ptr<environment> environment_ptr;
+
+typedef std::vector<gc::handle<value> > arguments_type;
+
+struct procedure {
+    procedure(
+            ast_lambda_expression const& ast,
+            environment_ptr parent);
+
+    gc::handle<value> apply(
+            arguments_type const& args,
+            arguments_type const& rest_args);
+
+    ast_lambda_expression ast;
+    environment_ptr env;
+
+};  //  struct procedure
 
 gc::handle<value> nil();
 
@@ -84,6 +105,8 @@ struct vector :
 {};
 
 std::ostream& operator<<(std::ostream& out, vector const& v);
+
+std::ostream& operator<<(std::ostream& out, procedure const& p);
 
 std::ostream& operator<<(std::ostream& out, gc::handle<value> const& handle);
 

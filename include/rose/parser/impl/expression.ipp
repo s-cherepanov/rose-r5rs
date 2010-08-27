@@ -16,8 +16,8 @@ namespace qi = boost::spirit::qi;
 template<typename Iterator, typename Skipper>
 expression<Iterator, Skipper>::expression() :
     expression::base_type(start),
-    conditional(this),
     lambda_expression(this),
+    conditional(this),
     procedure_call(this)
 {
     using qi::_1;

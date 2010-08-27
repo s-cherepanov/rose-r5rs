@@ -4,7 +4,6 @@
 #include "rose/gc/handle.hpp"
 #include "rose/value.hpp"
 
-#include <boost/format.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <map>
@@ -15,12 +14,12 @@ class environment;
 
 typedef boost::shared_ptr<environment> environment_ptr;
 
-class environment {
-public:
-    typedef
-        std::map<ast_variable, gc::handle<value> >
-        variable_map;
+class environment :
+    public std::map<ast_variable, gc::handle<value> >
+{
+    friend std::ostream& operator<<(std::ostream&, environment const&);
 
+public:
     environment(environment_ptr parent = environment_ptr()) :
         parent_(parent)
     {}
@@ -34,17 +33,17 @@ public:
     }
 
     void define(ast_variable const& var, gc::handle<value> val) {
-        variable_map::const_iterator it = variables_.find(var);
-        if (variables_.end() != it) {
+        const_iterator it = find(var);
+        if (end() != it) {
             throw std::runtime_error("definition duplicated");
         }
 
-        variables_[var] = val;
+        (*this)[var] = val;
     }
 
     void assign(ast_variable const& var, gc::handle<value> val) {
-        variable_map::iterator it = variables_.find(var);
-        if (variables_.end() == it) {
+        iterator it = find(var);
+        if (end() == it) {
             throw std::runtime_error("undefined variable");
         }
 
@@ -52,18 +51,16 @@ public:
     }
 
     gc::handle<value> lookup(ast_variable const& var) const {
-        variable_map::const_iterator it = variables_.find(var);
-        if (variables_.end() != it) {
+        const_iterator it = find(var);
+        if (end() != it) {
             return it->second;
         }
 
-        return !!parent_ ?
-            parent_->lookup(var) : gc::handle<value>();
+        return !!parent_ ?  parent_->lookup(var) : gc::handle<value>();
     }
 
 private:
     environment_ptr parent_;
-    variable_map variables_;
 
 };  //  class environment
 
