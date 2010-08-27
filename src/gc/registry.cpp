@@ -2,12 +2,17 @@
 #include "rose/gc/handle.hpp"
 #include "rose/gc/object.hpp"
 
+#include <boost/range/algorithm/for_each.hpp>
+#include <boost/range/algorithm/remove_copy_if.hpp>
+
 #include <algorithm>
 #include <iterator>
 #include <vector>
 
 namespace rose {
 namespace gc {
+
+using namespace boost;
 
 bool registry::is_root_handle(handle_base const* handle) const {
     object_registry::const_iterator it =
@@ -42,11 +47,8 @@ void registry::mark() {
 
     address_stack stack;
 
-    std::remove_copy_if(
-            handle_registry_.begin(),
-            handle_registry_.end(),
-            std::back_inserter(stack),
-            is_not_root);
+    remove_copy_if(handle_registry_,
+            std::back_inserter(stack), is_not_root);
 
     // Traverses all the handles that are referring to an alive (reachable)
     // object in a depth-frist way, starting from the root handle set.
@@ -62,34 +64,24 @@ void registry::mark() {
         a2h(address)->alive(true);
         address_set member_handles = find_member_handles(a2h(address));
 
-        std::remove_copy_if(
-                member_handles.begin(),
-                member_handles.end(),
-                back_inserter(stack),
-                is_dead_handle);
+        remove_copy_if(member_handles,
+                back_inserter(stack), is_dead_handle);
     }
 }
 
 void registry::sweep() {
     address_set dead_objects;
 
-    std::remove_copy_if(
-            object_registry_.begin(),
-            object_registry_.end(),
+    remove_copy_if(
+            object_registry_,
             std::inserter(dead_objects, dead_objects.begin()),
             is_alive_object);
 
-    std::for_each(
-            dead_objects.begin(),
-            dead_objects.end(),
-            delete_dead_object);
+    range::for_each(dead_objects, delete_dead_object);
 }
 
 void registry::reset() {
-    std::for_each(
-            object_registry_.begin(),
-            object_registry_.end(),
-            reset_to_death);
+    range::for_each(object_registry_, reset_to_death);
 }
 
 /**

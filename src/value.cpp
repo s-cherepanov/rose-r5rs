@@ -1,3 +1,4 @@
+#include "rose/environment.hpp"
 #include "rose/generator/token.hpp"
 #include "rose/value.hpp"
 
@@ -6,6 +7,21 @@
 namespace rose {
 
 namespace karma = boost::spirit::karma;
+
+procedure::procedure(
+        ast_lambda_expression const& ast,
+        environment_ptr parent)
+:
+    ast(ast),
+    env(new environment(parent))
+{}
+
+gc::handle<value> procedure::apply(
+        arguments_type const& args,
+        arguments_type const& rest_args)
+{
+    return nil();
+}
 
 gc::handle<value> nil() {
     static gc::handle<value> n;
@@ -70,6 +86,10 @@ std::ostream& operator<<(std::ostream& out, vector const& v) {
     }
 
     return out << ')';
+}
+
+std::ostream& operator<<(std::ostream& out, procedure const& p) {
+    return out << "#<procedure>";
 }
 
 struct value_printer : boost::static_visitor<std::ostream&> {

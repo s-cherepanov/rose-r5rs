@@ -1,35 +1,31 @@
 #include "rose/eval/evaluator.hpp"
 
 #include <boost/bind.hpp>
+#include <boost/circular_buffer.hpp>
+#include <boost/range/algorithm/transform.hpp>
 
 #include <algorithm>
 
 namespace rose {
-
-void evaluate_one(
-        ast_command_or_definition const& ast,
-        environment_ptr env,
-        gc::handle<value>& result)
-{
-    result = eval(ast, env);
-}
 
 gc::handle<value> evaluate_program(
         ast_program const& program, environment_ptr env)
 {
     using namespace boost;
 
-    gc::handle<value> result;
+    circular_buffer<gc::handle<value> > result(1);
 
     try {
-        std::for_each(program.begin(), program.end(),
-                bind(&evaluate_one, _1, env, ref(result)));
+        range::transform(
+                program,
+                std::back_inserter(result),
+                bind(&eval<ast_command_or_definition>, _1, env));
     }
     catch(std::exception& e) {
         std::cout << "repl-exception: " << e.what() << std::endl;
     }
 
-    return result;
+    return result.size() ? result[0] : nil();
 }
 
 }   //  namespace rose

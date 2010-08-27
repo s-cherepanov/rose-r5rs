@@ -58,18 +58,22 @@ BOOST_AUTO_TEST_CASE(literal_self_evaluating_string_test) {
 }
 
 BOOST_AUTO_TEST_CASE(procedure_call_test) {
-    check("(+ a b)",
+    check(
+            "(+ a b)",
             ast_procedure_call(
                 ast_variable("+"),
                 make_arguments(
                     ast_variable("a"),
-                    ast_variable("b"))));
+                    ast_variable("b")))
+    );
 
-    check("(symbol? 'a)",
+    check(
+            "(symbol? 'a)",
             ast_procedure_call(
                 ast_variable("symbol?"),
                 make_arguments(
-                    ast_quotation(ast_symbol("a")))));
+                    ast_quotation(ast_symbol("a"))))
+    );
 }
 
 BOOST_AUTO_TEST_CASE(conditional_test) {
@@ -78,17 +82,21 @@ BOOST_AUTO_TEST_CASE(conditional_test) {
 }
 
 BOOST_AUTO_TEST_CASE(lambda_expression_test) {
-    check("(lambda () 1)",
+    check(
+            "(lambda () 1)",
             ast_lambda_expression(
                 ast_formals(),
-                ast_body(ast_definitions(), make_sequence(1))));
+                ast_body(ast_definitions(), make_sequence(1)))
+    );
 
-    check("(lambda (x) x)",
+    check(
+            "(lambda (x) x)",
             ast_lambda_expression(
                 make_formals(
                     ast_variable("x")),
                 ast_body(
-                    make_sequence(ast_variable("x")))));
+                    make_sequence(ast_variable("x"))))
+    );
 }
 
 BOOST_AUTO_TEST_CASE(factorial_lambda_test) {

@@ -19,8 +19,8 @@ lambda_expression<Iterator, Skipper>::
     lambda_expression(expression_type const* e)
 :
     lambda_expression::base_type(start),
-    expression_ptr(e),
-    definition(e)
+    definition(e),
+    expression_ptr(e)
 {
     using phoenix::at_c;
     using phoenix::push_back;
