@@ -39,31 +39,25 @@ evaluator_base::result_type
     return make_value(procedure(ast, env));
 }
 
-evaluator_base::result_type
-    expression_evaluator::operator()(ast_procedure_call const& ast) const
+gc::handle<value> apply(
+        gc::handle<value> operator_,
+        arguments_type const& args,
+        arguments_type const& rest_args)
 {
     using namespace boost;
 
-    result_type operator_ = eval(ast.procedure, env);
     procedure& proc = handle_cast<procedure>(operator_);
-    std::vector<result_type> args;
-
-    range::transform(
-            ast.arguments,
-            std::back_inserter(args),
-            bind(&eval<ast_expression>, _1, env));
-
     range::transform(
             proc.ast.formals,
             args,
             std::inserter(*proc.env, proc.env->begin()),
-            &std::make_pair<ast_variable, result_type>);
+            &std::make_pair<ast_variable, gc::handle<value> >);
 
     range::for_each(
             proc.ast.body.definitions,
             bind(eval<ast_definition>, _1, proc.env));
 
-    circular_buffer<result_type> result(1);
+    circular_buffer<gc::handle<value> > result(1);
 
     range::transform(
             proc.ast.body.sequence,
@@ -71,6 +65,36 @@ evaluator_base::result_type
             bind(&eval<ast_expression>, _1, proc.env));
 
     return result.size() ? result[0] : nil();
+}
+
+gc::handle<value> apply(
+        gc::handle<value> operator_,
+        arguments_type const& args)
+{
+    arguments_type rest_args;
+    return apply(operator_, args, rest_args);
+}
+
+gc::handle<value> apply(gc::handle<value> operator_) {
+    arguments_type args;
+    arguments_type rest_args;
+    return apply(operator_, args, rest_args);
+}
+
+evaluator_base::result_type
+    expression_evaluator::operator()(ast_procedure_call const& ast) const
+{
+    using namespace boost;
+
+    result_type operator_ = eval(ast.procedure, env);
+    std::vector<result_type> args;
+
+    range::transform(
+            ast.arguments,
+            std::back_inserter(args),
+            bind(&eval<ast_expression>, _1, env));
+
+    return apply(operator_, args);
 }
 
 evaluator_base::result_type
