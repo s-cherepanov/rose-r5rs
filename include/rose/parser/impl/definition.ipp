@@ -52,15 +52,17 @@ definition<Iterator, Skipper>::definition(expression_type const* e) :
             >> no_case["define"]
             >> token.lparen
             >> token.variable               [at_c<0>(_val) = _1]
-            >> formals                      [_a = _1]
+            >> def_formals                  [_a = _1]
             >> token.rparen
             >> body                         [_b = _1]
             >> token.rparen)                [at_c<1>(_val) =
                                              construct<lambda_type>(_a, _b)]
         ;
 
-    formals
-        =   *token.variable
+    def_formals
+        =   *token.variable                 [push_back(at_c<0>(_val), _1)]
+            >> -(token.dot
+                 >> token.variable          [at_c<1>(_val) = _1])
         ;
 
     body

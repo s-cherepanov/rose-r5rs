@@ -3,17 +3,25 @@
 
 #include "rose/generator/expression.hpp"
 
+#include <boost/spirit/include/phoenix_fusion.hpp>
+#include <boost/spirit/include/phoenix_operator.hpp>
+#include <boost/spirit/include/phoenix_stl.hpp>
+
 namespace rose {
 namespace generator {
 
 namespace karma = boost::spirit::karma;
+namespace phoenix = boost::phoenix;
 
 template<typename Iterator, typename Delimiter>
 expression<Iterator, Delimiter>::expression() :
     expression::base_type(start)
 {
+    using karma::_1;
+    using karma::_val;
     using karma::int_;
     using karma::lit;
+    using phoenix::at_c;
 
     start
         =   expression_.alias()
@@ -51,7 +59,8 @@ expression<Iterator, Delimiter>::expression() :
 
     formals
         =   lit('(')
-            << *variable
+            << (*variable)                  [_1 = at_c<0>(_val)]
+            << (-('.' << variable))         [_1 = at_c<1>(_val)]
             << ')'
         ;
 

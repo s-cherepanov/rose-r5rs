@@ -234,41 +234,41 @@ rose::ast_sequence make_sequence(
 }
 
 template<typename T1>
-rose::ast_formals make_formals(T1 t1) {
-    rose::ast_formals formals;
-    formals.push_back(t1);
-    return formals;
+rose::ast_formal_args make_formal_args(T1 t1) {
+    rose::ast_formal_args formal_args;
+    formal_args.push_back(t1);
+    return formal_args;
 }
 
 template<typename T1, typename T2>
-rose::ast_formals make_formals(T1 const& t1, T2 const& t2) {
-    rose::ast_formals formals;
-    formals.push_back(t1);
-    formals.push_back(t2);
-    return formals;
+rose::ast_formal_args make_formal_args(T1 const& t1, T2 const& t2) {
+    rose::ast_formal_args formal_args;
+    formal_args.push_back(t1);
+    formal_args.push_back(t2);
+    return formal_args;
 }
 
 template<typename T1, typename T2, typename T3>
-rose::ast_formals make_formals(
+rose::ast_formal_args make_formal_args(
         T1 const& t1, T2 const& t2, T3 const& t3)
 {
-    rose::ast_formals formals;
-    formals.push_back(t1);
-    formals.push_back(t2);
-    formals.push_back(t3);
-    return formals;
+    rose::ast_formal_args formal_args;
+    formal_args.push_back(t1);
+    formal_args.push_back(t2);
+    formal_args.push_back(t3);
+    return formal_args;
 }
 
 template<typename T1, typename T2, typename T3, typename T4>
-rose::ast_formals make_formals(
+rose::ast_formal_args make_formal_args(
         T1 const& t1, T2 const& t2, T3 const& t3, T4 const& t4)
 {
-    rose::ast_formals formals;
-    formals.push_back(t1);
-    formals.push_back(t2);
-    formals.push_back(t3);
-    formals.push_back(t4);
-    return formals;
+    rose::ast_formal_args formal_args;
+    formal_args.push_back(t1);
+    formal_args.push_back(t2);
+    formal_args.push_back(t3);
+    formal_args.push_back(t4);
+    return formal_args;
 }
 
 template<typename T1>

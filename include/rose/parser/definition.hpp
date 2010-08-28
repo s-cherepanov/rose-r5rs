@@ -33,7 +33,7 @@ private:
 
     rule<Iterator, ast_definition(), Skipper> start;
     rule<Iterator, ast_definition(), Skipper> plain_definition;
-    rule<Iterator, ast_formals(),    Skipper> formals;
+    rule<Iterator, ast_formals(),    Skipper> def_formals;
     rule<Iterator, ast_body(),       Skipper> body;
     rule<Iterator, ast_sequence(),   Skipper> sequence;
 

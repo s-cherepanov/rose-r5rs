@@ -27,13 +27,25 @@ BOOST_AUTO_TEST_CASE(simple_definition_test) {
     );
 }
 
-BOOST_AUTO_TEST_CASE(lambda_define_test) {
+BOOST_AUTO_TEST_CASE(lambda_definition_test1) {
     check(
             "(define x (lambda (n) n))",
             ast_definition(
                 ast_variable("x"),
                 ast_lambda_expression(
-                    make_formals(ast_variable("n")),
+                    ast_formals(make_formal_args(ast_variable("n"))),
+                    ast_body(make_sequence(
+                            ast_variable("n")))))
+    );
+}
+
+BOOST_AUTO_TEST_CASE(lambda_definition_test2) {
+    check(
+            "(define x (lambda n n))",
+            ast_definition(
+                ast_variable("x"),
+                ast_lambda_expression(
+                    ast_formals(make_formal_args(ast_variable("n"))),
                     ast_body(make_sequence(
                             ast_variable("n")))))
     );
@@ -45,7 +57,19 @@ BOOST_AUTO_TEST_CASE(lambda_define_abbrev_test) {
             ast_definition(
                 ast_variable("x"),
                 ast_lambda_expression(
-                    make_formals(ast_variable("n")),
+                    ast_formals(make_formal_args(ast_variable("n"))),
+                    ast_body(make_sequence(
+                            ast_variable("n")))))
+    );
+
+    check(
+            "(define (x n . m) n)",
+            ast_definition(
+                ast_variable("x"),
+                ast_lambda_expression(
+                    ast_formals(
+                        make_formal_args(ast_variable("n")),
+                        ast_variable("m")),
                     ast_body(make_sequence(
                             ast_variable("n")))))
     );

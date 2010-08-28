@@ -52,10 +52,6 @@ typedef
     std::vector<ast_expression>
     ast_arguments;
 
-typedef
-    std::vector<ast_expression>
-    ast_rest_arguments;
-
 struct ast_procedure_call {
     ast_procedure_call() :
         procedure(),
@@ -207,7 +203,33 @@ struct ast_body {
 
 typedef
     std::vector<ast_variable>
-    ast_formals;
+    ast_formal_args;
+
+struct ast_formals {
+    ast_formals() {
+    }
+
+    ast_formals(ast_formal_args const& formal_args) :
+        formal_args(formal_args)
+    {}
+
+    ast_formals(
+            ast_formal_args const& formal_args,
+            ast_variable const& formal_rest)
+    :
+        formal_args(formal_args),
+        formal_rest(formal_rest)
+    {}
+
+    bool operator==(ast_formals const& rhs) const {
+        return formal_args == rhs.formal_args &&
+            formal_rest == rhs.formal_rest;
+    }
+
+    ast_formal_args formal_args;
+    boost::optional<ast_variable> formal_rest;
+
+};  //  struct ast_formals
 
 struct ast_lambda_expression {
     ast_lambda_expression() :
@@ -268,8 +290,13 @@ BOOST_FUSION_ADAPT_STRUCT(
         (rose::ast_expression, expression))
 
 BOOST_FUSION_ADAPT_STRUCT(
+        rose::ast_formals,
+        (rose::ast_formal_args, formal_args)
+        (boost::optional<rose::ast_variable>, formal_rest))
+
+BOOST_FUSION_ADAPT_STRUCT(
         rose::ast_body,
-        (std::vector<rose::ast_definition>, definitions)
+        (rose::ast_definitions, definitions)
         (rose::ast_sequence, sequence))
 
 BOOST_FUSION_ADAPT_STRUCT(

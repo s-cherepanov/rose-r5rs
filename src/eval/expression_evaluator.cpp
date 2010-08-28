@@ -54,7 +54,7 @@ evaluator_base::result_type
             bind(&eval<ast_expression>, _1, env));
 
     range::transform(
-            proc.ast.formals,
+            proc.ast.formals.formal_args,
             args,
             std::inserter(*proc.env, proc.env->begin()),
             &std::make_pair<ast_variable, result_type>);

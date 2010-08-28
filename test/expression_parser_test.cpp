@@ -71,8 +71,7 @@ BOOST_AUTO_TEST_CASE(procedure_call_test) {
             "(symbol? 'a)",
             ast_procedure_call(
                 ast_variable("symbol?"),
-                make_arguments(
-                    ast_quotation(ast_symbol("a"))))
+                make_arguments(ast_quotation(ast_symbol("a"))))
     );
 }
 
@@ -92,17 +91,24 @@ BOOST_AUTO_TEST_CASE(lambda_expression_test) {
     check(
             "(lambda (x) x)",
             ast_lambda_expression(
-                make_formals(
-                    ast_variable("x")),
-                ast_body(
-                    make_sequence(ast_variable("x"))))
+                ast_formals(make_formal_args(ast_variable("x"))),
+                ast_body(make_sequence(ast_variable("x"))))
+    );
+
+    check(
+            "(lambda (n . m) 10)",
+            ast_lambda_expression(
+                ast_formals(
+                    make_formal_args(ast_variable("n")),
+                    ast_variable("m")),
+                ast_body(make_sequence(10)))
     );
 }
 
 BOOST_AUTO_TEST_CASE(factorial_lambda_test) {
     ast_lambda_expression inner_lambda(
-            make_formals(
-                ast_variable("m")),
+            ast_formals(
+                make_formal_args(ast_variable("m"))),
             ast_body(
                 make_sequence(
                     ast_conditional(
@@ -124,7 +130,7 @@ BOOST_AUTO_TEST_CASE(factorial_lambda_test) {
                                                 1))))))))));
 
     ast_lambda_expression expected(
-            make_formals(ast_variable("n")),
+            ast_formals(make_formal_args(ast_variable("n"))),
             ast_body(
                 make_definitions(
                     ast_definition(

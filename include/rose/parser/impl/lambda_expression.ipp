@@ -38,7 +38,13 @@ lambda_expression<Iterator, Skipper>::
 
     formals
         =   token.lparen
-            >> *token.variable              [push_back(_val, _1)]
+            >> *token.variable              [push_back(at_c<0>(_val), _1)]
+            >> token.rparen
+        |   token.variable                  [push_back(at_c<0>(_val), _1)]
+        |   token.lparen
+            >> +token.variable
+            >> -(token.dot
+                 >> token.variable          [at_c<1>(_val) = _1])
             >> token.rparen
         ;
 
@@ -48,11 +54,7 @@ lambda_expression<Iterator, Skipper>::
         ;
 
     sequence
-        =   +command                        [push_back(_val, _1)]
-        ;
-
-    command
-       %=   (*expression_ptr)
+        =   +(*expression_ptr)              [push_back(_val, _1)]
         ;
 }
 

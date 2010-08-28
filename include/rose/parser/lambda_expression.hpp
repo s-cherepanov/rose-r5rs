@@ -36,7 +36,6 @@ private:
     rose::parser::token<Iterator, Skipper> token;
 
     rule<Iterator, ast_body(),              Skipper> body;
-    rule<Iterator, ast_expression(),        Skipper> command;
     rule<Iterator, ast_formals(),           Skipper> formals;
     rule<Iterator, ast_lambda_expression(), Skipper> start;
     rule<Iterator, ast_sequence(),          Skipper> sequence;

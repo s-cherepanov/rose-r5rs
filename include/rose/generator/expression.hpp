@@ -34,16 +34,11 @@ private:
     rule<Iterator, ast_conditional(),       Delimiter> conditional;
     rule<Iterator, ast_expression(),        Delimiter> expression_;
     rule<Iterator, ast_expression(),        Delimiter> start;
+    rule<Iterator, ast_formals(),           Delimiter> formals;
     rule<Iterator, ast_lambda_expression(), Delimiter> lambda_expression;
     rule<Iterator, ast_procedure_call(),    Delimiter> procedure_call;
     rule<Iterator, ast_quotation(),         Delimiter> quotation;
     rule<Iterator, ast_variable(),          Delimiter> variable;
-
-    typedef
-        std::vector<ast_variable>
-        formals_attr_type;
-
-    rule<Iterator, formals_attr_type(), Delimiter> formals;
 
 };  //  struct expression
 

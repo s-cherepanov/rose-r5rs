@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(call_factorial_test) {
                 ast_definition(
                     ast_variable("factorial"),
                     ast_lambda_expression(
-                        make_formals(ast_variable("n")),
+                        ast_formals(make_formal_args(ast_variable("n"))),
                         ast_body(
                             make_sequence(
                                 ast_conditional(
