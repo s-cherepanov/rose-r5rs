@@ -1,0 +1,14 @@
+project
+    :   requirements
+            <variant>debug:<define>BOOST_SPIRIT_DEBUG
+    ;
+
+lib rose-parser
+    :   [ glob-tree *.cpp ]
+    ;
+
+install install-rose-parser
+    :   rose-parser
+    :   <variant>debug:<location>$(PROJECT_ROOT)/dist/debug
+        <variant>release:<location>$(PROJECT_ROOT)/dist/release
+    ;
