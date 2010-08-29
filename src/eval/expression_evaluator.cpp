@@ -39,45 +39,84 @@ evaluator_base::result_type
     return make_value(procedure(ast, env));
 }
 
+struct proc_application : boost::static_visitor<gc::handle<value> > {
+    proc_application(arguments_type const& args) :
+        args(args)
+    {}
+
+    result_type operator()(procedure const& proc) const {
+        using namespace boost;
+
+        ast_formal_args const& formal_args = proc.ast.formals.formal_args;
+
+        if (args.size() < proc.arity().first ||
+                (args.size() > proc.arity().first && !proc.arity().second))
+        {
+            throw std::runtime_error("wrong arguments number");
+        }
+
+        range::transform(
+                formal_args,
+                args,
+                std::inserter(*proc.env, proc.env->begin()),
+                &std::make_pair<ast_variable, gc::handle<value> >);
+
+        if (proc.arity().second) {
+            gc::handle<value> rest_args = make_list(
+                    args.begin() + proc.arity().first, args.end());
+            proc.env->define(*proc.ast.formals.formal_rest, rest_args);
+        }
+
+        range::for_each(
+                proc.ast.body.definitions,
+                bind(eval<ast_definition>, _1, proc.env));
+
+        circular_buffer<gc::handle<value> > result(1);
+
+        range::transform(
+                proc.ast.body.sequence,
+                std::back_inserter(result),
+                bind(&eval<ast_expression>, _1, proc.env));
+
+        return result.size() ? result[0] : nil();
+    }
+
+    result_type operator()(native_procedure const& proc) const {
+        if (args.size() < proc.arity().first ||
+                (args.size() > proc.arity().first && !proc.arity().second))
+        {
+            throw std::runtime_error("wrong arguments number");
+        }
+
+        arguments_type::const_iterator
+            rest_begin = args.begin() + proc.arity().first,
+            rest_end = args.end();
+
+        arguments_type formal_args;
+        std::copy(args.begin(), rest_begin, std::back_inserter(formal_args));
+
+        gc::handle<value> rest_args;
+        if (proc.arity().second) {
+            rest_args = make_list(rest_begin, rest_end);
+        }
+
+        return proc.procedure(formal_args, rest_args);
+    }
+
+    template<typename ValueType>
+    result_type operator()(ValueType const& val) const {
+        throw std::runtime_error("wrong type to apply");
+    }
+
+    arguments_type args;
+
+};  //  struct apply_visitor
+
 gc::handle<value> apply(
         gc::handle<value> operator_,
         arguments_type const& args)
 {
-    using namespace boost;
-
-    procedure const& proc = handle_cast<procedure>(operator_);
-    ast_formal_args const& formal_args = proc.ast.formals.formal_args;
-
-    if (args.size() < proc.arity().first ||
-            (args.size() > proc.arity().first && !proc.arity().second))
-    {
-        throw std::runtime_error("wrong arguments number");
-    }
-
-    range::transform(
-            formal_args,
-            args,
-            std::inserter(*proc.env, proc.env->begin()),
-            &std::make_pair<ast_variable, gc::handle<value> >);
-
-    if (proc.arity().second) {
-        gc::handle<value> rest_args = make_list(
-                args.begin() + proc.arity().first, args.end());
-        proc.env->define(*proc.ast.formals.formal_rest, rest_args);
-    }
-
-    range::for_each(
-            proc.ast.body.definitions,
-            bind(eval<ast_definition>, _1, proc.env));
-
-    circular_buffer<gc::handle<value> > result(1);
-
-    range::transform(
-            proc.ast.body.sequence,
-            std::back_inserter(result),
-            bind(&eval<ast_expression>, _1, proc.env));
-
-    return result.size() ? result[0] : nil();
+    return boost::apply_visitor(proc_application(args), *operator_);
 }
 
 gc::handle<value> apply(gc::handle<value> operator_) {

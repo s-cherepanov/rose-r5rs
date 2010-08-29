@@ -22,6 +22,21 @@ std::pair<std::size_t, bool> procedure::arity() const {
             !!ast.formals.formal_rest);
 }
 
+native_procedure::native_procedure(
+        std::size_t min_arity,
+        bool with_rest,
+        procedure_fn const& procedure,
+        environment_ptr env)
+:
+    arity_(min_arity, with_rest),
+    procedure(procedure),
+    env(env)
+{}
+
+std::pair<std::size_t, bool> native_procedure::arity() const {
+    return arity_;
+}
+
 gc::handle<value> nil() {
     static gc::handle<value> n;
     return n;
@@ -89,6 +104,10 @@ std::ostream& operator<<(std::ostream& out, vector const& v) {
 
 std::ostream& operator<<(std::ostream& out, procedure const& p) {
     return out << "#<procedure>";
+}
+
+std::ostream& operator<<(std::ostream& out, native_procedure const& p) {
+    return out << "#<native-procedure>";
 }
 
 struct value_printer : boost::static_visitor<std::ostream&> {

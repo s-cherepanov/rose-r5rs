@@ -60,9 +60,7 @@ bool generate(ast_program const& program, std::string& output) {
     return generate_delimited(sink, grammar, space, program);
 }
 
-environment_ptr build_initial_env() {
-    return environment_ptr(new environment);
-}
+environment_ptr build_initial_env();
 
 void parse_and_generate(std::string const& input, environment_ptr env) {
     ast_program program;
@@ -72,7 +70,10 @@ void parse_and_generate(std::string const& input, environment_ptr env) {
         std::cout << "parsed: " << output << std::endl
       : std::cerr << "parsing error" << std::endl;
 
-    std::cout << "=> " << evaluate_program(program, env) << std::endl;
+    gc::handle<value> result = evaluate_program(program, env);
+    if (!!result) {
+        std::cout << "=> " << result << std::endl;
+    }
 }
 
 boost::format format_prompt(std::string const& prompt) {

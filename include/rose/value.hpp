@@ -4,6 +4,7 @@
 #include "rose/ast/program.hpp"
 #include "rose/gc/handle.hpp"
 
+#include <boost/function.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_convertible.hpp>
 #include <boost/variant.hpp>
@@ -16,6 +17,7 @@ namespace rose {
 struct pair;
 struct vector;
 struct procedure;
+struct native_procedure;
 
 typedef
     boost::variant<
@@ -26,7 +28,8 @@ typedef
         ast_symbol,
         boost::recursive_wrapper<pair>,
         boost::recursive_wrapper<vector>,
-        boost::recursive_wrapper<procedure>
+        boost::recursive_wrapper<procedure>,
+        boost::recursive_wrapper<native_procedure>
     >
     value;
 
@@ -64,6 +67,27 @@ struct procedure {
     environment_ptr env;
 
 };  //  struct procedure
+
+struct native_procedure {
+    typedef
+        boost::function<
+            gc::handle<value>(arguments_type, gc::handle<value>)
+        >
+        procedure_fn;
+
+    native_procedure(
+            std::size_t min_arity,
+            bool with_rest,
+            procedure_fn const& procedure,
+            environment_ptr env);
+
+    std::pair<std::size_t, bool> arity() const;
+
+    std::pair<std::size_t, bool> arity_;
+    procedure_fn procedure;
+    environment_ptr env;
+
+};  //  struct native_procedure
 
 gc::handle<value> nil();
 
@@ -111,6 +135,8 @@ struct vector :
 std::ostream& operator<<(std::ostream& out, vector const& v);
 
 std::ostream& operator<<(std::ostream& out, procedure const& p);
+
+std::ostream& operator<<(std::ostream& out, native_procedure const& p);
 
 std::ostream& operator<<(std::ostream& out, gc::handle<value> const& handle);
 
