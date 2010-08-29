@@ -72,7 +72,7 @@ void parse_and_generate(std::string const& input, environment_ptr env) {
         std::cout << "parsed: " << output << std::endl
       : std::cerr << "parsing error" << std::endl;
 
-    std::cout << evaluate_program(program, env) << std::endl;
+    std::cout << "=> " << evaluate_program(program, env) << std::endl;
 }
 
 boost::format format_prompt(std::string const& prompt) {

@@ -4,6 +4,8 @@
 #include "rose/ast/program.hpp"
 #include "rose/gc/handle.hpp"
 
+#include <boost/static_assert.hpp>
+#include <boost/type_traits/is_convertible.hpp>
 #include <boost/variant.hpp>
 
 #include <utility>
@@ -35,6 +37,10 @@ struct pair : std::pair<gc::handle<value>, gc::handle<value> > {
 
     pair() {}
 
+    pair(value_type const& first) :
+        base_type(first, value_type())
+    {}
+
     pair(value_type const& first, value_type const& second) :
         base_type(first, second)
     {}
@@ -52,9 +58,7 @@ struct procedure {
             ast_lambda_expression const& ast,
             environment_ptr parent);
 
-    gc::handle<value> apply(
-            arguments_type const& args,
-            arguments_type const& rest_args);
+    std::pair<std::size_t, bool> arity() const;
 
     ast_lambda_expression ast;
     environment_ptr env;
@@ -109,6 +113,33 @@ std::ostream& operator<<(std::ostream& out, vector const& v);
 std::ostream& operator<<(std::ostream& out, procedure const& p);
 
 std::ostream& operator<<(std::ostream& out, gc::handle<value> const& handle);
+
+template<typename InputIterator>
+gc::handle<value> make_list(InputIterator first, InputIterator last) {
+    BOOST_STATIC_ASSERT((
+            boost::is_same<
+                typename InputIterator::value_type,
+                gc::handle<value>
+            >::value));
+
+    typedef gc::handle<value> result_type;
+
+    result_type result = make_value(pair());
+
+    InputIterator next = first;
+    result_type last_one = result;
+
+    set_car(result, *next);
+
+    while (last != ++next) {
+        pair p;
+        p.first = *next;
+        set_cdr(last_one, make_value(p));
+        last_one = cdr(last_one);
+    }
+
+    return result;
+}
 
 }   //  namespace rose
 

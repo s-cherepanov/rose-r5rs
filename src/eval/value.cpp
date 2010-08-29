@@ -16,11 +16,10 @@ procedure::procedure(
     env(new environment(parent))
 {}
 
-gc::handle<value> procedure::apply(
-        arguments_type const& args,
-        arguments_type const& rest_args)
-{
-    return nil();
+std::pair<std::size_t, bool> procedure::arity() const {
+    return std::make_pair(
+            ast.formals.formal_args.size(),
+            !!ast.formals.formal_rest);
 }
 
 gc::handle<value> nil() {
