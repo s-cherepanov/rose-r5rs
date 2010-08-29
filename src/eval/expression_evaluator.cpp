@@ -41,17 +41,30 @@ evaluator_base::result_type
 
 gc::handle<value> apply(
         gc::handle<value> operator_,
-        arguments_type const& args,
-        arguments_type const& rest_args)
+        arguments_type const& args)
 {
     using namespace boost;
 
-    procedure& proc = handle_cast<procedure>(operator_);
+    procedure const& proc = handle_cast<procedure>(operator_);
+    ast_formal_args const& formal_args = proc.ast.formals.formal_args;
+
+    if (args.size() < proc.arity().first ||
+            (args.size() > proc.arity().first && !proc.arity().second))
+    {
+        throw std::runtime_error("wrong arguments number");
+    }
+
     range::transform(
-            proc.ast.formals,
+            formal_args,
             args,
             std::inserter(*proc.env, proc.env->begin()),
             &std::make_pair<ast_variable, gc::handle<value> >);
+
+    if (proc.arity().second) {
+        gc::handle<value> rest_args = make_list(
+                args.begin() + proc.arity().first, args.end());
+        proc.env->define(*proc.ast.formals.formal_rest, rest_args);
+    }
 
     range::for_each(
             proc.ast.body.definitions,
@@ -67,18 +80,9 @@ gc::handle<value> apply(
     return result.size() ? result[0] : nil();
 }
 
-gc::handle<value> apply(
-        gc::handle<value> operator_,
-        arguments_type const& args)
-{
-    arguments_type rest_args;
-    return apply(operator_, args, rest_args);
-}
-
 gc::handle<value> apply(gc::handle<value> operator_) {
     arguments_type args;
-    arguments_type rest_args;
-    return apply(operator_, args, rest_args);
+    return apply(operator_, args);
 }
 
 evaluator_base::result_type

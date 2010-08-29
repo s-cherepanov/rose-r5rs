@@ -9,6 +9,7 @@ run
         /boost//prg_exec_monitor
         /boost//thread
         /boost//unit_test_framework
+        /rose/eval//rose-eval
         /rose/gc//rose-gc
         /rose/generator//rose-generator
         /rose/parser//rose-parser
