@@ -48,7 +48,7 @@ definition<Iterator, Skipper>::definition(expression_type const* e) :
         lambda_type;
 
     procedure_definition
-        =   (token.lparen
+        =  (token.lparen
             >> no_case["define"]
             >> token.lparen
             >> token.variable               [at_c<0>(_val) = _1]
