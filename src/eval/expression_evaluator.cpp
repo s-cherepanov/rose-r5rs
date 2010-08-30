@@ -6,6 +6,7 @@
 #include <boost/range/algorithm/transform.hpp>
 
 #include <algorithm>
+#include <iostream>
 #include <iterator>
 #include <utility>
 
@@ -18,12 +19,12 @@ expression_evaluator::expression_evaluator(environment_ptr env) :
 expression_evaluator::result_type
     expression_evaluator::operator()(ast_variable const& ast) const
 {
-    result_type val = env->lookup(ast);
-    if (!val) {
-        throw std::runtime_error("undefined variable");
+    std::pair<bool, result_type> lookup_result = env->lookup(ast);
+    if (!lookup_result.first) {
+        throw std::runtime_error("undefined variable: " + ast);
     }
 
-    return val;
+    return lookup_result.second;
 }
 
 evaluator_base::result_type
@@ -35,7 +36,6 @@ evaluator_base::result_type
 evaluator_base::result_type
     expression_evaluator::operator()(ast_lambda_expression const& ast) const
 {
-    procedure proc(ast, env);
     return make_value(procedure(ast, env));
 }
 
@@ -52,9 +52,10 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
         if (args.size() < proc.arity().first ||
                 (args.size() > proc.arity().first && !proc.arity().second))
         {
-            throw std::runtime_error("wrong arguments number");
+            throw std::runtime_error("wrong number of arguments");
         }
 
+        proc.env->clear();
         range::transform(
                 formal_args,
                 args,
@@ -85,7 +86,7 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
         if (args.size() < proc.arity().first ||
                 (args.size() > proc.arity().first && !proc.arity().second))
         {
-            throw std::runtime_error("wrong arguments number");
+            throw std::runtime_error("wrong number of arguments");
         }
 
         arguments_type::const_iterator
@@ -149,11 +150,7 @@ evaluator_base::result_type
         return eval(ast.consequent, env);
     }
 
-    if (!!ast.alternate) {
-        return eval(*ast.alternate, env);
-    }
-
-    return nil();
+    return (!!ast.alternate) ? eval(*ast.alternate, env) : nil();
 }
 
 evaluator_base::result_type

@@ -26,11 +26,11 @@ native_procedure::native_procedure(
         std::size_t min_arity,
         bool with_rest,
         procedure_fn const& procedure,
-        environment_ptr env)
+        environment_ptr parent)
 :
     arity_(min_arity, with_rest),
     procedure(procedure),
-    env(env)
+    env(new environment(parent))
 {}
 
 std::pair<std::size_t, bool> native_procedure::arity() const {

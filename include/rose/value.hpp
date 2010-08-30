@@ -79,7 +79,7 @@ struct native_procedure {
             std::size_t min_arity,
             bool with_rest,
             procedure_fn const& procedure,
-            environment_ptr env);
+            environment_ptr parent);
 
     std::pair<std::size_t, bool> arity() const;
 
@@ -151,6 +151,9 @@ gc::handle<value> make_list(InputIterator first, InputIterator last) {
     typedef gc::handle<value> result_type;
 
     result_type result = make_value(pair());
+    if (0u == std::distance(first, last)) {
+        return result;
+    }
 
     InputIterator next = first;
     result_type last_one = result;

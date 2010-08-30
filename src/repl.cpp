@@ -76,6 +76,20 @@ void parse_and_generate(std::string const& input, environment_ptr env) {
     }
 }
 
+void interpret(std::string const& input, environment_ptr env) {
+    ast_program program;
+    std::string output;
+
+    if (!parse(input, program)) {
+        std::cout << "ABORT: syntax error" << std::endl;
+    }
+
+    gc::handle<value> result = evaluate_program(program, env);
+    if (!!result) {
+        std::cout << "=> " << result << std::endl;
+    }
+}
+
 boost::format format_prompt(std::string const& prompt) {
     boost::format formatter(prompt);
 
@@ -99,7 +113,7 @@ void do_repl(std::string const& prompt) {
             break;
         }
 
-        parse_and_generate(input, env);
+        interpret(input, env);
     }
 }
 
@@ -119,7 +133,7 @@ std::string load_file(std::string const& filename) {
 }
 
 void do_batch(std::string const& input_file) {
-    parse_and_generate(load_file(input_file), build_initial_env());
+    interpret(load_file(input_file), build_initial_env());
 }
 
 }   //  namespace rose

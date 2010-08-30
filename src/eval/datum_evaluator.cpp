@@ -17,13 +17,14 @@ datum_evaluator::datum_evaluator(environment_ptr env) :
 evaluator_base::result_type
     datum_evaluator::operator()(ast_list const& ast) const
 {
-    result_type result = make_value(pair());
+    result_type result;
 
     if (ast.elements.empty()) {
         return result;
     }
 
     ast_list::const_iterator next = ast.elements.begin();
+    result = make_value(pair());
     result_type last = result;
 
     set_car(result, eval(*next, env));
