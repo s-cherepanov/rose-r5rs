@@ -40,7 +40,7 @@ lambda_expression<Iterator, Skipper>::
         =   token.lparen
             >> *token.variable              [push_back(at_c<0>(_val), _1)]
             >> token.rparen
-        |   token.variable                  [push_back(at_c<0>(_val), _1)]
+        |   token.variable                  [at_c<1>(_val) = _1]
         |   token.lparen
             >> +token.variable
             >> -(token.dot

@@ -45,7 +45,9 @@ BOOST_AUTO_TEST_CASE(lambda_definition_test2) {
             ast_definition(
                 ast_variable("x"),
                 ast_lambda_expression(
-                    ast_formals(make_formal_args(ast_variable("n"))),
+                    ast_formals(
+                        ast_formal_args(),
+                        ast_variable("n")),
                     ast_body(make_sequence(
                             ast_variable("n")))))
     );

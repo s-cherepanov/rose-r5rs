@@ -44,7 +44,7 @@ datum<Iterator, Skipper>::datum() :
         =   token.lparen >> token.rparen
         |   token.lparen
             >> +datum_                      [push_back(at_c<0>(_val), _1)]
-            >> -(token.dot >> (datum_       [at_c<1>(_val) = _1]))
+            >> -(token.dot >> datum_        [at_c<1>(_val) = _1])
             >> token.rparen
         ;
 
