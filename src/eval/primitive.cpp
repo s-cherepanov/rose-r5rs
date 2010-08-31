@@ -1,13 +1,13 @@
 #include "rose/eval/primitive.hpp"
 #include "rose/environment.hpp"
 
-#define DEFINE_PRIMITIVE(name, args, rest)\
+#define NATIVE_PROCEDURE(name, args, rest)\
     rose::gc::handle<value> name(rose::arguments_type const& args,\
                                  rose::gc::handle<rose::value> rest)
 
 namespace rose {
 
-DEFINE_PRIMITIVE(rs_add, args, rest) {
+NATIVE_PROCEDURE(rs_add, args, rest) {
     int result = 0;
 
     if (!rest) {
@@ -23,7 +23,7 @@ DEFINE_PRIMITIVE(rs_add, args, rest) {
     return make_value(result);
 }
 
-DEFINE_PRIMITIVE(rs_minus, args, rest) {
+NATIVE_PROCEDURE(rs_minus, args, rest) {
     if (!rest) {
         throw std::runtime_error("wrong number of arguments");
     }
@@ -43,7 +43,7 @@ DEFINE_PRIMITIVE(rs_minus, args, rest) {
     return make_value(result);
 }
 
-DEFINE_PRIMITIVE(rs_multiply, args, rest) {
+NATIVE_PROCEDURE(rs_multiply, args, rest) {
     int result = 1;
 
     if (!rest) {
@@ -59,7 +59,7 @@ DEFINE_PRIMITIVE(rs_multiply, args, rest) {
     return make_value(result);
 }
 
-DEFINE_PRIMITIVE(rs_divide, args, rest) {
+NATIVE_PROCEDURE(rs_divide, args, rest) {
     if (!rest) {
         throw std::runtime_error("wrong number of arguments");
     }
@@ -79,81 +79,81 @@ DEFINE_PRIMITIVE(rs_divide, args, rest) {
     return make_value(result);
 }
 
-DEFINE_PRIMITIVE(rs_eq, args, rest) {
+NATIVE_PROCEDURE(rs_eq, args, rest) {
     int lhs = handle_cast<int>(args[0]);
     int rhs = handle_cast<int>(args[1]);
     return make_value(lhs == rhs);
 }
 
-DEFINE_PRIMITIVE(rs_less, args, rest) {
+NATIVE_PROCEDURE(rs_less, args, rest) {
     int lhs = handle_cast<int>(args[0]);
     int rhs = handle_cast<int>(args[1]);
     return make_value(lhs < rhs);
 }
 
-DEFINE_PRIMITIVE(rs_leq, args, rest) {
+NATIVE_PROCEDURE(rs_leq, args, rest) {
     int lhs = handle_cast<int>(args[0]);
     int rhs = handle_cast<int>(args[1]);
     return make_value(lhs <= rhs);
 }
 
-DEFINE_PRIMITIVE(rs_gr, args, rest) {
+NATIVE_PROCEDURE(rs_gr, args, rest) {
     int lhs = handle_cast<int>(args[0]);
     int rhs = handle_cast<int>(args[1]);
     return make_value(lhs > rhs);
 }
 
-DEFINE_PRIMITIVE(rs_geq, args, rest) {
+NATIVE_PROCEDURE(rs_geq, args, rest) {
     int lhs = handle_cast<int>(args[0]);
     int rhs = handle_cast<int>(args[1]);
     return make_value(lhs >= rhs);
 }
 
-DEFINE_PRIMITIVE(rs_pair_p, args, rest) {
+NATIVE_PROCEDURE(rs_pair_p, args, rest) {
     return !!args[0] ?
         make_value(!!boost::get<pair>(&(*args[0]))) :
         make_value(false);
 }
 
-DEFINE_PRIMITIVE(rs_vector_p, args, rest) {
+NATIVE_PROCEDURE(rs_vector_p, args, rest) {
     return !!args[0] ?
         make_value(!!boost::get<vector>(&(*args[0]))) :
         make_value(false);
 }
 
-DEFINE_PRIMITIVE(rs_string_p, args, rest) {
+NATIVE_PROCEDURE(rs_string_p, args, rest) {
     return !!args[0] ?
         make_value(!!boost::get<ast_string>(&(*args[0]))) :
         make_value(false);
 }
 
-DEFINE_PRIMITIVE(rs_symbol_p, args, rest) {
+NATIVE_PROCEDURE(rs_symbol_p, args, rest) {
     return make_value(!!boost::get<ast_symbol>(&(*args[0])));
 }
 
-DEFINE_PRIMITIVE(rs_car, args, rest) {
+NATIVE_PROCEDURE(rs_car, args, rest) {
     return car(args[0]);
 }
 
-DEFINE_PRIMITIVE(rs_cdr, args, rest) {
+NATIVE_PROCEDURE(rs_cdr, args, rest) {
     return cdr(args[0]);
 }
 
-DEFINE_PRIMITIVE(rs_set_car_x, args, rest) {
+NATIVE_PROCEDURE(rs_set_car_x, args, rest) {
     set_car(args[0], args[1]);
     return nil();
 }
 
-DEFINE_PRIMITIVE(rs_set_cdr_x, args, rest) {
+NATIVE_PROCEDURE(rs_set_cdr_x, args, rest) {
     set_cdr(args[0], args[1]);
     return nil();
 }
 
-DEFINE_PRIMITIVE(rs_list, args, rest) {
+NATIVE_PROCEDURE(rs_list, args, rest) {
     return rest;
 }
 
-DEFINE_PRIMITIVE(rs_vector, args, rest) {
+NATIVE_PROCEDURE(rs_vector, args, rest) {
     vector result;
 
     if (!rest) {
@@ -169,7 +169,7 @@ DEFINE_PRIMITIVE(rs_vector, args, rest) {
     return make_value(result);
 }
 
-DEFINE_PRIMITIVE(rs_display, args, rest) {
+NATIVE_PROCEDURE(rs_display, args, rest) {
     std::cout << args[0] << std::endl;
     return nil();
 }
