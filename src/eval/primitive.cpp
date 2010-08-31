@@ -7,7 +7,7 @@
 
 namespace rose {
 
-NATIVE_PROCEDURE(rs_add, args, rest) {
+NATIVE_PROCEDURE(np_add, args, rest) {
     int result = 0;
 
     if (!rest) {
@@ -23,7 +23,7 @@ NATIVE_PROCEDURE(rs_add, args, rest) {
     return make_value(result);
 }
 
-NATIVE_PROCEDURE(rs_minus, args, rest) {
+NATIVE_PROCEDURE(np_minus, args, rest) {
     if (!rest) {
         throw std::runtime_error("wrong number of arguments");
     }
@@ -43,7 +43,7 @@ NATIVE_PROCEDURE(rs_minus, args, rest) {
     return make_value(result);
 }
 
-NATIVE_PROCEDURE(rs_multiply, args, rest) {
+NATIVE_PROCEDURE(np_multiply, args, rest) {
     int result = 1;
 
     if (!rest) {
@@ -59,7 +59,7 @@ NATIVE_PROCEDURE(rs_multiply, args, rest) {
     return make_value(result);
 }
 
-NATIVE_PROCEDURE(rs_divide, args, rest) {
+NATIVE_PROCEDURE(np_divide, args, rest) {
     if (!rest) {
         throw std::runtime_error("wrong number of arguments");
     }
@@ -79,81 +79,81 @@ NATIVE_PROCEDURE(rs_divide, args, rest) {
     return make_value(result);
 }
 
-NATIVE_PROCEDURE(rs_eq, args, rest) {
+NATIVE_PROCEDURE(np_eq, args, rest) {
     int lhs = handle_cast<int>(args[0]);
     int rhs = handle_cast<int>(args[1]);
     return make_value(lhs == rhs);
 }
 
-NATIVE_PROCEDURE(rs_less, args, rest) {
+NATIVE_PROCEDURE(np_less, args, rest) {
     int lhs = handle_cast<int>(args[0]);
     int rhs = handle_cast<int>(args[1]);
     return make_value(lhs < rhs);
 }
 
-NATIVE_PROCEDURE(rs_leq, args, rest) {
+NATIVE_PROCEDURE(np_leq, args, rest) {
     int lhs = handle_cast<int>(args[0]);
     int rhs = handle_cast<int>(args[1]);
     return make_value(lhs <= rhs);
 }
 
-NATIVE_PROCEDURE(rs_gr, args, rest) {
+NATIVE_PROCEDURE(np_gr, args, rest) {
     int lhs = handle_cast<int>(args[0]);
     int rhs = handle_cast<int>(args[1]);
     return make_value(lhs > rhs);
 }
 
-NATIVE_PROCEDURE(rs_geq, args, rest) {
+NATIVE_PROCEDURE(np_geq, args, rest) {
     int lhs = handle_cast<int>(args[0]);
     int rhs = handle_cast<int>(args[1]);
     return make_value(lhs >= rhs);
 }
 
-NATIVE_PROCEDURE(rs_pair_p, args, rest) {
+NATIVE_PROCEDURE(np_pair_p, args, rest) {
     return !!args[0] ?
         make_value(!!boost::get<pair>(&(*args[0]))) :
         make_value(false);
 }
 
-NATIVE_PROCEDURE(rs_vector_p, args, rest) {
+NATIVE_PROCEDURE(np_vector_p, args, rest) {
     return !!args[0] ?
         make_value(!!boost::get<vector>(&(*args[0]))) :
         make_value(false);
 }
 
-NATIVE_PROCEDURE(rs_string_p, args, rest) {
+NATIVE_PROCEDURE(np_string_p, args, rest) {
     return !!args[0] ?
         make_value(!!boost::get<ast_string>(&(*args[0]))) :
         make_value(false);
 }
 
-NATIVE_PROCEDURE(rs_symbol_p, args, rest) {
+NATIVE_PROCEDURE(np_symbol_p, args, rest) {
     return make_value(!!boost::get<ast_symbol>(&(*args[0])));
 }
 
-NATIVE_PROCEDURE(rs_car, args, rest) {
+NATIVE_PROCEDURE(np_car, args, rest) {
     return car(args[0]);
 }
 
-NATIVE_PROCEDURE(rs_cdr, args, rest) {
+NATIVE_PROCEDURE(np_cdr, args, rest) {
     return cdr(args[0]);
 }
 
-NATIVE_PROCEDURE(rs_set_car_x, args, rest) {
+NATIVE_PROCEDURE(np_set_car_x, args, rest) {
     set_car(args[0], args[1]);
     return nil();
 }
 
-NATIVE_PROCEDURE(rs_set_cdr_x, args, rest) {
+NATIVE_PROCEDURE(np_set_cdr_x, args, rest) {
     set_cdr(args[0], args[1]);
     return nil();
 }
 
-NATIVE_PROCEDURE(rs_list, args, rest) {
+NATIVE_PROCEDURE(np_list, args, rest) {
     return rest;
 }
 
-NATIVE_PROCEDURE(rs_vector, args, rest) {
+NATIVE_PROCEDURE(np_vector, args, rest) {
     vector result;
 
     if (!rest) {
@@ -169,7 +169,7 @@ NATIVE_PROCEDURE(rs_vector, args, rest) {
     return make_value(result);
 }
 
-NATIVE_PROCEDURE(rs_display, args, rest) {
+NATIVE_PROCEDURE(np_display, args, rest) {
     std::cout << args[0] << std::endl;
     return nil();
 }
@@ -177,26 +177,26 @@ NATIVE_PROCEDURE(rs_display, args, rest) {
 environment_ptr build_initial_env() {
     environment_ptr env(new environment);
 
-    env->define("+",        native_procedure(0, true,  rs_add,       env));
-    env->define("-",        native_procedure(0, true,  rs_minus,     env));
-    env->define("*",        native_procedure(0, true,  rs_multiply,  env));
-    env->define("/",        native_procedure(0, true,  rs_divide,    env));
-    env->define("=",        native_procedure(2, true,  rs_eq,        env));
-    env->define("<",        native_procedure(2, true,  rs_less,      env));
-    env->define("<=",       native_procedure(2, true,  rs_leq,       env));
-    env->define(">",        native_procedure(2, true,  rs_gr,        env));
-    env->define(">=",       native_procedure(2, true,  rs_geq,       env));
-    env->define("pair?",    native_procedure(1, false, rs_pair_p,    env));
-    env->define("vector?",  native_procedure(1, false, rs_vector_p,  env));
-    env->define("string?",  native_procedure(1, false, rs_string_p,  env));
-    env->define("symbol?",  native_procedure(1, false, rs_symbol_p,  env));
-    env->define("car",      native_procedure(1, false, rs_car,       env));
-    env->define("cdr",      native_procedure(1, false, rs_cdr,       env));
-    env->define("set-car!", native_procedure(2, false, rs_set_car_x, env));
-    env->define("set-cdr!", native_procedure(2, false, rs_set_cdr_x, env));
-    env->define("list",     native_procedure(0, true,  rs_list,      env));
-    env->define("vector",   native_procedure(0, true,  rs_vector,    env));
-    env->define("display",  native_procedure(1, false, rs_display,   env));
+    env->define("+",        native_procedure(0, true,  np_add,       env));
+    env->define("-",        native_procedure(0, true,  np_minus,     env));
+    env->define("*",        native_procedure(0, true,  np_multiply,  env));
+    env->define("/",        native_procedure(0, true,  np_divide,    env));
+    env->define("=",        native_procedure(2, true,  np_eq,        env));
+    env->define("<",        native_procedure(2, true,  np_less,      env));
+    env->define("<=",       native_procedure(2, true,  np_leq,       env));
+    env->define(">",        native_procedure(2, true,  np_gr,        env));
+    env->define(">=",       native_procedure(2, true,  np_geq,       env));
+    env->define("pair?",    native_procedure(1, false, np_pair_p,    env));
+    env->define("vector?",  native_procedure(1, false, np_vector_p,  env));
+    env->define("string?",  native_procedure(1, false, np_string_p,  env));
+    env->define("symbol?",  native_procedure(1, false, np_symbol_p,  env));
+    env->define("car",      native_procedure(1, false, np_car,       env));
+    env->define("cdr",      native_procedure(1, false, np_cdr,       env));
+    env->define("set-car!", native_procedure(2, false, np_set_car_x, env));
+    env->define("set-cdr!", native_procedure(2, false, np_set_cdr_x, env));
+    env->define("list",     native_procedure(0, true,  np_list,      env));
+    env->define("vector",   native_procedure(0, true,  np_vector,    env));
+    env->define("display",  native_procedure(1, false, np_display,   env));
 
     return env;
 }
