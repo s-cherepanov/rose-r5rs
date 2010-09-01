@@ -1,0 +1,20 @@
+project
+    :   requirements
+            <variant>debug:<define>BOOST_SPIRIT_DEBUG
+    ;
+
+run
+        [ glob-tree *.cpp ]
+        /boost//date_time
+        /boost//prg_exec_monitor
+        /boost//thread
+        /boost//unit_test_framework
+        /rose/eval//rose-eval
+        /rose/gc//rose-gc
+        /rose/generator//rose-generator
+        /rose/parser//rose-parser
+    :   --working-dir=\"$(PROJECT_ROOT)\"
+    :
+    :
+    :   test
+    ;

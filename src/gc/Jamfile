@@ -1,0 +1,9 @@
+lib rose-gc
+    :   [ glob-tree *.cpp ]
+    ;
+
+install install-rose-gc
+    :   rose-gc
+    :   <variant>debug:<location>$(PROJECT_ROOT)/dist/debug
+        <variant>release:<location>$(PROJECT_ROOT)/dist/release
+    ;
