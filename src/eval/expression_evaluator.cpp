@@ -63,9 +63,9 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
                 &std::make_pair<ast_variable, gc::handle<value> >);
 
         if (proc.arity().second) {
-            gc::handle<value> rest_args = make_list(
+            gc::handle<value> rest_list = make_list(
                     args.begin() + proc.arity().first, args.end());
-            proc.env->define(*proc.ast.formals.formal_rest, rest_args);
+            proc.env->define(*proc.ast.formals.formal_rest, rest_list);
         }
 
         range::for_each(
@@ -96,12 +96,12 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
         arguments_type formal_args;
         std::copy(args.begin(), rest_begin, std::back_inserter(formal_args));
 
-        gc::handle<value> rest_args;
+        gc::handle<value> rest_list;
         if (proc.arity().second) {
-            rest_args = make_list(rest_begin, rest_end);
+            rest_list = make_list(rest_begin, rest_end);
         }
 
-        return proc.procedure(formal_args, rest_args);
+        return proc.procedure(formal_args, rest_list);
     }
 
     template<typename ValueType>
