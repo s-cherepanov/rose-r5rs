@@ -1,9 +1,0 @@
-lib rose-eval
-    :   [ glob-tree *.cpp ]
-    ;
-
-install install-rose-eval
-    :   rose-eval
-    :   <variant>debug:<location>$(PROJECT_ROOT)/dist/debug
-        <variant>release:<location>$(PROJECT_ROOT)/dist/release
-    ;

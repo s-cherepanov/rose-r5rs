@@ -1,7 +1,7 @@
 #ifndef __ROSE_EVAL_EVALUATOR_HPP__
 #define __ROSE_EVAL_EVALUATOR_HPP__
 
-#include "rose/ast/program.hpp"
+#include "rose/ast.hpp"
 #include "rose/environment.hpp"
 #include "rose/gc/handle.hpp"
 #include "rose/value.hpp"
