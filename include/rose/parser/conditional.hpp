@@ -1,7 +1,7 @@
 #ifndef __ROSE_PARSER_CONDITIONAL_HPP__
 #define __ROSE_PARSER_CONDITIONAL_HPP__
 
-#include "rose/ast/program.hpp"
+#include "rose/ast.hpp"
 #include "rose/parser/token.hpp"
 
 #include <boost/config/warning_disable.hpp>

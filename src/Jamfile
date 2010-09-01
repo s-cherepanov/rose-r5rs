@@ -1,21 +1,9 @@
-project
-    :   requirements
-            <library>/boost//date_time
-            <library>/boost//filesystem
-            <library>/boost//program_options
-            <library>/boost//thread
-    ;
-
-exe rose
+lib rose-rt
     :   [ glob *.cpp ]
-        /rose/eval//rose-eval
-        /rose/gc//rose-gc
-        /rose/generator//rose-generator
-        /rose/parser//rose-parser
     ;
 
-install install-rose
-    :   rose
+install install-rose-rt
+    :   rose-rt
     :   <variant>debug:<location>$(PROJECT_ROOT)/dist/debug
         <variant>release:<location>$(PROJECT_ROOT)/dist/release
     ;

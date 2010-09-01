@@ -1,7 +1,7 @@
 #ifndef __ROSE_TOKEN_HPP__
 #define __ROSE_TOKEN_HPP__
 
-#include "rose/ast/datum.hpp"
+#include "rose/ast.hpp"
 #include "rose/parser/boolean.hpp"
 #include "rose/parser/character.hpp"
 #include "rose/parser/identifier.hpp"
