@@ -36,7 +36,7 @@ evaluator_base::result_type
 evaluator_base::result_type
     expression_evaluator::operator()(ast_lambda_expression const& ast) const
 {
-    return make_value(procedure(ast, env));
+    return make_value(rs_procedure(ast, env));
 }
 
 struct proc_application : boost::static_visitor<gc::handle<value> > {
@@ -44,7 +44,7 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
         args(args)
     {}
 
-    result_type operator()(procedure const& proc) const {
+    result_type operator()(rs_procedure const& proc) const {
         using namespace boost;
 
         ast_formal_args const& formal_args = proc.ast.formals.formal_args;
@@ -82,7 +82,7 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
         return result.size() ? result[0] : nil();
     }
 
-    result_type operator()(native_procedure const& proc) const {
+    result_type operator()(rs_native_procedure const& proc) const {
         if (args.size() < proc.arity().first ||
                 (args.size() > proc.arity().first && !proc.arity().second))
         {

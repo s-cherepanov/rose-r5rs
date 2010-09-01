@@ -7,6 +7,7 @@
 #include <boost/function.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_convertible.hpp>
+#include <boost/type_traits/is_same.hpp>
 #include <boost/variant.hpp>
 
 #include <utility>
@@ -14,41 +15,44 @@
 
 namespace rose {
 
-struct pair;
-struct vector;
-struct procedure;
-struct native_procedure;
+typedef ast_string rs_string;
+typedef ast_symbol rs_symbol;
+
+struct rs_pair;
+struct rs_vector;
+struct rs_procedure;
+struct rs_native_procedure;
 
 typedef
     boost::variant<
         bool,
         int,
         char,
-        ast_string,
-        ast_symbol,
-        boost::recursive_wrapper<pair>,
-        boost::recursive_wrapper<vector>,
-        boost::recursive_wrapper<procedure>,
-        boost::recursive_wrapper<native_procedure>
+        rs_string,
+        rs_symbol,
+        boost::recursive_wrapper<rs_pair>,
+        boost::recursive_wrapper<rs_vector>,
+        boost::recursive_wrapper<rs_procedure>,
+        boost::recursive_wrapper<rs_native_procedure>
     >
     value;
 
-struct pair : std::pair<gc::handle<value>, gc::handle<value> > {
+struct rs_pair : std::pair<gc::handle<value>, gc::handle<value> > {
     typedef gc::handle<value> value_type;
 
     typedef std::pair<value_type, value_type> base_type;
 
-    pair() {}
+    rs_pair() {}
 
-    pair(value_type const& first) :
+    rs_pair(value_type const& first) :
         base_type(first, value_type())
     {}
 
-    pair(value_type const& first, value_type const& second) :
+    rs_pair(value_type const& first, value_type const& second) :
         base_type(first, second)
     {}
 
-};  //  struct pair
+};  //  struct rs_pair
 
 struct environment;
 
@@ -56,8 +60,8 @@ typedef boost::shared_ptr<environment> environment_ptr;
 
 typedef std::vector<gc::handle<value> > arguments_type;
 
-struct procedure {
-    procedure(
+struct rs_procedure {
+    rs_procedure(
             ast_lambda_expression const& ast,
             environment_ptr parent);
 
@@ -68,14 +72,14 @@ struct procedure {
 
 };  //  struct procedure
 
-struct native_procedure {
+struct rs_native_procedure {
     typedef
         boost::function<
             gc::handle<value>(arguments_type, gc::handle<value>)
         >
         procedure_fn;
 
-    native_procedure(
+    rs_native_procedure(
             std::size_t min_arity,
             bool with_rest,
             procedure_fn const& procedure,
@@ -126,17 +130,17 @@ ValueType const* handle_cast(gc::handle<value> const* val) {
     return boost::get<ValueType>(&(*val));
 }
 
-std::ostream& operator<<(std::ostream& out, pair const& p);
+std::ostream& operator<<(std::ostream& out, rs_pair const& p);
 
-struct vector :
+struct rs_vector :
     std::vector<gc::handle<value> >
 {};
 
-std::ostream& operator<<(std::ostream& out, vector const& v);
+std::ostream& operator<<(std::ostream& out, rs_vector const& v);
 
-std::ostream& operator<<(std::ostream& out, procedure const& p);
+std::ostream& operator<<(std::ostream& out, rs_procedure const& p);
 
-std::ostream& operator<<(std::ostream& out, native_procedure const& p);
+std::ostream& operator<<(std::ostream& out, rs_native_procedure const& p);
 
 std::ostream& operator<<(std::ostream& out, gc::handle<value> const& handle);
 
@@ -150,7 +154,7 @@ gc::handle<value> make_list(InputIterator first, InputIterator last) {
 
     typedef gc::handle<value> result_type;
 
-    result_type result = make_value(pair());
+    result_type result = make_value(rs_pair());
     if (0u == std::distance(first, last)) {
         return result;
     }
@@ -161,7 +165,7 @@ gc::handle<value> make_list(InputIterator first, InputIterator last) {
     set_car(result, *next);
 
     while (last != ++next) {
-        pair p;
+        rs_pair p;
         p.first = *next;
         set_cdr(last_one, make_value(p));
         last_one = cdr(last_one);

@@ -24,13 +24,13 @@ evaluator_base::result_type
     }
 
     ast_list::const_iterator next = ast.elements.begin();
-    result = make_value(pair());
+    result = make_value(rs_pair());
     result_type last = result;
 
     set_car(result, eval(*next, env));
 
     while (ast.elements.end() != ++next) {
-        pair p;
+        rs_pair p;
         p.first = eval(*next, env);
         set_cdr(last, make_value(p));
         last = cdr(last);
@@ -46,7 +46,7 @@ evaluator_base::result_type
 evaluator_base::result_type
     datum_evaluator::operator()(ast_vector const& ast) const
 {
-    vector result;
+    rs_vector result;
     range::transform(
             ast,
             std::back_inserter(result),

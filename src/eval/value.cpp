@@ -8,7 +8,7 @@ namespace rose {
 
 namespace karma = boost::spirit::karma;
 
-procedure::procedure(
+rs_procedure::rs_procedure(
         ast_lambda_expression const& ast,
         environment_ptr parent)
 :
@@ -16,13 +16,13 @@ procedure::procedure(
     env(new environment(parent))
 {}
 
-std::pair<std::size_t, bool> procedure::arity() const {
+std::pair<std::size_t, bool> rs_procedure::arity() const {
     return std::make_pair(
             ast.formals.formal_args.size(),
             !!ast.formals.formal_rest);
 }
 
-native_procedure::native_procedure(
+rs_native_procedure::rs_native_procedure(
         std::size_t min_arity,
         bool with_rest,
         procedure_fn const& procedure,
@@ -33,7 +33,7 @@ native_procedure::native_procedure(
     env(new environment(parent))
 {}
 
-std::pair<std::size_t, bool> native_procedure::arity() const {
+std::pair<std::size_t, bool> rs_native_procedure::arity() const {
     return arity_;
 }
 
@@ -43,23 +43,23 @@ gc::handle<value> nil() {
 }
 
 gc::handle<value> car(gc::handle<value> p) {
-    return (boost::get<pair>(*p)).first;
+    return (boost::get<rs_pair>(*p)).first;
 }
 
 gc::handle<value> cdr(gc::handle<value> p) {
-    return (boost::get<pair>(*p)).second;
+    return (boost::get<rs_pair>(*p)).second;
 }
 
 void set_car(gc::handle<value> p, gc::handle<value> val) {
-    (boost::get<pair>(*p)).first = val;
+    (boost::get<rs_pair>(*p)).first = val;
 }
 
 void set_cdr(gc::handle<value> p, gc::handle<value> val) {
-    (boost::get<pair>(*p)).second = val;
+    (boost::get<rs_pair>(*p)).second = val;
 }
 
 bool is_pair(gc::handle<value> val) {
-    return !!boost::get<pair>(&(*val));
+    return !!boost::get<rs_pair>(&(*val));
 }
 
 void print_cdr(std::ostream& out, gc::handle<value> p) {
@@ -68,7 +68,7 @@ void print_cdr(std::ostream& out, gc::handle<value> p) {
     }
 
     if (is_pair(p)) {
-        pair const& cdr(handle_cast<pair>(p));
+        rs_pair const& cdr(handle_cast<rs_pair>(p));
         out << " " << cdr.first;
         print_cdr(out, cdr.second);
     }
@@ -77,22 +77,18 @@ void print_cdr(std::ostream& out, gc::handle<value> p) {
     }
 }
 
-std::ostream& operator<<(std::ostream& out, pair const& p) {
-    if (p.first == nil() && p.second == nil()) {
-        return out << "()";
-    }
-
+std::ostream& operator<<(std::ostream& out, rs_pair const& p) {
     out << '(' << p.first;
     print_cdr(out, p.second);
     return out << ')';
 }
 
-std::ostream& operator<<(std::ostream& out, vector const& v) {
+std::ostream& operator<<(std::ostream& out, rs_vector const& v) {
     if (v.empty()) {
         return out << "#()";
     }
 
-    vector::const_iterator it = v.begin();
+    rs_vector::const_iterator it = v.begin();
     out << "#(" << *it++;
 
     for (; it != v.end(); ++it) {
@@ -102,11 +98,11 @@ std::ostream& operator<<(std::ostream& out, vector const& v) {
     return out << ')';
 }
 
-std::ostream& operator<<(std::ostream& out, procedure const& p) {
+std::ostream& operator<<(std::ostream& out, rs_procedure const& p) {
     return out << "#<procedure>";
 }
 
-std::ostream& operator<<(std::ostream& out, native_procedure const& p) {
+std::ostream& operator<<(std::ostream& out, rs_native_procedure const& p) {
     return out << "#<native-procedure>";
 }
 
@@ -134,7 +130,7 @@ struct value_printer : boost::static_visitor<std::ostream&> {
         return out << karma::format(g, val);
     }
 
-    result_type operator()(ast_string const& val) const {
+    result_type operator()(rs_string const& val) const {
         typedef
             generator::string<output_iterator>
             string_generator;
