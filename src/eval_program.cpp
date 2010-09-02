@@ -17,15 +17,15 @@ gc::handle<value> eval<ast_program>(
 
     circular_buffer<gc::handle<value> > result(1);
 
-    // try {
+    try {
         range::transform(
                 program,
                 std::back_inserter(result),
                 bind(&eval<ast_command_or_definition>, _1, env));
-    /*}
+    }
     catch(std::exception& e) {
         std::cout << "repl-exception: " << e.what() << std::endl;
-    }*/
+    }
 
     return result.size() ? result[0] : none();
 }
