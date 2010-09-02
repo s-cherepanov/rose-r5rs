@@ -4,6 +4,7 @@
 #include <string>
 
 namespace rose {
+namespace detail {
 
 template<typename Tag>
 struct tagged_string : std::string {
@@ -27,6 +28,7 @@ struct tagged_string : std::string {
 
 };  //  struct tagged_string
 
+}   //  namespace detail
 }   //  namespace rose
 
 #endif  //  __ROSE_AST_TAGGED_STRING_HPP__

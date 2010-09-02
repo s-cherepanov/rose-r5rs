@@ -1,7 +1,7 @@
 #ifndef __ROSE_AST_HPP__
 #define __ROSE_AST_HPP__
 
-#include "rose/tagged_string.hpp"
+#include "rose/detail/tagged_string.hpp"
 
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/optional.hpp>
@@ -20,10 +20,10 @@ struct identifier_tag {};
 struct symbol_tag     {};
 struct variable_tag   {};
 
-typedef tagged_string<string_tag>     ast_string;
-typedef tagged_string<identifier_tag> ast_identifier;
-typedef tagged_string<symbol_tag>     ast_symbol;
-typedef tagged_string<variable_tag>   ast_variable;
+typedef detail::tagged_string<string_tag>     ast_string;
+typedef detail::tagged_string<identifier_tag> ast_identifier;
+typedef detail::tagged_string<symbol_tag>     ast_symbol;
+typedef detail::tagged_string<variable_tag>   ast_variable;
 
 struct ast_list;
 struct ast_vector;
