@@ -5,6 +5,8 @@
 #include "rose/gc/handle.hpp"
 
 #include <boost/function.hpp>
+#include <boost/range/begin.hpp>
+#include <boost/range/end.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_convertible.hpp>
 #include <boost/type_traits/is_same.hpp>
@@ -18,6 +20,7 @@ namespace rose {
 typedef ast_string rs_string;
 typedef ast_symbol rs_symbol;
 
+struct rs_nil;
 struct rs_pair;
 struct rs_vector;
 struct rs_procedure;
@@ -25,6 +28,7 @@ struct rs_native_procedure;
 
 typedef
     boost::variant<
+        rs_nil,
         bool,
         int,
         char,
@@ -37,15 +41,32 @@ typedef
     >
     value;
 
+struct rs_nil {
+    bool operator==(rs_nil const&) const {
+        return true;
+    }
+
+};  //  struct rs_nil
+
+std::ostream& operator<<(std::ostream& out, rs_nil const&);
+
+gc::handle<value> nil();
+
+bool is_nil(gc::handle<value> val);
+
+gc::handle<value> none();
+
 struct rs_pair : std::pair<gc::handle<value>, gc::handle<value> > {
     typedef gc::handle<value> value_type;
 
     typedef std::pair<value_type, value_type> base_type;
 
-    rs_pair() {}
+    rs_pair() :
+        base_type(nil(), nil())
+    {}
 
     rs_pair(value_type const& first) :
-        base_type(first, value_type())
+        base_type(first, nil())
     {}
 
     rs_pair(value_type const& first, value_type const& second) :
@@ -53,6 +74,8 @@ struct rs_pair : std::pair<gc::handle<value>, gc::handle<value> > {
     {}
 
 };  //  struct rs_pair
+
+std::ostream& operator<<(std::ostream& out, rs_pair const& p);
 
 class environment;
 typedef boost::shared_ptr<environment> environment_ptr;
@@ -70,6 +93,8 @@ struct rs_procedure {
     environment_ptr env;
 
 };  //  struct procedure
+
+std::ostream& operator<<(std::ostream& out, rs_procedure const& p);
 
 struct rs_native_procedure {
     typedef
@@ -92,7 +117,7 @@ struct rs_native_procedure {
 
 };  //  struct native_procedure
 
-gc::handle<value> nil();
+std::ostream& operator<<(std::ostream& out, rs_native_procedure const& p);
 
 gc::handle<value> car(gc::handle<value> p);
 
@@ -121,25 +146,19 @@ ValueType const& handle_cast(gc::handle<value> const& val) {
 
 template<typename ValueType>
 ValueType* handle_cast(gc::handle<value>* val) {
-    return boost::get<ValueType>(&(*val));
+    return boost::get<ValueType>(&(**val));
 }
 
 template<typename ValueType>
 ValueType const* handle_cast(gc::handle<value> const* val) {
-    return boost::get<ValueType>(&(*val));
+    return boost::get<ValueType>(&(**val));
 }
-
-std::ostream& operator<<(std::ostream& out, rs_pair const& p);
 
 struct rs_vector :
     std::vector<gc::handle<value> >
 {};
 
 std::ostream& operator<<(std::ostream& out, rs_vector const& v);
-
-std::ostream& operator<<(std::ostream& out, rs_procedure const& p);
-
-std::ostream& operator<<(std::ostream& out, rs_native_procedure const& p);
 
 std::ostream& operator<<(std::ostream& out, gc::handle<value> const& handle);
 
@@ -171,6 +190,11 @@ gc::handle<value> make_list(InputIterator first, InputIterator last) {
     }
 
     return result;
+}
+
+template<typename Range>
+gc::handle<value>make_list(Range const& range) {
+    return make_list(boost::begin(range), boost::end(range));
 }
 
 }   //  namespace rose

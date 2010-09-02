@@ -15,7 +15,7 @@ NATIVE_PROCEDURE(np_add, args, rest) {
     }
 
     gc::handle<value> next = rest;
-    while (!!next) {
+    while (!is_nil(next)) {
         result += handle_cast<int>(car(next));
         next = cdr(next);
     }
@@ -30,12 +30,12 @@ NATIVE_PROCEDURE(np_minus, args, rest) {
 
     int result = handle_cast<int>(car(rest));
 
-    if (!cdr(rest)) {
+    if (is_nil(cdr(rest))) {
         return make_value(-result);
     }
 
     gc::handle<value> next = cdr(rest);
-    while (!!next) {
+    while (!is_nil(next)) {
         result -= handle_cast<int>(car(next));
         next = cdr(next);
     }
@@ -51,7 +51,7 @@ NATIVE_PROCEDURE(np_multiply, args, rest) {
     }
 
     gc::handle<value> next = rest;
-    while (!!next) {
+    while (!is_nil(next)) {
         result *= handle_cast<int>(car(next));
         next = cdr(next);
     }
@@ -71,7 +71,7 @@ NATIVE_PROCEDURE(np_divide, args, rest) {
     }
 
     gc::handle<value> next = cdr(rest);
-    while (!!next) {
+    while (!is_nil(next)) {
         result /= handle_cast<int>(car(next));
         next = cdr(next);
     }
@@ -141,12 +141,12 @@ NATIVE_PROCEDURE(np_cdr, args, rest) {
 
 NATIVE_PROCEDURE(np_set_car_x, args, rest) {
     set_car(args[0], args[1]);
-    return nil();
+    return none();
 }
 
 NATIVE_PROCEDURE(np_set_cdr_x, args, rest) {
     set_cdr(args[0], args[1]);
-    return nil();
+    return none();
 }
 
 NATIVE_PROCEDURE(np_list, args, rest) {
@@ -171,7 +171,7 @@ NATIVE_PROCEDURE(np_vector, args, rest) {
 
 NATIVE_PROCEDURE(np_display, args, rest) {
     std::cout << args[0] << std::endl;
-    return nil();
+    return none();
 }
 
 environment_ptr build_initial_env() {

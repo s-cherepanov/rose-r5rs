@@ -27,7 +27,7 @@ gc::handle<value> eval<ast_program>(
         std::cout << "repl-exception: " << e.what() << std::endl;
     }
 
-    return result.size() ? result[0] : nil();
+    return result.size() ? result[0] : none();
 }
 
 }   //  namespace detail

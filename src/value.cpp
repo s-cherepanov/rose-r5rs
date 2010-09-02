@@ -38,6 +38,15 @@ std::pair<std::size_t, bool> rs_native_procedure::arity() const {
 }
 
 gc::handle<value> nil() {
+    static gc::handle<value> n(make_value(rs_nil()));
+    return n;
+}
+
+bool is_nil(gc::handle<value> val) {
+    return !!val ? (!!handle_cast<rs_nil>(&val)): false;
+}
+
+gc::handle<value> none() {
     static gc::handle<value> n;
     return n;
 }
@@ -62,18 +71,18 @@ bool is_pair(gc::handle<value> val) {
     return !!boost::get<rs_pair>(&(*val));
 }
 
-void print_cdr(std::ostream& out, gc::handle<value> p) {
-    if (p == nil()) {
-        return;
-    }
+std::ostream& operator<<(std::ostream& out, rs_nil const&) {
+    return out << "()";
+}
 
-    if (is_pair(p)) {
-        rs_pair const& cdr(handle_cast<rs_pair>(p));
-        out << " " << cdr.first;
-        print_cdr(out, cdr.second);
+void print_cdr(std::ostream& out, gc::handle<value> val) {
+    if (is_pair(val)) {
+        rs_pair const& p(handle_cast<rs_pair>(val));
+        out << " " << p.first;
+        print_cdr(out, p.second);
     }
-    else {
-        out << " . " << *(p);
+    else if (!is_nil(val)) {
+        out << " . " << *(val);
     }
 }
 
@@ -147,7 +156,9 @@ struct value_printer : boost::static_visitor<std::ostream&> {
 };  //  struct value_printer
 
 std::ostream& operator<<(std::ostream& out, gc::handle<value> const& h) {
-    return !!h ? boost::apply_visitor(value_printer(out), *h) : out;
+    return (is_nil(h)) ?
+        out << "()" :
+        boost::apply_visitor(value_printer(out), *h);
 }
 
 }   //  namespace rose
