@@ -1,4 +1,4 @@
-#include "rose/eval/datum_evaluator.hpp"
+#include "rose/datum_evaluator.hpp"
 
 #include <boost/bind.hpp>
 #include <boost/range/algorithm/transform.hpp>

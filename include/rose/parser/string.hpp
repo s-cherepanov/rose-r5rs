@@ -1,7 +1,7 @@
 #ifndef __ROSE_PARSER_STRING_HPP__
 #define __ROSE_PARSER_STRING_HPP__
 
-#include "rose/ast/datum.hpp"
+#include "rose/ast.hpp"
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>

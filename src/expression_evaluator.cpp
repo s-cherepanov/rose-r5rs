@@ -1,4 +1,4 @@
-#include "rose/eval/expression_evaluator.hpp"
+#include "rose/expression_evaluator.hpp"
 
 #include <boost/bind.hpp>
 #include <boost/circular_buffer.hpp>

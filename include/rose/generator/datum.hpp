@@ -1,7 +1,7 @@
 #ifndef __ROSE_GENERATOR_DATUM_HPP__
 #define __ROSE_GENERATOR_DATUM_HPP__
 
-#include "rose/ast/datum.hpp"
+#include "rose/ast.hpp"
 #include "rose/generator/token.hpp"
 
 #include <boost/config/warning_disable.hpp>

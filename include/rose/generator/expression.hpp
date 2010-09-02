@@ -1,7 +1,7 @@
 #ifndef __ROSE_GENERATOR_EXPRESSION_HPP__
 #define __ROSE_GENERATOR_EXPRESSION_HPP__
 
-#include "rose/ast/program.hpp"
+#include "rose/ast.hpp"
 #include "rose/generator/datum.hpp"
 #include "rose/generator/token.hpp"
 

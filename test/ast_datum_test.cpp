@@ -1,4 +1,4 @@
-#include "rose/ast/datum.hpp"
+#include "rose/ast.hpp"
 
 #include <boost/test/unit_test.hpp>
 

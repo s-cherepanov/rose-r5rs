@@ -1,4 +1,4 @@
-#include "rose/eval/command_or_definition_evaluator.hpp"
+#include "rose/command_or_definition_evaluator.hpp"
 
 namespace rose {
 
