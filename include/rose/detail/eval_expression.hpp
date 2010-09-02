@@ -3,7 +3,7 @@
 
 #include "rose/ast.hpp"
 #include "rose/environment.hpp"
-#include "rose/evaluator.hpp"
+#include "rose/eval.hpp"
 #include "rose/gc/handle.hpp"
 #include "rose/value.hpp"
 
@@ -12,11 +12,8 @@
 namespace rose {
 
 template<>
-gc::handle<value> eval<ast_expression>(
-        ast_expression const& ast, environment_ptr env);
-
-struct expression_evaluator : evaluator_base {
-    expression_evaluator(environment_ptr env);
+struct eval_visitor<ast_expression> : eval_base {
+    eval_visitor(environment_ptr env);
 
     template<typename Ast>
     result_type operator()(Ast const& ast) const {
@@ -38,7 +35,7 @@ struct expression_evaluator : evaluator_base {
 private:
     bool is_true(value const& val) const;
 
-};  //  struct expression_evaluator
+};  //  struct eval_visitor<ast_expression>
 
 }   //  namespace rose
 

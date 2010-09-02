@@ -10,12 +10,12 @@ namespace rose {
 
 using namespace boost;
 
-datum_evaluator::datum_evaluator(environment_ptr env) :
-    evaluator_base(env)
+eval_visitor<ast_datum>::eval_visitor(environment_ptr env) :
+    eval_base(env)
 {}
 
-evaluator_base::result_type
-    datum_evaluator::operator()(ast_list const& ast) const
+eval_base::result_type
+    eval_visitor<ast_datum>::operator()(ast_list const& ast) const
 {
     result_type result;
 
@@ -43,8 +43,8 @@ evaluator_base::result_type
     return result;
 }
 
-evaluator_base::result_type
-    datum_evaluator::operator()(ast_vector const& ast) const
+eval_base::result_type
+    eval_visitor<ast_datum>::operator()(ast_vector const& ast) const
 {
     rs_vector result;
     range::transform(
@@ -53,13 +53,6 @@ evaluator_base::result_type
             bind(&eval<ast_datum>, _1, env));
 
     return make_value(result);
-}
-
-template<>
-gc::handle<value> eval<ast_datum>(
-        ast_datum const& ast, environment_ptr env)
-{
-    return boost::apply_visitor(datum_evaluator(env), ast);
 }
 
 }   //  namespace rose

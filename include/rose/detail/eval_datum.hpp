@@ -1,8 +1,8 @@
-#ifndef __ROSE_EVAL_DATUM_EVALUATOR_HPP__
-#define __ROSE_EVAL_DATUM_EVALUATOR_HPP__
+#ifndef __ROSE_DETAIL_EVAL_DATUM_HPP__
+#define __ROSE_DETAIL_EVAL_DATUM_HPP__
 
 #include "rose/environment.hpp"
-#include "rose/evaluator.hpp"
+#include "rose/eval.hpp"
 #include "rose/gc/handle.hpp"
 #include "rose/value.hpp"
 
@@ -11,11 +11,8 @@
 namespace rose {
 
 template<>
-gc::handle<value> eval<ast_datum>(
-        ast_datum const& ast, environment_ptr env);
-
-struct datum_evaluator : evaluator_base {
-    datum_evaluator(environment_ptr env);
+struct eval_visitor<ast_datum> : eval_base {
+    eval_visitor(environment_ptr env);
 
     result_type operator()(ast_list const& ast) const;
 
@@ -26,8 +23,8 @@ struct datum_evaluator : evaluator_base {
         return make_value(ast);
     }
 
-};  //  struct datum_evaluator
+};  //  struct eval_visitor<ast_datum>
 
 }   //  namespace rose
 
-#endif  //  __ROSE_EVAL_DATUM_EVALUATOR_HPP__
+#endif  //  __ROSE_DETAIL_EVAL_DATUM_HPP__

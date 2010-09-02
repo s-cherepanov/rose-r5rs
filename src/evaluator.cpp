@@ -1,6 +1,6 @@
 #include "rose/environment.hpp"
+#include "rose/eval.hpp"
 #include "rose/evaluator.hpp"
-#include "rose/interpreter.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/program.hpp"
 
@@ -10,11 +10,11 @@ namespace rose {
 
 namespace qi = boost::spirit::qi;
 
-interpreter::interpreter(environment_ptr env) :
+evaluator::evaluator(environment_ptr env) :
     env_(env)
 {}
 
-bool interpreter::parse(std::string const& source) {
+bool evaluator::parse(std::string const& source) {
     typedef
         std::string::const_iterator
         iterator_type;
@@ -37,12 +37,12 @@ bool interpreter::parse(std::string const& source) {
     return match && first == last;
 }
 
-gc::handle<value> interpreter::eval() {
+gc::handle<value> evaluator::eval() {
     return rose::eval(ast_, env_);
 }
 
 std::pair<bool, gc::handle<value> >
-    interpreter::operator[](std::string const& var) const
+    evaluator::operator[](std::string const& var) const
 {
     return env_->lookup(var);
 }
