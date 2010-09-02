@@ -1,4 +1,5 @@
-#include "rose/expression_evaluator.hpp"
+#include "rose/detail/eval_datum.hpp"
+#include "rose/detail/eval_expression.hpp"
 
 #include <boost/bind.hpp>
 #include <boost/circular_buffer.hpp>
@@ -12,12 +13,12 @@
 
 namespace rose {
 
-expression_evaluator::expression_evaluator(environment_ptr env) :
-    evaluator_base(env)
+eval_visitor<ast_expression>::eval_visitor(environment_ptr env) :
+    eval_base(env)
 {}
 
-expression_evaluator::result_type
-    expression_evaluator::operator()(ast_variable const& ast) const
+eval_base::result_type
+    eval_visitor<ast_expression>::operator()(ast_variable const& ast) const
 {
     std::pair<bool, result_type> lookup_result = env->lookup(ast);
     if (!lookup_result.first) {
@@ -27,14 +28,14 @@ expression_evaluator::result_type
     return lookup_result.second;
 }
 
-evaluator_base::result_type
-    expression_evaluator::operator()(ast_quotation const& ast) const
+eval_base::result_type
+    eval_visitor<ast_expression>::operator()(ast_quotation const& ast) const
 {
     return eval(ast.quoted, env);
 }
 
-evaluator_base::result_type
-    expression_evaluator::operator()(ast_lambda_expression const& ast) const
+eval_base::result_type
+    eval_visitor<ast_expression>::operator()(ast_lambda_expression const& ast) const
 {
     return make_value(rs_procedure(ast, env));
 }
@@ -125,8 +126,8 @@ gc::handle<value> apply(gc::handle<value> operator_) {
     return apply(operator_, args);
 }
 
-evaluator_base::result_type
-    expression_evaluator::operator()(ast_procedure_call const& ast) const
+eval_base::result_type
+    eval_visitor<ast_expression>::operator()(ast_procedure_call const& ast) const
 {
     using namespace boost;
 
@@ -141,8 +142,8 @@ evaluator_base::result_type
     return apply(operator_, args);
 }
 
-evaluator_base::result_type
-    expression_evaluator::operator()(ast_conditional const& ast) const
+eval_base::result_type
+    eval_visitor<ast_expression>::operator()(ast_conditional const& ast) const
 {
     result_type test = eval(ast.test, env);
 
@@ -153,24 +154,17 @@ evaluator_base::result_type
     return (!!ast.alternate) ? eval(*ast.alternate, env) : nil();
 }
 
-evaluator_base::result_type
-    expression_evaluator::operator()(ast_assignment const& ast) const
+eval_base::result_type
+    eval_visitor<ast_expression>::operator()(ast_assignment const& ast) const
 {
     env->assign(ast.variable, eval(ast.expression, env));
     return nil();
 }
 
-bool expression_evaluator::is_true(value const& val) const {
+bool eval_visitor<ast_expression>::is_true(value const& val) const {
     // Any Scheme value other than #f can be implicitly converted to #t.
     bool const* ptr = boost::get<bool>(&val);
     return !ptr || (*ptr == true);
-}
-
-template<>
-gc::handle<value> eval<ast_expression>(
-        ast_expression const& ast, environment_ptr env)
-{
-    return boost::apply_visitor(expression_evaluator(env), ast);
 }
 
 }   //  namespace rose

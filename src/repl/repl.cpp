@@ -1,7 +1,6 @@
 #include "rose/environment.hpp"
+#include "rose/evaluator.hpp"
 #include "rose/gc/handle.hpp"
-#include "rose/generator/program.hpp"
-#include "rose/interpreter.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/program.hpp"
 #include "rose/value.hpp"
@@ -14,14 +13,12 @@
 
 namespace rose {
 
-namespace ascii = boost::spirit::ascii;
-namespace karma = boost::spirit::karma;
 namespace qi = boost::spirit::qi;
 
 environment_ptr build_initial_env();
 
-void interpret(std::string const& input, environment_ptr env) {
-    interpreter i(env);
+void call_evaluator(std::string const& input, environment_ptr env) {
+    evaluator i(env);
 
     if (!i.parse(input)) {
         std::cout << "ABORT: syntax error" << std::endl;
@@ -56,7 +53,7 @@ void do_repl(std::string const& prompt) {
             break;
         }
 
-        interpret(input, env);
+        call_evaluator(input, env);
     }
 }
 
@@ -76,7 +73,7 @@ std::string load_file(std::string const& filename) {
 }
 
 void do_batch(std::string const& input_file) {
-    interpret(load_file(input_file), build_initial_env());
+    call_evaluator(load_file(input_file), build_initial_env());
 }
 
 }   //  namespace rose

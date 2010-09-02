@@ -1,33 +1,31 @@
-#ifndef __ROSE_EVAL_EVALUATOR_HPP__
-#define __ROSE_EVAL_EVALUATOR_HPP__
+#ifndef __ROSE_EVALUATOR_HPP__
+#define __ROSE_EVALUATOR_HPP__
 
-#include "rose/ast.hpp"
-#include "rose/environment.hpp"
 #include "rose/gc/handle.hpp"
 #include "rose/value.hpp"
 
-#include <boost/variant.hpp>
-
 namespace rose {
 
-template<typename Ast>
-gc::handle<value> eval(Ast const& ast, environment_ptr env);
+struct environment;
+typedef boost::shared_ptr<environment> environment_ptr;
 
-template<>
-gc::handle<value> eval<ast_program>(
-        ast_program const& ast, environment_ptr env);
+class evaluator {
+public:
+    evaluator(environment_ptr env);
 
-struct evaluator_base :
-    boost::static_visitor<gc::handle<value> >
-{
-    environment_ptr env;
+    bool parse(std::string const& source);
 
-    evaluator_base(environment_ptr env) :
-        env(env)
-    {}
+    gc::handle<value> eval();
 
-};  //  struct evaluator_base
+    std::pair<bool, gc::handle<value> >
+        operator[](std::string const& var) const;
+
+private:
+    environment_ptr env_;
+    ast_program ast_;
+
+};  //  class evaluator
 
 }   //  namespace rose
 
-#endif  //  __ROSE_EVAL_EVALUATOR_HPP__
+#endif  //  __ROSE_EVALUATOR_HPP__
