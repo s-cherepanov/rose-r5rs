@@ -1,6 +1,7 @@
 #include "rose/detail/eval.hpp"
 #include "rose/environment.hpp"
 
+#include <boost/assert.hpp>
 #include <boost/bind.hpp>
 #include <boost/range/algorithm/transform.hpp>
 
@@ -19,9 +20,10 @@ eval_visitor<ast_datum>::eval_visitor(environment_ptr env) :
 eval_base::result_type
     eval_visitor<ast_datum>::operator()(ast_list const& ast) const
 {
-    result_type result;
+    result_type result = nil();
 
     if (ast.elements.empty()) {
+        BOOST_ASSERT(!ast.dotted_element);
         return result;
     }
 
@@ -40,6 +42,9 @@ eval_base::result_type
 
     if (!!ast.dotted_element) {
         set_cdr(last, eval(*(ast.dotted_element), env));
+    }
+    else {
+        set_cdr(last, nil());
     }
 
     return result;

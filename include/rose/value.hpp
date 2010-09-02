@@ -104,8 +104,8 @@ struct rs_native_procedure {
         procedure_fn;
 
     rs_native_procedure(
-            std::size_t min_arity,
-            bool with_rest,
+            std::size_t required,
+            bool has_rest,
             procedure_fn const& procedure,
             environment_ptr parent);
 
@@ -163,32 +163,33 @@ std::ostream& operator<<(std::ostream& out, rs_vector const& v);
 std::ostream& operator<<(std::ostream& out, gc::handle<value> const& handle);
 
 template<typename InputIterator>
-gc::handle<value> make_list(InputIterator first, InputIterator last) {
+gc::handle<value> make_list(InputIterator begin, InputIterator end) {
     BOOST_STATIC_ASSERT((
             boost::is_same<
                 typename InputIterator::value_type,
                 gc::handle<value>
             >::value));
 
+    if (0u == std::distance(begin, end)) {
+        return nil();
+    }
+
     typedef gc::handle<value> result_type;
 
     result_type result = make_value(rs_pair());
-    if (0u == std::distance(first, last)) {
-        return result;
-    }
-
-    InputIterator next = first;
-    result_type last_one = result;
+    result_type last = result;
+    InputIterator next = begin;
 
     set_car(result, *next);
 
-    while (last != ++next) {
+    while (end != ++next) {
         rs_pair p;
         p.first = *next;
-        set_cdr(last_one, make_value(p));
-        last_one = cdr(last_one);
+        set_cdr(last, make_value(p));
+        last = cdr(last);
     }
 
+    cdr(last) = nil();
     return result;
 }
 

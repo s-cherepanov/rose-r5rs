@@ -3,12 +3,17 @@
 #include "rose/evaluator.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/program.hpp"
+#include "rose/primitive.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
 namespace rose {
 
 namespace qi = boost::spirit::qi;
+
+evaluator::evaluator() :
+    env_(build_initial_env())
+{}
 
 evaluator::evaluator(environment_ptr env) :
     env_(env)
@@ -19,12 +24,12 @@ bool evaluator::parse(std::string const& source) {
         std::string::const_iterator
         iterator_type;
 
+    iterator_type first = source.begin();
+    iterator_type last = source.end();
+
     typedef
         rose::parser::intertoken_space<iterator_type>
         skipper_type;
-
-    iterator_type first = source.begin();
-    iterator_type last = source.end();
 
     typedef
         rose::parser::program<iterator_type, skipper_type>
@@ -38,12 +43,15 @@ bool evaluator::parse(std::string const& source) {
 }
 
 gc::handle<value> evaluator::eval() {
-    return detail::eval(ast_, env_);
+    last_result_ = detail::eval(ast_, env_);
+    return last_result_;
 }
 
-std::pair<bool, gc::handle<value> >
-    evaluator::operator[](std::string const& var) const
-{
+gc::handle<value> evaluator::eval(std::string const& source) {
+    return parse(source) ? eval() : none();
+}
+
+gc::handle<value> evaluator::operator[](std::string const& var) const {
     return env_->lookup(var);
 }
 

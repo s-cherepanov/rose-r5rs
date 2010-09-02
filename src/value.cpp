@@ -23,12 +23,12 @@ std::pair<std::size_t, bool> rs_procedure::arity() const {
 }
 
 rs_native_procedure::rs_native_procedure(
-        std::size_t min_arity,
-        bool with_rest,
+        std::size_t required,
+        bool has_rest,
         procedure_fn const& procedure,
         environment_ptr parent)
 :
-    arity_(min_arity, with_rest),
+    arity_(required, has_rest),
     procedure(procedure),
     env(new environment(parent))
 {}
@@ -43,7 +43,7 @@ gc::handle<value> nil() {
 }
 
 bool is_nil(gc::handle<value> val) {
-    return !!val ? (!!handle_cast<rs_nil>(&val)): false;
+    return !!val ? (!!handle_cast<rs_nil>(&val)) : false;
 }
 
 gc::handle<value> none() {

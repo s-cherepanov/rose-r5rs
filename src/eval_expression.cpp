@@ -21,12 +21,12 @@ eval_visitor<ast_expression>::eval_visitor(environment_ptr env) :
 eval_base::result_type
     eval_visitor<ast_expression>::operator()(ast_variable const& ast) const
 {
-    std::pair<bool, result_type> lookup_result = env->lookup(ast);
-    if (!lookup_result.first) {
+    result_type result = env->lookup(ast);
+    if (!result) {
         throw std::runtime_error("undefined variable: " + ast);
     }
 
-    return lookup_result.second;
+    return result;
 }
 
 eval_base::result_type
