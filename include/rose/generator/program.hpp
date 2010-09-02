@@ -1,7 +1,7 @@
 #ifndef __ROSE_GENERATOR_PROGRAM_HPP__
 #define __ROSE_GENERATOR_PROGRAM_HPP__
 
-#include "rose/ast/program.hpp"
+#include "rose/ast.hpp"
 #include "rose/generator/expression.hpp"
 
 #include <boost/config/warning_disable.hpp>

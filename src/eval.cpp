@@ -1,4 +1,4 @@
-#include "rose/eval/evaluator.hpp"
+#include "rose/evaluator.hpp"
 
 #include <boost/bind.hpp>
 #include <boost/circular_buffer.hpp>
@@ -8,7 +8,8 @@
 
 namespace rose {
 
-gc::handle<value> evaluate_program(
+template<>
+gc::handle<value> eval<ast_program>(
         ast_program const& program, environment_ptr env)
 {
     using namespace boost;

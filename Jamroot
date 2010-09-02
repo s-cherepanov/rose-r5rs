@@ -6,7 +6,7 @@ path-constant PROJECT_ROOT : . ;
 
 use-project /boost          : $(BOOST_ROOT) ;
 use-project /rose           : $(PROJECT_ROOT) ;
-use-project /rose/eval      : $(PROJECT_ROOT)/src/eval ;
+use-project /rose/rt        : $(PROJECT_ROOT)/src ;
 use-project /rose/gc        : $(PROJECT_ROOT)/src/gc ;
 use-project /rose/generator : $(PROJECT_ROOT)/src/generator ;
 use-project /rose/parser    : $(PROJECT_ROOT)/src/parser ;
@@ -39,5 +39,5 @@ project
             bin
     ;
 
-build-project src ;
+build-project src/repl ;
 build-project test ;

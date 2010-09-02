@@ -1,7 +1,7 @@
 #ifndef __ROSE_GENERATOR_TOKEN_HPP__
 #define __ROSE_GENERATOR_TOKEN_HPP__
 
-#include "rose/ast/datum.hpp"
+#include "rose/ast.hpp"
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/karma.hpp>

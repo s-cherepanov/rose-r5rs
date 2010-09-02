@@ -1,4 +1,4 @@
-#include "rose/eval/primitive.hpp"
+#include "rose/primitive.hpp"
 #include "rose/environment.hpp"
 
 #define NATIVE_PROCEDURE(name, args, rest)\

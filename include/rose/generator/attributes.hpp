@@ -1,8 +1,7 @@
 #ifndef __ROSE_GENERATOR_ATTRIBUTES_HPP__
 #define __ROSE_GENERATOR_ATTRIBUTES_HPP__
 
-#include "rose/ast/datum.hpp"
-#include "rose/ast/program.hpp"
+#include "rose/ast.hpp"
 
 #include <boost/spirit/include/karma.hpp>
 
