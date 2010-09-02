@@ -1,4 +1,5 @@
-#include "rose/datum_evaluator.hpp"
+#include "rose/detail/eval.hpp"
+#include "rose/environment.hpp"
 
 #include <boost/bind.hpp>
 #include <boost/range/algorithm/transform.hpp>
@@ -7,6 +8,7 @@
 #include <iterator>
 
 namespace rose {
+namespace detail {
 
 using namespace boost;
 
@@ -55,4 +57,5 @@ eval_base::result_type
     return make_value(result);
 }
 
+}   //  namespace detail
 }   //  namespace rose

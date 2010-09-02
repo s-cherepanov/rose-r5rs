@@ -1,5 +1,5 @@
-#include "rose/detail/eval_datum.hpp"
-#include "rose/detail/eval_expression.hpp"
+#include "rose/detail/eval.hpp"
+#include "rose/environment.hpp"
 
 #include <boost/bind.hpp>
 #include <boost/circular_buffer.hpp>
@@ -12,6 +12,7 @@
 #include <utility>
 
 namespace rose {
+namespace detail {
 
 eval_visitor<ast_expression>::eval_visitor(environment_ptr env) :
     eval_base(env)
@@ -167,4 +168,5 @@ bool eval_visitor<ast_expression>::is_true(value const& val) const {
     return !ptr || (*ptr == true);
 }
 
+}   //  namespace detail
 }   //  namespace rose

@@ -1,5 +1,5 @@
+#include "rose/detail/eval.hpp"
 #include "rose/environment.hpp"
-#include "rose/eval.hpp"
 #include "rose/evaluator.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/program.hpp"
@@ -38,7 +38,7 @@ bool evaluator::parse(std::string const& source) {
 }
 
 gc::handle<value> evaluator::eval() {
-    return rose::eval(ast_, env_);
+    return detail::eval(ast_, env_);
 }
 
 std::pair<bool, gc::handle<value> >

@@ -1,5 +1,4 @@
-#include "rose/eval.hpp"
-#include "rose/detail/eval_command_or_definition.hpp"
+#include "rose/detail/eval.hpp"
 
 #include <boost/bind.hpp>
 #include <boost/circular_buffer.hpp>
@@ -8,6 +7,7 @@
 #include <algorithm>
 
 namespace rose {
+namespace detail {
 
 template<>
 gc::handle<value> eval<ast_program>(
@@ -30,4 +30,5 @@ gc::handle<value> eval<ast_program>(
     return result.size() ? result[0] : nil();
 }
 
+}   //  namespace detail
 }   //  namespace rose

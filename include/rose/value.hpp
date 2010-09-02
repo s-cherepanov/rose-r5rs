@@ -54,8 +54,7 @@ struct rs_pair : std::pair<gc::handle<value>, gc::handle<value> > {
 
 };  //  struct rs_pair
 
-struct environment;
-
+class environment;
 typedef boost::shared_ptr<environment> environment_ptr;
 
 typedef std::vector<gc::handle<value> > arguments_type;
