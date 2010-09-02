@@ -1,5 +1,5 @@
-#ifndef __ROSE_AST_TAGGED_STRING_HPP__
-#define __ROSE_AST_TAGGED_STRING_HPP__
+#ifndef __ROSE_DETAIL_TAGGED_STRING_HPP__
+#define __ROSE_DETAIL_TAGGED_STRING_HPP__
 
 #include <string>
 
@@ -31,4 +31,4 @@ struct tagged_string : std::string {
 }   //  namespace detail
 }   //  namespace rose
 
-#endif  //  __ROSE_AST_TAGGED_STRING_HPP__
+#endif  //  __ROSE_DETAIL_TAGGED_STRING_HPP__

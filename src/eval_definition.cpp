@@ -1,6 +1,8 @@
-#include "rose/detail/eval_command_or_definition.hpp"
+#include "rose/detail/eval.hpp"
+#include "rose/environment.hpp"
 
 namespace rose {
+namespace detail {
 
 template<>
 gc::handle<value> eval(ast_definition const& ast, environment_ptr env) {
@@ -8,4 +10,5 @@ gc::handle<value> eval(ast_definition const& ast, environment_ptr env) {
     return nil();
 }
 
+}   //  namespace detail
 }   //  namespace rose
