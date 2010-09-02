@@ -20,6 +20,11 @@ class environment :
 {
     friend std::ostream& operator<<(std::ostream&, environment const&);
 
+private:
+    typedef
+        std::map<ast_variable, gc::handle<value> >
+        base_type;
+
 public:
     environment(environment_ptr parent = environment_ptr()) :
         parent_(parent)
@@ -62,18 +67,16 @@ public:
         assign(ast_variable(var), make_value(val));
     }
 
-    std::pair<bool, gc::handle<value> > lookup(ast_variable const& var) const {
+    gc::handle<value> lookup(ast_variable const& var) const {
         const_iterator it = find(var);
         if (end() != it) {
-            return make_pair(true, it->second);
+            return it->second;
         }
 
-        return !!parent() ?
-            parent()->lookup(var) :
-            make_pair(false, gc::handle<value>());
+        return !!parent() ? parent()->lookup(var) : none();
     }
 
-    std::pair<bool, gc::handle<value> > lookup(std::string const& var) const {
+    gc::handle<value> lookup(std::string const& var) const {
         return lookup(ast_variable(var));
     }
 

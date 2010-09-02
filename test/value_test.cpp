@@ -13,13 +13,19 @@ BOOST_AUTO_TEST_CASE(handle_cast_test) {
     }
 }
 
+BOOST_AUTO_TEST_CASE(make_list_nil_test) {
+    std::vector<gc::handle<value> > args;
+    gc::handle<value> actual = make_list(args);
+    BOOST_CHECK(is_nil(actual));
+}
+
 BOOST_AUTO_TEST_CASE(make_list_test) {
     std::vector<gc::handle<value> > args;
     args.push_back(make_value(1));
     args.push_back(make_value(rs_symbol("hello")));
     args.push_back(make_value(rs_string("world")));
 
-    rs_pair actual = handle_cast<rs_pair>(make_list(args.begin(), args.end()));
+    rs_pair actual = handle_cast<rs_pair>(make_list(args));
 
     rs_pair expected(
             make_value(1),
