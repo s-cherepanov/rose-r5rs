@@ -81,7 +81,7 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
                 std::back_inserter(result),
                 bind(&eval<ast_expression>, _1, proc.env));
 
-        return result.size() ? result[0] : nil();
+        return result.size() ? result[0] : none();
     }
 
     result_type operator()(rs_native_procedure const& proc) const {
@@ -152,14 +152,14 @@ eval_base::result_type
         return eval(ast.consequent, env);
     }
 
-    return (!!ast.alternate) ? eval(*ast.alternate, env) : nil();
+    return (!!ast.alternate) ? eval(*ast.alternate, env) : none();
 }
 
 eval_base::result_type
     eval_visitor<ast_expression>::operator()(ast_assignment const& ast) const
 {
     env->assign(ast.variable, eval(ast.expression, env));
-    return nil();
+    return none();
 }
 
 bool eval_visitor<ast_expression>::is_true(value const& val) const {

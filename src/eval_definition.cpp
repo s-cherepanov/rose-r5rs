@@ -7,7 +7,7 @@ namespace detail {
 template<>
 gc::handle<value> eval(ast_definition const& ast, environment_ptr env) {
     env->define(ast.variable, eval(ast.expression, env));
-    return nil();
+    return none();
 }
 
 }   //  namespace detail

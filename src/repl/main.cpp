@@ -14,7 +14,7 @@ void do_batch(std::string const& input_file);
 
 static const std::string DEFAULT_REPL_PROMPT("rose[%1%]> ");
 
-int main(int argc, char* argv[]) try {
+int main(int argc, char* argv[]) {
     using boost::program_options::command_line_parser;
     using boost::program_options::notify;
     using boost::program_options::options_description;
