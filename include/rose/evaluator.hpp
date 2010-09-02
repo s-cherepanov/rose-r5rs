@@ -13,6 +13,10 @@ namespace rose {
 template<typename Ast>
 gc::handle<value> eval(Ast const& ast, environment_ptr env);
 
+template<>
+gc::handle<value> eval<ast_program>(
+        ast_program const& ast, environment_ptr env);
+
 struct evaluator_base :
     boost::static_visitor<gc::handle<value> >
 {

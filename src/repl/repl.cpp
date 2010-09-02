@@ -1,6 +1,7 @@
 #include "rose/environment.hpp"
 #include "rose/gc/handle.hpp"
 #include "rose/generator/program.hpp"
+#include "rose/interpreter.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/program.hpp"
 #include "rose/value.hpp"
@@ -17,74 +18,16 @@ namespace ascii = boost::spirit::ascii;
 namespace karma = boost::spirit::karma;
 namespace qi = boost::spirit::qi;
 
-gc::handle<value> evaluate_program(
-        ast_program const& program, environment_ptr env);
-
-bool parse(std::string const& source, ast_program& program) {
-    typedef
-        std::string::const_iterator
-        iterator_type;
-
-    typedef
-        rose::parser::intertoken_space<iterator_type>
-        skipper_type;
-
-    iterator_type first = source.begin();
-    iterator_type last = source.end();
-
-    typedef
-        rose::parser::program<iterator_type, skipper_type>
-        program_parser;
-
-    program_parser parser;
-    skipper_type skipper;
-
-    bool match = qi::phrase_parse(first, last, parser, skipper, program);
-
-    return match && first == last;
-}
-
-bool generate(ast_program const& program, std::string& output) {
-    using ascii::space;
-    using ascii::space_type;
-    using karma::generate_delimited;
-
-    typedef
-        std::back_insert_iterator<std::string>
-        iterator_type;
-
-    output.clear();
-    iterator_type sink(output);
-    generator::program<iterator_type, space_type> grammar;
-
-    return generate_delimited(sink, grammar, space, program);
-}
-
 environment_ptr build_initial_env();
 
-void parse_and_generate(std::string const& input, environment_ptr env) {
-    ast_program program;
-    std::string output;
-
-    parse(input, program) && generate(program, output) ?
-        std::cout << "parsed: " << output << std::endl
-      : std::cerr << "parsing error" << std::endl;
-
-    gc::handle<value> result = evaluate_program(program, env);
-    if (!!result) {
-        std::cout << "=> " << result << std::endl;
-    }
-}
-
 void interpret(std::string const& input, environment_ptr env) {
-    ast_program program;
-    std::string output;
+    interpreter i(env);
 
-    if (!parse(input, program)) {
+    if (!i.parse(input)) {
         std::cout << "ABORT: syntax error" << std::endl;
     }
 
-    gc::handle<value> result = evaluate_program(program, env);
+    gc::handle<value> result = i.eval();
     if (!!result) {
         std::cout << "=> " << result << std::endl;
     }
@@ -104,7 +47,7 @@ boost::format format_prompt(std::string const& prompt) {
 void do_repl(std::string const& prompt) {
     std::string input;
     int line_no = 0;
-    environment_ptr env = build_initial_env();
+    environment_ptr env(build_initial_env());
 
     while (true) {
         std::cout << format_prompt(prompt) % line_no++;
