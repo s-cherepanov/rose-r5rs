@@ -1,3 +1,4 @@
+#include <boost/exception/all.hpp>
 #include <boost/format.hpp>
 #include <boost/program_options.hpp>
 
@@ -68,11 +69,14 @@ int main(int argc, char* argv[]) try {
     }
 
     cmdline_vars.count("input-file") ?
-        rose::do_batch(input_files[0])
-      : rose::do_repl(repl_prompt);
+        rose::do_batch(input_files[0]) :
+        rose::do_repl(repl_prompt);
 
     return 0;
 }
-catch(std::exception& e) {
-    std::cout << "exception: " << e.what() << std::endl;
+catch(boost::exception& e) {
+    std::cout
+        << "EXCEPTION: "
+        << diagnostic_information(e)
+        << std::endl;
 }

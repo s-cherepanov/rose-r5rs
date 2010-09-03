@@ -1,5 +1,6 @@
 #include "rose/environment.hpp"
 #include "rose/evaluator.hpp"
+#include "rose/exception.hpp"
 #include "rose/gc/handle.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/program.hpp"
@@ -61,9 +62,9 @@ std::string load_file(std::string const& filename) {
     std::ifstream in(filename.c_str());
 
     if (!in.is_open()) {
-        std::ostringstream out;
-        out << "Couldn't open file: " << filename;
-        throw std::runtime_error(out.str());
+        BOOST_THROW_EXCEPTION(
+                file_not_found()
+                << boost::errinfo_file_name(filename));
     }
 
     in.unsetf(std::ios::skipws);

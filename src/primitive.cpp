@@ -1,5 +1,6 @@
 #include "rose/primitive.hpp"
 #include "rose/environment.hpp"
+#include "rose/exception.hpp"
 
 #define NATIVE_PROCEDURE(name, args, rest)\
     rose::gc::handle<value> name(rose::arguments_type const& args,\
@@ -10,7 +11,7 @@ namespace rose {
 NATIVE_PROCEDURE(np_add, args, rest) {
     int result = 0;
 
-    if (!rest) {
+    if (is_nil(rest)) {
         return make_value(result);
     }
 
@@ -24,17 +25,21 @@ NATIVE_PROCEDURE(np_add, args, rest) {
 }
 
 NATIVE_PROCEDURE(np_minus, args, rest) {
-    if (!rest) {
-        throw std::runtime_error("wrong number of arguments");
+    if (args.size() < 1) {
+        BOOST_THROW_EXCEPTION(
+                arity_mismatch()
+                << errinfo_required_arg_num(1)
+                << errinfo_has_rest(true)
+                << errinfo_actual_arg_num(args.size()));
     }
 
-    int result = handle_cast<int>(car(rest));
+    int result = handle_cast<int>(args[0]);
 
-    if (is_nil(cdr(rest))) {
+    if (is_nil(rest)) {
         return make_value(-result);
     }
 
-    gc::handle<value> next = cdr(rest);
+    gc::handle<value> next = rest;
     while (!is_nil(next)) {
         result -= handle_cast<int>(car(next));
         next = cdr(next);
@@ -46,7 +51,7 @@ NATIVE_PROCEDURE(np_minus, args, rest) {
 NATIVE_PROCEDURE(np_multiply, args, rest) {
     int result = 1;
 
-    if (!rest) {
+    if (is_nil(rest)) {
         return make_value(result);
     }
 
@@ -60,17 +65,21 @@ NATIVE_PROCEDURE(np_multiply, args, rest) {
 }
 
 NATIVE_PROCEDURE(np_divide, args, rest) {
-    if (!rest) {
-        throw std::runtime_error("wrong number of arguments");
+    if (args.size() < 1) {
+        BOOST_THROW_EXCEPTION(
+                arity_mismatch()
+                << errinfo_required_arg_num(0)
+                << errinfo_has_rest(true)
+                << errinfo_actual_arg_num(args.size()));
     }
 
     int result = handle_cast<int>(car(rest));
 
-    if (!cdr(rest)) {
+    if (is_nil(rest)) {
         return make_value(1 / result);
     }
 
-    gc::handle<value> next = cdr(rest);
+    gc::handle<value> next = rest;
     while (!is_nil(next)) {
         result /= handle_cast<int>(car(next));
         next = cdr(next);
@@ -110,21 +119,21 @@ NATIVE_PROCEDURE(np_geq, args, rest) {
 }
 
 NATIVE_PROCEDURE(np_pair_p, args, rest) {
-    return !!args[0] ?
-        make_value(!!boost::get<rs_pair>(&(*args[0]))) :
-        make_value(false);
+    return !args[0] ?
+        make_value(false) :
+        make_value(!!boost::get<rs_pair>(&(*args[0])));
 }
 
 NATIVE_PROCEDURE(np_vector_p, args, rest) {
-    return !!args[0] ?
-        make_value(!!boost::get<rs_vector>(&(*args[0]))) :
-        make_value(false);
+    return !args[0] ?
+        make_value(false) :
+        make_value(!!boost::get<rs_vector>(&(*args[0])));
 }
 
 NATIVE_PROCEDURE(np_string_p, args, rest) {
-    return !!args[0] ?
-        make_value(!!boost::get<rs_string>(&(*args[0]))) :
-        make_value(false);
+    return !args[0] ?
+        make_value(false) :
+        make_value(!!boost::get<rs_string>(&(*args[0])));
 }
 
 NATIVE_PROCEDURE(np_symbol_p, args, rest) {
@@ -156,12 +165,12 @@ NATIVE_PROCEDURE(np_list, args, rest) {
 NATIVE_PROCEDURE(np_vector, args, rest) {
     rs_vector result;
 
-    if (!rest) {
+    if (is_nil(rest)) {
         return make_value(result);
     }
 
     gc::handle<value> next = rest;
-    while (!!next) {
+    while (!is_nil(next)) {
         result.push_back(car(next));
         next = cdr(next);
     }
@@ -170,6 +179,11 @@ NATIVE_PROCEDURE(np_vector, args, rest) {
 }
 
 NATIVE_PROCEDURE(np_display, args, rest) {
+    std::cout << args[0];
+    return none();
+}
+
+NATIVE_PROCEDURE(np_display_line, args, rest) {
     std::cout << args[0] << std::endl;
     return none();
 }
@@ -178,7 +192,7 @@ environment_ptr build_initial_env() {
     environment_ptr env(new environment);
 
     env->define("+",        rs_native_procedure(0, true,  np_add,       env));
-    env->define("-",        rs_native_procedure(0, true,  np_minus,     env));
+    env->define("-",        rs_native_procedure(1, true,  np_minus,     env));
     env->define("*",        rs_native_procedure(0, true,  np_multiply,  env));
     env->define("/",        rs_native_procedure(0, true,  np_divide,    env));
     env->define("=",        rs_native_procedure(2, true,  np_eq,        env));
@@ -197,6 +211,9 @@ environment_ptr build_initial_env() {
     env->define("list",     rs_native_procedure(0, true,  np_list,      env));
     env->define("vector",   rs_native_procedure(0, true,  np_vector,    env));
     env->define("display",  rs_native_procedure(1, false, np_display,   env));
+
+    env->define("display-line",
+            rs_native_procedure(1, false, np_display_line, env));
 
     return env;
 }
