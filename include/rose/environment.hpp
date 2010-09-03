@@ -1,6 +1,7 @@
 #ifndef __ROSE_ENVIRONMENT_HPP__
 #define __ROSE_ENVIRONMENT_HPP__
 
+#include "rose/exception.hpp"
 #include "rose/gc/handle.hpp"
 #include "rose/value.hpp"
 
@@ -42,7 +43,9 @@ public:
     void define(ast_variable const& var, ValueType const& val) {
         const_iterator it = find(var);
         if (end() != it) {
-            throw std::runtime_error("definition duplicated");
+            BOOST_THROW_EXCEPTION(
+                    duplicated_definition()
+                    << errinfo_variable_name(var));
         }
 
         (*this)[var] = val;
@@ -56,7 +59,9 @@ public:
     void assign(ast_variable const& var, gc::handle<value> val) {
         iterator it = find(var);
         if (end() == it) {
-            throw std::runtime_error("undefined variable");
+            BOOST_THROW_EXCEPTION(
+                    undefined_variable()
+                    << errinfo_variable_name(var));
         }
 
         it->second = val;

@@ -1,5 +1,6 @@
 #include "rose/detail/eval.hpp"
 #include "rose/environment.hpp"
+#include "rose/exception.hpp"
 
 #include <boost/bind.hpp>
 #include <boost/circular_buffer.hpp>
@@ -23,7 +24,9 @@ eval_base::result_type
 {
     result_type result = env->lookup(ast);
     if (!result) {
-        throw std::runtime_error("undefined variable: " + ast);
+        BOOST_THROW_EXCEPTION(
+                undefined_variable()
+                << errinfo_variable_name(ast));
     }
 
     return result;
@@ -54,7 +57,11 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
         if (args.size() < proc.arity().first ||
                 (args.size() > proc.arity().first && !proc.arity().second))
         {
-            throw std::runtime_error("wrong number of arguments");
+            BOOST_THROW_EXCEPTION(
+                    arity_mismatch()
+                    << errinfo_required_arg_num(proc.arity().first)
+                    << errinfo_has_rest(proc.arity().second)
+                    << errinfo_actual_arg_num(args.size()));
         }
 
         proc.env->clear();
@@ -88,7 +95,11 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
         if (args.size() < proc.arity().first ||
                 (args.size() > proc.arity().first && !proc.arity().second))
         {
-            throw std::runtime_error("wrong number of arguments");
+            BOOST_THROW_EXCEPTION(
+                    arity_mismatch()
+                    << errinfo_required_arg_num(proc.arity().first)
+                    << errinfo_has_rest(proc.arity().second)
+                    << errinfo_actual_arg_num(args.size()));
         }
 
         arguments_type::const_iterator
@@ -108,7 +119,8 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
 
     template<typename ValueType>
     result_type operator()(ValueType const& val) const {
-        throw std::runtime_error("wrong type to apply");
+        BOOST_THROW_EXCEPTION(wrong_type_to_apply());
+        return none();
     }
 
     arguments_type args;
