@@ -82,21 +82,37 @@ typedef boost::shared_ptr<environment> environment_ptr;
 
 typedef std::vector<gc::handle<value> > arguments_type;
 
-struct rs_procedure {
+struct arity_info {
+    arity_info(std::size_t required = 0u, bool has_rest = false) :
+        required(required),
+        has_rest(has_rest)
+    {}
+
+    std::size_t required;
+    bool has_rest;
+
+};  //  struct arity_info
+
+class rs_procedure {
+public:
     rs_procedure(
             ast_lambda_expression const& ast,
             environment_ptr parent);
 
-    std::pair<std::size_t, bool> arity() const;
+    arity_info const& arity() const;
 
     ast_lambda_expression ast;
     environment_ptr env;
+
+private:
+    arity_info arity_;
 
 };  //  struct procedure
 
 std::ostream& operator<<(std::ostream& out, rs_procedure const& p);
 
-struct rs_native_procedure {
+class rs_native_procedure {
+public:
     typedef
         boost::function<
             gc::handle<value>(arguments_type, gc::handle<value>)
@@ -104,16 +120,17 @@ struct rs_native_procedure {
         procedure_fn;
 
     rs_native_procedure(
-            std::size_t required,
-            bool has_rest,
+            arity_info const& airty,
             procedure_fn const& procedure,
             environment_ptr parent);
 
-    std::pair<std::size_t, bool> arity() const;
+    arity_info const& arity() const;
 
-    std::pair<std::size_t, bool> arity_;
     procedure_fn procedure;
     environment_ptr env;
+
+private:
+    arity_info arity_;
 
 };  //  struct native_procedure
 

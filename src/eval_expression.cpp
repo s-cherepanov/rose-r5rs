@@ -54,13 +54,14 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
 
         ast_formal_args const& formal_args = proc.ast.formals.formal_args;
 
-        if (args.size() < proc.arity().first ||
-                (args.size() > proc.arity().first && !proc.arity().second))
+        if (args.size() < proc.arity().required ||
+                (args.size() > proc.arity().required &&
+                 !proc.arity().has_rest))
         {
             BOOST_THROW_EXCEPTION(
                     arity_mismatch()
-                    << errinfo_required_arg_num(proc.arity().first)
-                    << errinfo_has_rest(proc.arity().second)
+                    << errinfo_required_arg_num(proc.arity().required)
+                    << errinfo_has_rest(proc.arity().has_rest)
                     << errinfo_actual_arg_num(args.size()));
         }
 
@@ -71,9 +72,9 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
                 std::inserter(*proc.env, proc.env->begin()),
                 &std::make_pair<ast_variable, gc::handle<value> >);
 
-        if (proc.arity().second) {
+        if (proc.arity().has_rest) {
             gc::handle<value> rest_list = make_list(
-                    args.begin() + proc.arity().first, args.end());
+                    args.begin() + proc.arity().required, args.end());
             proc.env->define(*proc.ast.formals.formal_rest, rest_list);
         }
 
@@ -92,25 +93,26 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
     }
 
     result_type operator()(rs_native_procedure const& proc) const {
-        if (args.size() < proc.arity().first ||
-                (args.size() > proc.arity().first && !proc.arity().second))
+        if (args.size() < proc.arity().required ||
+                (args.size() > proc.arity().required &&
+                 !proc.arity().has_rest))
         {
             BOOST_THROW_EXCEPTION(
                     arity_mismatch()
-                    << errinfo_required_arg_num(proc.arity().first)
-                    << errinfo_has_rest(proc.arity().second)
+                    << errinfo_required_arg_num(proc.arity().required)
+                    << errinfo_has_rest(proc.arity().has_rest)
                     << errinfo_actual_arg_num(args.size()));
         }
 
         arguments_type::const_iterator
-            rest_begin = args.begin() + proc.arity().first,
+            rest_begin = args.begin() + proc.arity().required,
             rest_end = args.end();
 
         arguments_type formal_args;
         std::copy(args.begin(), rest_begin, std::back_inserter(formal_args));
 
         gc::handle<value> rest_list;
-        if (proc.arity().second) {
+        if (proc.arity().has_rest) {
             rest_list = make_list(rest_begin, rest_end);
         }
 

@@ -19,13 +19,7 @@ namespace qi = boost::spirit::qi;
 environment_ptr build_initial_env();
 
 void call_evaluator(std::string const& input, environment_ptr env) {
-    evaluator i(env);
-
-    if (!i.parse(input)) {
-        std::cout << "ABORT: syntax error" << std::endl;
-    }
-
-    gc::handle<value> result = i.eval();
+    gc::handle<value> result = evaluator(env).eval(input);
     if (!!result) {
         std::cout << "=> " << result << std::endl;
     }

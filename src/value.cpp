@@ -13,27 +13,25 @@ rs_procedure::rs_procedure(
         environment_ptr parent)
 :
     ast(ast),
-    env(new environment(parent))
+    env(new environment(parent)),
+    arity_(ast.formals.formal_args.size(), !!ast.formals.formal_rest)
 {}
 
-std::pair<std::size_t, bool> rs_procedure::arity() const {
-    return std::make_pair(
-            ast.formals.formal_args.size(),
-            !!ast.formals.formal_rest);
+arity_info const& rs_procedure::arity() const {
+    return arity_;
 }
 
 rs_native_procedure::rs_native_procedure(
-        std::size_t required,
-        bool has_rest,
+        arity_info const& arity,
         procedure_fn const& procedure,
         environment_ptr parent)
 :
-    arity_(required, has_rest),
     procedure(procedure),
-    env(new environment(parent))
+    env(new environment(parent)),
+    arity_(arity)
 {}
 
-std::pair<std::size_t, bool> rs_native_procedure::arity() const {
+arity_info const& rs_native_procedure::arity() const {
     return arity_;
 }
 
