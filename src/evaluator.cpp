@@ -19,7 +19,7 @@ evaluator::evaluator(environment_ptr env) :
     env_(env)
 {}
 
-bool evaluator::parse(std::string const& source) {
+bool evaluator::parse(std::string const& source, ast_program& ast) {
     typedef
         std::string::const_iterator
         iterator_type;
@@ -38,17 +38,13 @@ bool evaluator::parse(std::string const& source) {
     parser_type parser;
     skipper_type skipper;
 
-    bool match = qi::phrase_parse(first, last, parser, skipper, ast_);
+    bool match = qi::phrase_parse(first, last, parser, skipper, ast);
     return match && first == last;
 }
 
-gc::handle<value> evaluator::eval() {
-    last_result_ = detail::eval(ast_, env_);
-    return last_result_;
-}
-
 gc::handle<value> evaluator::eval(std::string const& source) {
-    return parse(source) ? eval() : none();
+    ast_program ast;
+    return parse(source, ast) ? detail::eval(ast, env_) : none();
 }
 
 gc::handle<value> evaluator::operator[](std::string const& var) const {

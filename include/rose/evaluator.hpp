@@ -15,37 +15,23 @@ public:
 
     evaluator(environment_ptr env);
 
-    bool parse(std::string const& source);
-
-    gc::handle<value> eval();
-
     gc::handle<value> eval(std::string const& source);
 
     template<typename ValueType>
-    ValueType& eval_to();
-
-    template<typename ValueType>
-    ValueType& eval_to(std::string const& source);
+    ValueType eval_to(std::string const& source);
 
     gc::handle<value> operator[](std::string const& var) const;
 
 private:
+    bool parse(std::string const& source, ast_program& ast);
+
     environment_ptr env_;
-    ast_program ast_;
-    gc::handle<value> last_result_;
 
 };  //  class evaluator
 
 template<typename ValueType>
-inline ValueType& evaluator::eval_to() {
-    eval();
-    return handle_cast<ValueType>(last_result_);
-}
-
-template<typename ValueType>
-inline ValueType& evaluator::eval_to(std::string const& source) {
-    eval(source);
-    return handle_cast<ValueType>(last_result_);
+inline ValueType evaluator::eval_to(std::string const& source) {
+    return handle_cast<ValueType>(eval(source));
 }
 
 }   //  namespace rose

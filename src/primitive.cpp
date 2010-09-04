@@ -119,9 +119,7 @@ NATIVE_PROCEDURE(np_geq, args, rest) {
 }
 
 NATIVE_PROCEDURE(np_pair_p, args, rest) {
-    return !args[0] ?
-        make_value(false) :
-        make_value(!!boost::get<rs_pair>(&(*args[0])));
+    return !args[0] ? make_value(false) : make_value(is_pair(args[0]));
 }
 
 NATIVE_PROCEDURE(np_vector_p, args, rest) {
@@ -191,29 +189,29 @@ NATIVE_PROCEDURE(np_display_line, args, rest) {
 environment_ptr build_initial_env() {
     environment_ptr env(new environment);
 
-    env->define("+",        rs_native_procedure(0, true,  np_add,       env));
-    env->define("-",        rs_native_procedure(1, true,  np_minus,     env));
-    env->define("*",        rs_native_procedure(0, true,  np_multiply,  env));
-    env->define("/",        rs_native_procedure(0, true,  np_divide,    env));
-    env->define("=",        rs_native_procedure(2, true,  np_eq,        env));
-    env->define("<",        rs_native_procedure(2, true,  np_less,      env));
-    env->define("<=",       rs_native_procedure(2, true,  np_leq,       env));
-    env->define(">",        rs_native_procedure(2, true,  np_gr,        env));
-    env->define(">=",       rs_native_procedure(2, true,  np_geq,       env));
-    env->define("pair?",    rs_native_procedure(1, false, np_pair_p,    env));
-    env->define("vector?",  rs_native_procedure(1, false, np_vector_p,  env));
-    env->define("string?",  rs_native_procedure(1, false, np_string_p,  env));
-    env->define("symbol?",  rs_native_procedure(1, false, np_symbol_p,  env));
-    env->define("car",      rs_native_procedure(1, false, np_car,       env));
-    env->define("cdr",      rs_native_procedure(1, false, np_cdr,       env));
-    env->define("set-car!", rs_native_procedure(2, false, np_set_car_x, env));
-    env->define("set-cdr!", rs_native_procedure(2, false, np_set_cdr_x, env));
-    env->define("list",     rs_native_procedure(0, true,  np_list,      env));
-    env->define("vector",   rs_native_procedure(0, true,  np_vector,    env));
-    env->define("display",  rs_native_procedure(1, false, np_display,   env));
+    env->define("+",        rs_native_procedure(arity_info(0, true),  np_add,       env));
+    env->define("-",        rs_native_procedure(arity_info(1, true),  np_minus,     env));
+    env->define("*",        rs_native_procedure(arity_info(0, true),  np_multiply,  env));
+    env->define("/",        rs_native_procedure(arity_info(0, true),  np_divide,    env));
+    env->define("=",        rs_native_procedure(arity_info(2, true),  np_eq,        env));
+    env->define("<",        rs_native_procedure(arity_info(2, true),  np_less,      env));
+    env->define("<=",       rs_native_procedure(arity_info(2, true),  np_leq,       env));
+    env->define(">",        rs_native_procedure(arity_info(2, true),  np_gr,        env));
+    env->define(">=",       rs_native_procedure(arity_info(2, true),  np_geq,       env));
+    env->define("pair?",    rs_native_procedure(arity_info(1, false), np_pair_p,    env));
+    env->define("vector?",  rs_native_procedure(arity_info(1, false), np_vector_p,  env));
+    env->define("string?",  rs_native_procedure(arity_info(1, false), np_string_p,  env));
+    env->define("symbol?",  rs_native_procedure(arity_info(1, false), np_symbol_p,  env));
+    env->define("car",      rs_native_procedure(arity_info(1, false), np_car,       env));
+    env->define("cdr",      rs_native_procedure(arity_info(1, false), np_cdr,       env));
+    env->define("set-car!", rs_native_procedure(arity_info(2, false), np_set_car_x, env));
+    env->define("set-cdr!", rs_native_procedure(arity_info(2, false), np_set_cdr_x, env));
+    env->define("list",     rs_native_procedure(arity_info(0, true),  np_list,      env));
+    env->define("vector",   rs_native_procedure(arity_info(0, true),  np_vector,    env));
+    env->define("display",  rs_native_procedure(arity_info(1, false), np_display,   env));
 
     env->define("display-line",
-            rs_native_procedure(1, false, np_display_line, env));
+            rs_native_procedure(arity_info(1, false), np_display_line, env));
 
     return env;
 }
