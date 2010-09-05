@@ -1,7 +1,7 @@
 (define (fact n)
-  (display n)
+  (display-line n)
   (if (< n 1)
     1
     (* n (fact (- n 1)))))
 
-(fact 10)
+(display-line (fact 10))

@@ -56,6 +56,8 @@ bool is_nil(gc::handle<value> val);
 
 gc::handle<value> none();
 
+bool is_none(gc::handle<value> val);
+
 struct rs_pair : std::pair<gc::handle<value>, gc::handle<value> > {
     typedef gc::handle<value> value_type;
 
