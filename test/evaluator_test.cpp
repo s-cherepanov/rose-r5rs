@@ -1,27 +1,23 @@
 #include "rose/evaluator.hpp"
 
-#include <boost/test/unit_test.hpp>
-
-BOOST_AUTO_TEST_SUITE(evaluator_suite)
+#include <gtest/gtest.h>
 
 using namespace rose;
 
-BOOST_AUTO_TEST_CASE(evaluator_simple_test) {
-    BOOST_CHECK_EQUAL(evaluator().eval_to<int>("(define x 1) x"), 1);
+TEST(evaluator_test, eval_to) {
+    ASSERT_EQ(evaluator().eval_to<int>("(define x 1) x"), 1);
 }
 
-BOOST_AUTO_TEST_CASE(evaluator_eval_test) {
+TEST(evaluator_test, multiple_eval) {
     evaluator e;
     e.eval("(define x 1)");
     e.eval("(define y 2)");
-    BOOST_CHECK_EQUAL(handle_cast<int>(e["x"]), 1);
-    BOOST_CHECK_EQUAL(handle_cast<int>(e["y"]), 2);
+    ASSERT_EQ(handle_cast<int>(e["x"]), 1);
+    ASSERT_EQ(handle_cast<int>(e["y"]), 2);
 }
 
-BOOST_AUTO_TEST_CASE(evaluator_eval_to_test) {
+TEST(evaluator_test, multiple_eval_to) {
     evaluator e;
-    BOOST_CHECK_EQUAL(e.eval_to<int>("(define x 1) (+ x 1)"), 2);
-    BOOST_CHECK_EQUAL(e.eval_to<int>("(define y 2) (+ x y)"), 3);
+    ASSERT_EQ(e.eval_to<int>("(define x 1) (+ x 1)"), 2);
+    ASSERT_EQ(e.eval_to<int>("(define y 2) (+ x y)"), 3);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

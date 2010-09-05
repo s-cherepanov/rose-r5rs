@@ -2,21 +2,19 @@
 #include "utilities.hpp"
 
 #include <boost/assign.hpp>
-#include <boost/test/unit_test.hpp>
-
-BOOST_AUTO_TEST_SUITE(datum_suite)
+#include <gtest/gtest.h>
 
 using namespace boost::assign;
 using namespace rose;
 
-void check(std::string const& input, ast_datum const& expected) {
+static void check(std::string const& input, ast_datum const& expected) {
     ast_datum actual;
-    BOOST_CHECK(test_phrase_parser_attr(
+    ASSERT_TRUE(test_phrase_parser_attr(
                 datum_p, input, skipper_p, actual));
-    BOOST_CHECK(actual == expected);
+    ASSERT_TRUE(actual == expected);
 }
 
-BOOST_AUTO_TEST_CASE(simple_datum_test) {
+TEST(datum_parser_test, parse_simple_datum) {
     // boolean
     check("#t", ast_datum(true));
     check("#f", ast_datum(false));
@@ -43,7 +41,7 @@ BOOST_AUTO_TEST_CASE(simple_datum_test) {
     check("list->string", ast_datum(ast_symbol("list->string")));
 }
 
-BOOST_AUTO_TEST_CASE(empty_list_test) {
+TEST(datum_parser_test, parse_empty_list) {
     ast_list list;
     check("()", ast_datum(list));
     check("( )", ast_datum(list));
@@ -53,33 +51,33 @@ BOOST_AUTO_TEST_CASE(empty_list_test) {
     check(" ( ) ", ast_datum(list));
 }
 
-BOOST_AUTO_TEST_CASE(flat_list_test) {
+TEST(datum_parser_test, parse_flat_list) {
     rose::ast_list list;
     list.elements += 1, 2, 3;
     check("(1 2 3)", ast_datum(list));
     check(" ( 1 2 3 ) ", ast_datum(list));
 }
 
-BOOST_AUTO_TEST_CASE(mixed_list_test) {
+TEST(datum_parser_test, parse_mixed_list) {
     ast_list list;
     list.elements += 1, ast_symbol("x"), ast_string("hello");
     list.dotted_element.reset(true);
     check("(1 x \"hello\" . #t)", ast_datum(list));
 }
 
-BOOST_AUTO_TEST_CASE(flat_vector_test) {
+TEST(datum_parser_test, parse_flat_vector) {
     ast_vector vec;
     vec += 1, 2, 3;
     check("#(1 2 3)", ast_datum(vec));
 }
 
-BOOST_AUTO_TEST_CASE(mixed_vector_test) {
+TEST(datum_parser_test, parse_mixed_vector) {
     ast_vector vec;
     vec += 1, ast_symbol("x"), ast_string("hello"), true;
     check("#(1 x \"hello\" #t)", ast_datum(vec));
 }
 
-BOOST_AUTO_TEST_CASE(nested_vector_test) {
+TEST(datum_parser_test, parse_nested_vector) {
     {
         ast_vector vec, empty;
         empty += empty;
@@ -105,5 +103,3 @@ BOOST_AUTO_TEST_CASE(nested_vector_test) {
         check("#(#t (1 2 3 . 4) \"abc\")", ast_datum(vec));
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

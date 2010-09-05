@@ -2,14 +2,12 @@
 #include "rose/gc/handle.hpp"
 #include "rose/gc/object.hpp"
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 
 namespace gc = rose::gc;
 
 using gc::handle;
 using gc::object;
-
-BOOST_AUTO_TEST_SUITE(gc_suite)
 
 struct garbage {
     static bool existing;
@@ -26,20 +24,20 @@ struct garbage {
 
 bool garbage::existing = true;
 
-BOOST_AUTO_TEST_CASE(simple_gc_test) {
+TEST(gc_test, simple_gc) {
     {
         handle<garbage> h(new object<garbage>);
-        BOOST_CHECK(garbage::existing);
+        ASSERT_TRUE(garbage::existing);
     }
 
     gc::force_gc();
-    BOOST_CHECK(!garbage::existing);
+    ASSERT_FALSE(garbage::existing);
 }
 
 struct to {};
 struct from : to {};
 
-BOOST_AUTO_TEST_CASE(conversion_test) {
+TEST(gc_test, conversion) {
     {
         handle<from> h1(new object<from>);
         handle<to> h2(h1), h3 = h1, h4;
@@ -55,13 +53,11 @@ BOOST_AUTO_TEST_CASE(conversion_test) {
     gc::force_gc();
 }
 
-BOOST_AUTO_TEST_CASE(empty_handle_test) {
+TEST(gc_test, empty_handle) {
     handle<int> h;
     gc::force_gc();
 }
 
-BOOST_AUTO_TEST_CASE(force_gc_test) {
+TEST(gc_test, force_gc) {
     gc::force_gc();
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -1,24 +1,22 @@
 #include "parsers.hpp"
 #include "utilities.hpp"
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 
-BOOST_AUTO_TEST_SUITE(identifier_suite)
-
-void check(std::string const& expected) {
+static void check(std::string const& expected) {
     rose::ast_identifier actual;
-    BOOST_CHECK(test_phrase_parser_attr(
+    ASSERT_TRUE(test_phrase_parser_attr(
                 token_p.identifier, expected, skipper_p, actual));
-    BOOST_CHECK_EQUAL(actual, rose::ast_identifier(expected));
+    ASSERT_EQ(actual, rose::ast_identifier(expected));
 }
 
-BOOST_AUTO_TEST_CASE(peculiar_identifier_test) {
+TEST(identifier_parser_test, peculiar_identifier) {
     check("+");
     check("-");
     check("...");
 }
 
-BOOST_AUTO_TEST_CASE(test_special_initial) {
+TEST(identifier_parser_test, special_initial) {
     check("!");
     check("$");
     check("%");
@@ -35,18 +33,16 @@ BOOST_AUTO_TEST_CASE(test_special_initial) {
     check("~");
 }
 
-BOOST_AUTO_TEST_CASE(test_special_subsequent) {
+TEST(identifier_parser_test, special_subsequent) {
     check("a+");
     check("a-");
     check("a.");
     check("a@");
 }
 
-BOOST_AUTO_TEST_CASE(test_mixed ) {
+TEST(identifier_parser_test, mixed ) {
     check("list");
     check("pair?");
     check("set-car!");
     check("string->list");
 }
-
-BOOST_AUTO_TEST_SUITE_END()

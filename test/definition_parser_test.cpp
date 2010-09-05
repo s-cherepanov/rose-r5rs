@@ -2,23 +2,19 @@
 #include "utilities.hpp"
 
 #include <boost/assign.hpp>
-#include <boost/test/unit_test.hpp>
-
-#include <boost/test/unit_test.hpp>
-
-BOOST_AUTO_TEST_SUITE(definition_parser_suite)
+#include <gtest/gtest.h>
 
 using namespace rose;
 
-void check(std::string const& input, ast_definition const& expected) {
+static void check(std::string const& input, ast_definition const& expected) {
     ast_definition actual;
-    BOOST_CHECK(test_phrase_parser_attr(
+    ASSERT_TRUE(test_phrase_parser_attr(
                 expression_p.lambda_expression.definition,
                 input, skipper_p, actual));
-    BOOST_CHECK(actual == expected);
+    ASSERT_TRUE(actual == expected);
 }
 
-BOOST_AUTO_TEST_CASE(simple_definition_test) {
+TEST(definition_parser_test, simple_definition) {
     check(
             "(define x 1)",
             ast_definition(
@@ -27,7 +23,7 @@ BOOST_AUTO_TEST_CASE(simple_definition_test) {
     );
 }
 
-BOOST_AUTO_TEST_CASE(lambda_definition_test1) {
+TEST(definition_parser_test, lambda_definition) {
     check(
             "(define x (lambda (n) n))",
             ast_definition(
@@ -39,7 +35,7 @@ BOOST_AUTO_TEST_CASE(lambda_definition_test1) {
     );
 }
 
-BOOST_AUTO_TEST_CASE(lambda_definition_test2) {
+TEST(definition_parser_test, lambda_definition_with_rest_list_only) {
     check(
             "(define x (lambda n n))",
             ast_definition(
@@ -53,7 +49,7 @@ BOOST_AUTO_TEST_CASE(lambda_definition_test2) {
     );
 }
 
-BOOST_AUTO_TEST_CASE(lambda_define_abbrev_test) {
+TEST(definition_parser_test, abbrev_lambda_definition) {
     check(
             "(define (x n) n)",
             ast_definition(
@@ -63,7 +59,9 @@ BOOST_AUTO_TEST_CASE(lambda_define_abbrev_test) {
                     ast_body(make_sequence(
                             ast_variable("n")))))
     );
+}
 
+TEST(definition_parser_test, abbrev_lambda_definition_with_rest_list) {
     check(
             "(define (x n . m) n)",
             ast_definition(
@@ -76,5 +74,3 @@ BOOST_AUTO_TEST_CASE(lambda_define_abbrev_test) {
                             ast_variable("n")))))
     );
 }
-
-BOOST_AUTO_TEST_SUITE_END()
