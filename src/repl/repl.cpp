@@ -18,13 +18,6 @@ namespace qi = boost::spirit::qi;
 
 environment_ptr build_initial_env();
 
-void call_evaluator(std::string const& input, environment_ptr env) {
-    gc::handle<value> result = evaluator(env).eval(input);
-    if (!!result) {
-        std::cout << "=> " << result << std::endl;
-    }
-}
-
 boost::format format_prompt(std::string const& prompt) {
     boost::format formatter(prompt);
 
@@ -48,7 +41,10 @@ void do_repl(std::string const& prompt) {
             break;
         }
 
-        call_evaluator(input, env);
+        gc::handle<value> result = evaluator(env).eval(input);
+        if (!is_none(result)) {
+            std::cout << "=> " << result << std::endl;
+        }
     }
 }
 
@@ -68,7 +64,7 @@ std::string load_file(std::string const& filename) {
 }
 
 void do_batch(std::string const& input_file) {
-    call_evaluator(load_file(input_file), build_initial_env());
+    evaluator(build_initial_env()).eval(load_file(input_file));
 }
 
 }   //  namespace rose

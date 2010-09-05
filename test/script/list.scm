@@ -3,8 +3,8 @@
     (+ 1 (length (cdr lst)))
     0))
 
-(display (length '()))
-(display (length '(1)))
-(display (length '(1 2)))
-(display (length '(1 2 3)))
-(display (length '(1 2 3 4)))
+(display-line (length '()))
+(display-line (length '(1)))
+(display-line (length '(1 2)))
+(display-line (length '(1 2 3)))
+(display-line (length '(1 2 3 4)))

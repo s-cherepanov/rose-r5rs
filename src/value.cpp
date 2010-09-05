@@ -49,6 +49,10 @@ gc::handle<value> none() {
     return n;
 }
 
+bool is_none(gc::handle<value> val) {
+    return !val;
+}
+
 gc::handle<value> car(gc::handle<value> p) {
     return (boost::get<rs_pair>(*p)).first;
 }

@@ -73,7 +73,7 @@ NATIVE_PROCEDURE(np_divide, args, rest) {
                 << errinfo_actual_arg_num(args.size()));
     }
 
-    int result = handle_cast<int>(car(rest));
+    int result = handle_cast<int>(args[0]);
 
     if (is_nil(rest)) {
         return make_value(1 / result);
@@ -192,7 +192,7 @@ environment_ptr build_initial_env() {
     env->define("+",        rs_native_procedure(arity_info(0, true),  np_add,       env));
     env->define("-",        rs_native_procedure(arity_info(1, true),  np_minus,     env));
     env->define("*",        rs_native_procedure(arity_info(0, true),  np_multiply,  env));
-    env->define("/",        rs_native_procedure(arity_info(0, true),  np_divide,    env));
+    env->define("/",        rs_native_procedure(arity_info(1, true),  np_divide,    env));
     env->define("=",        rs_native_procedure(arity_info(2, true),  np_eq,        env));
     env->define("<",        rs_native_procedure(arity_info(2, true),  np_less,      env));
     env->define("<=",       rs_native_procedure(arity_info(2, true),  np_leq,       env));
