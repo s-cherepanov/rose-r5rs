@@ -7,7 +7,7 @@
 #include <iterator>
 #include <string>
 
-std::string load_file( std::string const& filename );
+std::string load_file(std::string const& filename);
 
 template<typename Generator>
 std::string test_generator(Generator const& generator) {

@@ -1,3 +1,4 @@
+#include "rose/base.hpp"
 #include "rose/environment.hpp"
 #include "rose/evaluator.hpp"
 #include "rose/exception.hpp"
@@ -16,8 +17,6 @@ namespace rose {
 
 namespace qi = boost::spirit::qi;
 
-environment_ptr build_initial_env();
-
 boost::format format_prompt(std::string const& prompt) {
     boost::format formatter(prompt);
 
@@ -32,7 +31,7 @@ boost::format format_prompt(std::string const& prompt) {
 void do_repl(std::string const& prompt) {
     std::string input;
     int line_no = 0;
-    environment_ptr env(build_initial_env());
+    environment_ptr env(init_env());
 
     while (true) {
         std::cout << format_prompt(prompt) % line_no++;
@@ -64,7 +63,7 @@ std::string load_file(std::string const& filename) {
 }
 
 void do_batch(std::string const& input_file) {
-    evaluator(build_initial_env()).eval(load_file(input_file));
+    evaluator(init_env()).eval(load_file(input_file));
 }
 
 }   //  namespace rose

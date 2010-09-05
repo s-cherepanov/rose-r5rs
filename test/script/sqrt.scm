@@ -17,4 +17,6 @@
         (sqrt-iter (improve guess))))
   (sqrt-iter 1))
 
-(display-line (sqrt 1000))
+(define result (sqrt 10000))
+(display-line result)
+result
