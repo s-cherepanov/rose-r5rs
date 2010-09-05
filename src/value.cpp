@@ -54,23 +54,23 @@ bool is_none(gc::handle<value> val) {
 }
 
 gc::handle<value> car(gc::handle<value> p) {
-    return (boost::get<rs_pair>(*p)).first;
+    return ensure_handle_cast<rs_pair>(p).first;
 }
 
 gc::handle<value> cdr(gc::handle<value> p) {
-    return (boost::get<rs_pair>(*p)).second;
+    return ensure_handle_cast<rs_pair>(p).second;
 }
 
 void set_car(gc::handle<value> p, gc::handle<value> val) {
-    (boost::get<rs_pair>(*p)).first = val;
+    ensure_handle_cast<rs_pair>(p).first = val;
 }
 
 void set_cdr(gc::handle<value> p, gc::handle<value> val) {
-    (boost::get<rs_pair>(*p)).second = val;
+    ensure_handle_cast<rs_pair>(p).second = val;
 }
 
 bool is_pair(gc::handle<value> val) {
-    return !!boost::get<rs_pair>(&(*val));
+    return !!handle_cast<rs_pair>(&val);
 }
 
 std::ostream& operator<<(std::ostream& out, rs_nil const&) {

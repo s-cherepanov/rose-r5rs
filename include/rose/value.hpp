@@ -2,6 +2,7 @@
 #define __ROSE_VALUE_HPP__
 
 #include "rose/ast.hpp"
+#include "rose/exception.hpp"
 #include "rose/gc/handle.hpp"
 
 #include <boost/function.hpp>
@@ -171,6 +172,58 @@ ValueType* handle_cast(gc::handle<value>* val) {
 template<typename ValueType>
 ValueType const* handle_cast(gc::handle<value> const* val) {
     return boost::get<ValueType>(&(**val));
+}
+
+template<typename ValueType>
+ValueType& ensure_handle_cast(gc::handle<value>& val) {
+    ValueType* result = handle_cast<ValueType>(&val);
+
+    if (!result) {
+        BOOST_THROW_EXCEPTION(
+                type_error()
+                << errinfo_expected_type(typeid(ValueType).name()));
+    }
+
+    return *result;
+}
+
+template<typename ValueType>
+ValueType const& ensure_handle_cast(gc::handle<value> const& val) {
+    ValueType const* result = handle_cast<ValueType>(&val);
+
+    if (!result) {
+        BOOST_THROW_EXCEPTION(
+                type_error()
+                << errinfo_expected_type(typeid(ValueType).name()));
+    }
+
+    return *result;
+}
+
+template<typename ValueType>
+ValueType* ensure_handle_cast(gc::handle<value>* val) {
+    ValueType* result = handle_cast<ValueType>(val);
+
+    if (!result) {
+        BOOST_THROW_EXCEPTION(
+                type_error()
+                << errinfo_expected_type(typeid(ValueType).name()));
+    }
+
+    return result;
+}
+
+template<typename ValueType>
+ValueType const* ensure_handle_cast(gc::handle<value> const* val) {
+    ValueType const* result = handle_cast<ValueType>(val);
+
+    if (!result) {
+        BOOST_THROW_EXCEPTION(
+                type_error()
+                << errinfo_expected_type(typeid(ValueType).name()));
+    }
+
+    return result;
 }
 
 struct rs_vector :
