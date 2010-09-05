@@ -52,18 +52,9 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
     result_type operator()(rs_procedure const& proc) const {
         using namespace boost;
 
-        ast_formal_args const& formal_args = proc.ast.formals.formal_args;
+        check_arity(proc);
 
-        if (args.size() < proc.arity().required ||
-                (args.size() > proc.arity().required &&
-                 !proc.arity().has_rest))
-        {
-            BOOST_THROW_EXCEPTION(
-                    arity_mismatch()
-                    << errinfo_required_arg_num(proc.arity().required)
-                    << errinfo_has_rest(proc.arity().has_rest)
-                    << errinfo_actual_arg_num(args.size()));
-        }
+        ast_formal_args const& formal_args = proc.ast.formals.formal_args;
 
         proc.env->clear();
         range::transform(
@@ -93,16 +84,7 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
     }
 
     result_type operator()(rs_native_procedure const& proc) const {
-        if (args.size() < proc.arity().required ||
-                (args.size() > proc.arity().required &&
-                 !proc.arity().has_rest))
-        {
-            BOOST_THROW_EXCEPTION(
-                    arity_mismatch()
-                    << errinfo_required_arg_num(proc.arity().required)
-                    << errinfo_has_rest(proc.arity().has_rest)
-                    << errinfo_actual_arg_num(args.size()));
-        }
+        check_arity(proc);
 
         arguments_type::const_iterator
             rest_begin = args.begin() + proc.arity().required,
@@ -111,7 +93,7 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
         arguments_type formal_args;
         std::copy(args.begin(), rest_begin, std::back_inserter(formal_args));
 
-        gc::handle<value> rest_list;
+        gc::handle<value> rest_list(nil());
         if (proc.arity().has_rest) {
             rest_list = make_list(rest_begin, rest_end);
         }
@@ -123,6 +105,20 @@ struct proc_application : boost::static_visitor<gc::handle<value> > {
     result_type operator()(ValueType const& val) const {
         BOOST_THROW_EXCEPTION(wrong_type_to_apply());
         return none();
+    }
+
+    template<typename Procedure>
+    void check_arity(Procedure const& p) const {
+        if (args.size() < p.arity().required ||
+                (args.size() > p.arity().required &&
+                 !p.arity().has_rest))
+        {
+            BOOST_THROW_EXCEPTION(
+                    arity_mismatch()
+                    << errinfo_required_arg_num(p.arity().required)
+                    << errinfo_has_rest(p.arity().has_rest)
+                    << errinfo_actual_arg_num(args.size()));
+        }
     }
 
     arguments_type args;

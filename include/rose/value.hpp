@@ -114,21 +114,23 @@ private:
 
 std::ostream& operator<<(std::ostream& out, rs_procedure const& p);
 
+typedef
+    boost::function<
+        gc::handle<value>(arguments_type, gc::handle<value>)
+    >
+    procedure_fn;
+
 class rs_native_procedure {
 public:
-    typedef
-        boost::function<
-            gc::handle<value>(arguments_type, gc::handle<value>)
-        >
-        procedure_fn;
-
     rs_native_procedure(
+            std::string const& name,
             arity_info const& airty,
             procedure_fn const& procedure,
             environment_ptr parent);
 
     arity_info const& arity() const;
 
+    std::string name;
     procedure_fn procedure;
     environment_ptr env;
 

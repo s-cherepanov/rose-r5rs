@@ -22,10 +22,12 @@ arity_info const& rs_procedure::arity() const {
 }
 
 rs_native_procedure::rs_native_procedure(
+        std::string const& name,
         arity_info const& arity,
         procedure_fn const& procedure,
         environment_ptr parent)
 :
+    name(name),
     procedure(procedure),
     env(new environment(parent)),
     arity_(arity)
@@ -114,7 +116,7 @@ std::ostream& operator<<(std::ostream& out, rs_procedure const& p) {
 }
 
 std::ostream& operator<<(std::ostream& out, rs_native_procedure const& p) {
-    return out << "#<native-procedure>";
+    return out << "#<native-procedure " << p.name << ">";
 }
 
 struct value_printer : boost::static_visitor<std::ostream&> {

@@ -4,4 +4,6 @@
     1
     (* n (fact (- n 1)))))
 
-(display-line (fact 10))
+(define result (fact 10))
+(display-line result)
+result

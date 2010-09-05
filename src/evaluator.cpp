@@ -3,7 +3,7 @@
 #include "rose/evaluator.hpp"
 #include "rose/parser/intertoken_space.hpp"
 #include "rose/parser/program.hpp"
-#include "rose/primitive.hpp"
+#include "rose/base.hpp"
 
 #include <boost/spirit/include/qi.hpp>
 
@@ -12,7 +12,7 @@ namespace rose {
 namespace qi = boost::spirit::qi;
 
 evaluator::evaluator() :
-    env_(build_initial_env())
+    env_(init_env())
 {}
 
 evaluator::evaluator(environment_ptr env) :

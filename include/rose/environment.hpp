@@ -5,6 +5,7 @@
 #include "rose/gc/handle.hpp"
 #include "rose/value.hpp"
 
+#include <boost/enable_shared_from_this.hpp>
 #include <boost/format.hpp>
 #include <boost/shared_ptr.hpp>
 
@@ -17,7 +18,8 @@ class environment;
 typedef boost::shared_ptr<environment> environment_ptr;
 
 class environment :
-    public std::map<ast_variable, gc::handle<value> >
+    public std::map<ast_variable, gc::handle<value> >,
+    public boost::enable_shared_from_this<environment>
 {
     friend std::ostream& operator<<(std::ostream&, environment const&);
 
@@ -54,6 +56,39 @@ public:
     template<typename ValueType>
     void define(std::string const& var, ValueType const& val) {
         define(ast_variable(var), make_value(val));
+    }
+
+    struct definition_adder {
+        definition_adder(environment_ptr env) :
+            env(env)
+        {}
+
+        template<typename ValueType>
+        definition_adder const& operator()(
+                std::string const& var, ValueType const& val) const
+        {
+            env->define(var, val);
+            return *this;
+        }
+
+        definition_adder const& operator()(
+                std::string const& name,
+                std::size_t required,
+                bool has_rest,
+                procedure_fn fn) const
+        {
+            env->define(name, rs_native_procedure(
+                        name, arity_info(required, has_rest), fn, env));
+            return *this;
+        }
+
+    private:
+        environment_ptr env;
+
+    };  //  struct definition_adder
+
+    definition_adder define() {
+        return definition_adder(shared_from_this());
     }
 
     void assign(ast_variable const& var, gc::handle<value> val) {
