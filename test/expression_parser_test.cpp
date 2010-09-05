@@ -2,9 +2,7 @@
 #include "utilities.hpp"
 
 #include <boost/assign.hpp>
-#include <boost/test/unit_test.hpp>
-
-BOOST_AUTO_TEST_SUITE(expression_suite)
+#include <gtest/gtest.h>
 
 using namespace boost::assign;
 using namespace rose;
@@ -12,12 +10,12 @@ using namespace rose;
 template<typename Expression>
 void check(std::string const& input, Expression const& expected) {
     ast_expression actual;
-    BOOST_CHECK(test_phrase_parser_attr(
+    ASSERT_TRUE(test_phrase_parser_attr(
                 expression_p, input, skipper_p, actual));
-    BOOST_CHECK(actual == ast_expression(expected));
+    ASSERT_TRUE(actual == ast_expression(expected));
 }
 
-BOOST_AUTO_TEST_CASE(variable_test) {
+TEST(expression_parser_test, variable) {
     check("abc", ast_variable("abc"));
     check("+", ast_variable("+"));
     check("-", ast_variable("-"));
@@ -25,7 +23,7 @@ BOOST_AUTO_TEST_CASE(variable_test) {
     check("boolean?", ast_variable("boolean?"));
 }
 
-BOOST_AUTO_TEST_CASE(literal_quotation_test) {
+TEST(expression_parser_test, literal_quotation) {
     check("'a", ast_quotation(ast_datum(ast_symbol("a"))));
 
     ast_list list;
@@ -34,30 +32,30 @@ BOOST_AUTO_TEST_CASE(literal_quotation_test) {
     check("(quote (1 2 3))", ast_quotation(ast_datum(list)));
 }
 
-BOOST_AUTO_TEST_CASE(literal_self_evaluating_boolean_test) {
+TEST(expression_parser_test, literal_self_evaluating_boolean) {
     check("#t", true);
     check("#f", false);
 }
 
-BOOST_AUTO_TEST_CASE(literal_self_evaluating_number_test) {
+TEST(expression_parser_test, literal_self_evaluating_number) {
     check("10", 10);
     check("-10", -10);
     check("0", 0);
 }
 
-BOOST_AUTO_TEST_CASE(literal_self_evaluating_character_test) {
+TEST(expression_parser_test, literal_self_evaluating_character) {
     check("#\\a", 'a');
     check("#\\newline", '\n');
     check("#\\space", ' ');
 }
 
-BOOST_AUTO_TEST_CASE(literal_self_evaluating_string_test) {
+TEST(expression_parser_test, literal_self_evaluating_string) {
     check("\"\"", ast_string(""));
     check("\"\n\t\\\"\"", ast_string("\n\t\""));
     check("\"abc\"", ast_string("abc"));
 }
 
-BOOST_AUTO_TEST_CASE(procedure_call_test) {
+TEST(expression_parser_test, procedure_call) {
     check(
             "(+ a b)",
             ast_procedure_call(
@@ -75,12 +73,12 @@ BOOST_AUTO_TEST_CASE(procedure_call_test) {
     );
 }
 
-BOOST_AUTO_TEST_CASE(conditional_test) {
+TEST(expression_parser_test, conditional) {
     check("(if #t 1)", ast_conditional(true, 1));
     check("(if #t 1 2)", ast_conditional(true, 1, 2));
 }
 
-BOOST_AUTO_TEST_CASE(lambda_expression_test) {
+TEST(expression_parser_test, lambda_expression) {
     check(
             "(lambda () 1)",
             ast_lambda_expression(
@@ -105,7 +103,7 @@ BOOST_AUTO_TEST_CASE(lambda_expression_test) {
     );
 }
 
-BOOST_AUTO_TEST_CASE(factorial_lambda_test) {
+TEST(expression_parser_test, factorial_lambda) {
     ast_lambda_expression inner_lambda(
             ast_formals(
                 make_formal_args(ast_variable("m"))),
@@ -153,5 +151,3 @@ BOOST_AUTO_TEST_CASE(factorial_lambda_test) {
             expected
     );
 }
-
-BOOST_AUTO_TEST_SUITE_END()

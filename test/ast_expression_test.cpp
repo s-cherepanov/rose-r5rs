@@ -1,15 +1,11 @@
 #include "rose/ast.hpp"
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 
 using namespace rose;
 
-BOOST_AUTO_TEST_SUITE(ast_expression_suite)
-
-BOOST_AUTO_TEST_CASE(ast_expression_test) {
+TEST(ast_expression_test, empty_expression) {
     ast_expression e1;
     ast_expression e2;
-    BOOST_CHECK( e1 == e2 );
+    ASSERT_TRUE(e1 == e2);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

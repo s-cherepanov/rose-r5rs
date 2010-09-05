@@ -1,25 +1,23 @@
 #include "rose/value.hpp"
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 
 using namespace rose;
 
-BOOST_AUTO_TEST_SUITE(value_suite)
-
-BOOST_AUTO_TEST_CASE(handle_cast_test) {
+TEST(value_test, handle_cast) {
     {
         gc::handle<value> val(make_value(1));
-        BOOST_CHECK_EQUAL(handle_cast<int>(val), 1);
+        ASSERT_EQ(handle_cast<int>(val), 1);
     }
 }
 
-BOOST_AUTO_TEST_CASE(make_list_nil_test) {
+TEST(value_test, make_list_nil) {
     std::vector<gc::handle<value> > args;
     gc::handle<value> actual = make_list(args);
-    BOOST_CHECK(is_nil(actual));
+    ASSERT_TRUE(is_nil(actual));
 }
 
-BOOST_AUTO_TEST_CASE(make_list_test) {
+TEST(value_test, make_list) {
     std::vector<gc::handle<value> > args;
     args.push_back(make_value(1));
     args.push_back(make_value(rs_symbol("hello")));
@@ -38,7 +36,5 @@ BOOST_AUTO_TEST_CASE(make_list_test) {
     out1 << actual;
     out2 << expected;
 
-    BOOST_CHECK_EQUAL(out1.str(), out2.str());
+    ASSERT_EQ(out1.str(), out2.str());
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -2,26 +2,24 @@
 #include "utilities.hpp"
 
 #include <boost/assign.hpp>
-#include <boost/test/unit_test.hpp>
-
-BOOST_AUTO_TEST_SUITE(program_parser_suite)
+#include <gtest/gtest.h>
 
 using namespace boost::assign;
 using namespace rose;
 
-void check(std::string const& input, ast_program const& expected) {
+static void check(std::string const& input, ast_program const& expected) {
     ast_program actual;
-    BOOST_CHECK(test_phrase_parser_attr(program_p, input, skipper_p, actual));
-    BOOST_CHECK(actual == expected);
+    ASSERT_TRUE(test_phrase_parser_attr(program_p, input, skipper_p, actual));
+    ASSERT_TRUE(actual == expected);
 }
 
-BOOST_AUTO_TEST_CASE(varaible_test) {
+TEST(program_parser_test, varaible) {
     ast_program expected;
     expected += ast_expression(ast_variable("x"));
     check("x", expected);
 }
 
-BOOST_AUTO_TEST_CASE(definition_test) {
+TEST(program_parser_test, definition) {
     check(
             "(define x 1)\n"
             "(define y 2)\n",
@@ -31,7 +29,7 @@ BOOST_AUTO_TEST_CASE(definition_test) {
     );
 }
 
-BOOST_AUTO_TEST_CASE(shebang_test) {
+TEST(program_parser_test, shebang) {
     check(
             "#!/usr/local/bin/rose\n"
             "\n"
@@ -40,7 +38,7 @@ BOOST_AUTO_TEST_CASE(shebang_test) {
     );
 }
 
-BOOST_AUTO_TEST_CASE(call_factorial_test) {
+TEST(program_parser_test, call_factorial) {
     ast_program expected =
         make_program(
                 ast_definition(
@@ -82,5 +80,3 @@ BOOST_AUTO_TEST_CASE(call_factorial_test) {
             expected
     );
 }
-
-BOOST_AUTO_TEST_SUITE_END()
