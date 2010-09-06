@@ -131,6 +131,13 @@ DEFINE_NATIVE_PROCEDURE(np_procedure_p) {
                 handle_cast<rs_native_procedure>(&args[0]));
 }
 
+DEFINE_NATIVE_PROCEDURE(np_cons) {
+    gc::handle<value> result = make_value(rs_pair());
+    set_car(result, args[0]);
+    set_cdr(result, args[1]);
+    return result;
+}
+
 DEFINE_NATIVE_PROCEDURE(np_car) {
     return car(args[0]);
 }
@@ -186,27 +193,28 @@ environment_ptr init_env(environment_ptr env) {
 
     env->define()
         ("+",            0, true,  np_add)
-        ("-",            1, true,  np_minus)
         ("*",            0, true,  np_multiply)
         ("/",            1, true,  np_divide)
+        ("-",            1, true,  np_minus)
         ("=",            2, true,  np_eq)
-        ("<",            2, true,  np_less)
-        ("<=",           2, true,  np_leq)
-        (">",            2, true,  np_gr)
         (">=",           2, true,  np_geq)
-        ("pair?",        1, false, np_pair_p)
-        ("vector?",      1, false, np_vector_p)
-        ("string?",      1, false, np_string_p)
-        ("symbol?",      1, false, np_symbol_p)
-        ("procedure?",   1, false, np_procedure_p)
+        (">",            2, true,  np_gr)
+        ("<=",           2, true,  np_leq)
+        ("<",            2, true,  np_less)
         ("car",          1, false, np_car)
         ("cdr",          1, false, np_cdr)
-        ("set-car!",     2, false, np_set_car_x)
-        ("set-cdr!",     2, false, np_set_cdr_x)
-        ("list",         0, true,  np_list)
-        ("vector",       0, true,  np_vector)
+        ("cons",         2, false, np_cons)
         ("display",      1, false, np_display)
         ("display-line", 1, false, np_display_line)
+        ("list",         0, true,  np_list)
+        ("pair?",        1, false, np_pair_p)
+        ("procedure?",   1, false, np_procedure_p)
+        ("set-car!",     2, false, np_set_car_x)
+        ("set-cdr!",     2, false, np_set_cdr_x)
+        ("string?",      1, false, np_string_p)
+        ("symbol?",      1, false, np_symbol_p)
+        ("vector",       0, true,  np_vector)
+        ("vector?",      1, false, np_vector_p)
         ;
 
     return env;
